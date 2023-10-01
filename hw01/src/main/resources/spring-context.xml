@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns = "http://www.springframework.org/schema/beans"
+        xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:util="http://www.springframework.org/schema/util" xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd" >
+
+    <util:constant id="OUTPUT_STREAM" static-field="java.lang.System.out"/>
+    <bean id="printer" class="ru.fedbon.services.PrinterImpl">
+        <constructor-arg index="0" ref="OUTPUT_STREAM"/>
+    </bean>
+    <bean id="parser" class="ru.fedbon.services.CsvParser">
+        <constructor-arg index="0" value="questions.csv"/>
+    </bean>
+    <bean id="questionService" class="ru.fedbon.services.QuestionServiceImpl">
+        <constructor-arg index="0" ref="parser"/>
+    </bean>
+    <bean id="stringifier" class="ru.fedbon.services.QuestionsStringifier"/>
+    <bean id="app" class="ru.fedbon.App">
+        <constructor-arg index="0" ref="questionService"/>
+        <constructor-arg index="1" ref="stringifier"/>
+        <constructor-arg index="2" ref="printer"/>
+    </bean>
+</beans>

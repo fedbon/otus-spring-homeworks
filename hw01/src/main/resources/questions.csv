@@ -1,0 +1,5 @@
+Which is correct for Spring Framework?,Spring framework is light-weight solution.,Spring framework is heavy-weight solution.
+Beans defined in spring framework are by default .. ,singleton,prototype,request,session,global session
+In which spring version has Spring Expression Language been supported?,Spring 3.0,Spring 2.5
+AOP is the part of Core Container in Spring Framework.,False,True
+Which class represents the IoC container?,ApplicationContext,ServletContext
