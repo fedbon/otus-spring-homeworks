@@ -2,11 +2,13 @@ package ru.fedbon;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import ru.fedbon.service.TestingServiceImpl;
+import ru.fedbon.service.api.TestingService;
 
-public class AppRunner {
+public class TestingApp {
     public static void main(String[] args) throws BeansException {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/spring-context.xml");
-        App app = context.getBean(App.class);
-        app.run();
+        TestingService testingService = context.getBean(TestingServiceImpl.class);
+        testingService.executeTesting();
     }
 }
