@@ -24,13 +24,15 @@ public class CsvQuestionDao implements QuestionDao {
     @Override
     public List<Question> getAll() {
         var inputStream = this.getClass().getClassLoader().getResourceAsStream(path);
-        try {
-            assert inputStream != null;
-            var reader1 = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
-            try (var reader = new CSVReader(reader1)) {
-                List<List<String>> data = reader.readAll().stream().map(Arrays::asList).toList();
-                return data.stream().map(this::createQuestion).toList();
-            }
+        if (inputStream == null) {
+            throw new IllegalArgumentException("File not found: " + path);
+        }
+        try (var reader1 = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+             var reader = new CSVReader(reader1)) {
+
+            List<List<String>> data = reader.readAll().stream().map(Arrays::asList).toList();
+            return data.stream().map(this::createQuestion).toList();
+
         } catch (IOException | CsvException e) {
             throw new AppException(e);
         }
