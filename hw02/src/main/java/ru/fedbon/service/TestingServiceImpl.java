@@ -1,6 +1,7 @@
 package ru.fedbon.service;
 
-import org.springframework.beans.factory.annotation.Value;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.fedbon.domain.Result;
 import ru.fedbon.service.api.IOService;
@@ -10,6 +11,7 @@ import ru.fedbon.service.api.UserService;
 import ru.fedbon.utils.Message;
 
 @Service
+@RequiredArgsConstructor
 public class TestingServiceImpl implements TestingService {
 
     private final IOService ioService;
@@ -22,19 +24,6 @@ public class TestingServiceImpl implements TestingService {
 
     private final UserService userService;
 
-    private final int scoreToPass;
-
-    public TestingServiceImpl(IOService ioService, QuestionService questionService,
-                              QuestionStringifierService questionStringifierService,
-                              ResultStringifierService resultStringifierService, UserService userService,
-                              @Value("${score.to.pass}")int scoreToPass) {
-        this.ioService = ioService;
-        this.questionService = questionService;
-        this.questionStringifierService = questionStringifierService;
-        this.resultStringifierService = resultStringifierService;
-        this.userService = userService;
-        this.scoreToPass = scoreToPass;
-    }
 
     @Override
     public void executeTesting() {
@@ -52,7 +41,7 @@ public class TestingServiceImpl implements TestingService {
             result.incrementCorrectAnswers(isCorrect);
             ioService.output(isCorrect ? Message.MSG_RIGHT_ANSWER : Message.MSG_WRONG_ANSWER);
         });
-        ioService.output(resultStringifierService.stringify(result, scoreToPass));
+        ioService.output(resultStringifierService.stringify(result, resultStringifierService.getScoreToPass()));
     }
 }
 
