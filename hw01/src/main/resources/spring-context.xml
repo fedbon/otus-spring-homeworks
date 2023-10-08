@@ -11,7 +11,7 @@
         <constructor-arg index="0" value="questions.csv"/>
     </bean>
 
-    <bean id="stringifier" class="ru.fedbon.utils.QuestionsStringifier"/>
+    <bean id="stringifier" class="ru.fedbon.service.QuestionStringifierService"/>
 
     <bean id="testingService" class="ru.fedbon.service.TestingServiceImpl">
         <constructor-arg index="0" ref="questionDao"/>
