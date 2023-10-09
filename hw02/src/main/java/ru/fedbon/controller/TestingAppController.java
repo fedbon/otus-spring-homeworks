@@ -17,8 +17,7 @@ public class TestingAppController implements Controller {
     public void executeTesting() {
         testingServiceImpl.displayHeader();
 
-        var user = testingServiceImpl.registryUser();
-        var result = testingServiceImpl.getResult(user);
+        var result = testingServiceImpl.getResult(testingServiceImpl.registryUser());
 
         testingServiceImpl.displayResult(result);
     }
