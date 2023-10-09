@@ -32,15 +32,18 @@ public class TestingServiceImpl implements TestingService {
         this.resultStringifier = resultStringifier;
     }
 
+    @Override
     public void displayHeader() {
         ioService.output(Message.MSG_HEADER);
         ioService.output(Message.HEADER_DELIMITER);
     }
 
+    @Override
     public User registryUser() {
         return userService.getUser();
     }
 
+    @Override
     public Result getResult(User user) {
         var result = new Result(user);
 
@@ -56,6 +59,7 @@ public class TestingServiceImpl implements TestingService {
         return result;
     }
 
+    @Override
     public void displayResult(Result result) {
         ioService.output(resultStringifier.stringify(result, resultStringifier.getScoreToPass()));
     }
