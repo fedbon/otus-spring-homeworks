@@ -1,13 +1,13 @@
 package ru.fedbon.service;
 
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import ru.fedbon.domain.Question;
 import ru.fedbon.service.api.Stringifier;
 
 
-@Service
-public class QuestionStringifierService implements Stringifier {
+@Component
+public class QuestionStringifier implements Stringifier {
 
     @Override
     public String stringify(Question question) {

@@ -2,18 +2,18 @@ package ru.fedbon.service;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import ru.fedbon.domain.Result;
 import ru.fedbon.service.api.Stringifier;
 import ru.fedbon.utils.Message;
 
-@Service
+@Component
 @Getter
-public class ResultStringifierService implements Stringifier {
+public class ResultStringifier implements Stringifier {
 
     private final int scoreToPass;
 
-    public ResultStringifierService(@Value("${score.to.pass}") int scoreToPass) {
+    public ResultStringifier(@Value("${score.to.pass}") int scoreToPass) {
         this.scoreToPass = scoreToPass;
     }
 
