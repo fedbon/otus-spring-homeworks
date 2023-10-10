@@ -1,4 +1,4 @@
-package ru.fedbon.controller.api;
+package ru.fedbon.controller;
 
 
 

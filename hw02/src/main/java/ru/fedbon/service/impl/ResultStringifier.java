@@ -1,10 +1,10 @@
-package ru.fedbon.service;
+package ru.fedbon.service.impl;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.fedbon.domain.Result;
-import ru.fedbon.service.api.Stringifier;
+import ru.fedbon.service.Stringifier;
 import ru.fedbon.utils.Message;
 
 @Component

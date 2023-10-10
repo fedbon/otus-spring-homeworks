@@ -1,6 +1,6 @@
-package ru.fedbon.service;
+package ru.fedbon.service.impl;
 
-import ru.fedbon.service.api.IOService;
+import ru.fedbon.service.IOService;
 import ru.fedbon.utils.Message;
 
 import java.io.InputStream;

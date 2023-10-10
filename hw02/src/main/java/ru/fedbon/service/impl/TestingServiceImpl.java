@@ -1,12 +1,10 @@
-package ru.fedbon.service;
+package ru.fedbon.service.impl;
 
 import org.springframework.stereotype.Service;
 import ru.fedbon.domain.Result;
-import ru.fedbon.domain.User;
-import ru.fedbon.service.api.IOService;
-import ru.fedbon.service.api.TestingService;
-import ru.fedbon.service.api.QuestionService;
-import ru.fedbon.service.api.UserService;
+import ru.fedbon.service.IOService;
+import ru.fedbon.service.QuestionService;
+import ru.fedbon.service.TestingService;
 import ru.fedbon.utils.Message;
 
 @Service
@@ -14,22 +12,16 @@ public class TestingServiceImpl implements TestingService {
 
     private final IOService ioService;
 
-    private final UserService userService;
-
     private final QuestionService questionService;
 
     private final QuestionStringifier questionStringifier;
 
-    private final ResultStringifier resultStringifier;
 
-
-    public TestingServiceImpl(IOService ioService, UserService userService, QuestionService questionService,
-                              QuestionStringifier questionStringifier, ResultStringifier resultStringifier) {
+    public TestingServiceImpl(IOService ioService, QuestionService questionService,
+                              QuestionStringifier questionStringifier) {
         this.ioService = ioService;
-        this.userService = userService;
         this.questionService = questionService;
         this.questionStringifier = questionStringifier;
-        this.resultStringifier = resultStringifier;
     }
 
     @Override
@@ -39,14 +31,7 @@ public class TestingServiceImpl implements TestingService {
     }
 
     @Override
-    public User registryUser() {
-        return userService.getUser();
-    }
-
-    @Override
-    public Result getResult(User user) {
-        var result = new Result(user);
-
+    public void processTesting(Result result) {
         var questions = questionService.getAllQuestions();
         questions.forEach(question -> {
             var option = ioService.readInt(questionStringifier.stringify(question) +
@@ -55,12 +40,5 @@ public class TestingServiceImpl implements TestingService {
             result.incrementCorrectAnswers(isCorrect);
             ioService.output(isCorrect ? Message.MSG_RIGHT_ANSWER : Message.MSG_WRONG_ANSWER);
         });
-
-        return result;
-    }
-
-    @Override
-    public void displayResult(Result result) {
-        ioService.output(resultStringifier.stringify(result, resultStringifier.getScoreToPass()));
     }
 }

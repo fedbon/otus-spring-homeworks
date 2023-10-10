@@ -1,4 +1,4 @@
-package ru.fedbon.service.api;
+package ru.fedbon.service;
 
 public interface IOService {
     void output(String message);

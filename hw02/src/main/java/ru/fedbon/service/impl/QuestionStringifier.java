@@ -1,9 +1,9 @@
-package ru.fedbon.service;
+package ru.fedbon.service.impl;
 
 
 import org.springframework.stereotype.Component;
 import ru.fedbon.domain.Question;
-import ru.fedbon.service.api.Stringifier;
+import ru.fedbon.service.Stringifier;
 
 
 @Component

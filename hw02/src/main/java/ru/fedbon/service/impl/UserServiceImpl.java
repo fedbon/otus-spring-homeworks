@@ -1,10 +1,10 @@
-package ru.fedbon.service;
+package ru.fedbon.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.fedbon.domain.User;
-import ru.fedbon.service.api.IOService;
-import ru.fedbon.service.api.UserService;
+import ru.fedbon.service.IOService;
+import ru.fedbon.service.UserService;
 import ru.fedbon.utils.Message;
 
 @Service

@@ -1,10 +1,10 @@
-package ru.fedbon.service;
+package ru.fedbon.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.fedbon.dao.QuestionDao;
 import ru.fedbon.domain.Question;
-import ru.fedbon.service.api.QuestionService;
+import ru.fedbon.service.QuestionService;
 
 import java.util.List;
 

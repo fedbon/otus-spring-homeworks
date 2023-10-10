@@ -9,6 +9,8 @@ import org.mockito.MockitoAnnotations;
 import ru.fedbon.dao.QuestionDao;
 import ru.fedbon.domain.Answer;
 import ru.fedbon.domain.Question;
+import ru.fedbon.service.impl.QuestionServiceImpl;
+
 import java.util.Arrays;
 import java.util.List;
 
