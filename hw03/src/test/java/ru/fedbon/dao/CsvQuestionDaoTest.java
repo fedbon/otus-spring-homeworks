@@ -10,6 +10,8 @@ import ru.fedbon.config.LocalizedResourceNameProvider;
 import ru.fedbon.config.ScoreToPassProvider;
 import ru.fedbon.domain.Answer;
 import ru.fedbon.domain.Question;
+import ru.fedbon.service.impl.QuestionServiceImpl;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +19,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
-@SpringBootTest
+@SpringBootTest(classes = CsvQuestionDao.class)
 class CsvQuestionDaoTest {
 
     private static final String CSV_RESOURCE_NAME = "test-questions.csv";
