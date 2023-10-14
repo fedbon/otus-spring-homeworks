@@ -22,7 +22,7 @@ public class ShellCommand {
 
     private final UserService userService;
 
-    @ShellMethod(value = "startTesting", key = {"start-app"})
+    @ShellMethod(value = "startTesting", key = {"start-testing"})
     public void startTesting() {
         appRunner.run();
     }
