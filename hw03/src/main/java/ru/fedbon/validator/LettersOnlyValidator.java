@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import java.util.regex.Pattern;
 
 @Component
-public class StringInputValidator implements Validator {
+public class LettersOnlyValidator implements Validator {
 
     private static final Pattern LETTERS_ONLY_PATTERN = Pattern.compile("\\p{L}+");
 
@@ -16,6 +16,6 @@ public class StringInputValidator implements Validator {
 
     @Override
     public String errorMessage() {
-        return "Invalid input! Please use only letters.";
+        return "error.message.invalid.string.input";
     }
 }

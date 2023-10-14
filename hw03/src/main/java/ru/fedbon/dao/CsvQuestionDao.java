@@ -28,7 +28,7 @@ public class CsvQuestionDao implements QuestionDao {
         var csvResourceName = resourceNameProvider.getLocalizedResourceName();
 
         try (var reader = new CSVReader(new InputStreamReader(Objects.requireNonNull(this.getClass().getClassLoader().
-                getResourceAsStream(csvResourceName), "File not found")))) {
+                getResourceAsStream(csvResourceName))))) {
             var content = reader.readAll();
             var questions = new ArrayList<Question>();
             for (var row : content) {

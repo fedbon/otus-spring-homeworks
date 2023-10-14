@@ -7,4 +7,4 @@ app:
   properties:
     resource-name: "questions.csv"
     score-to-pass: 4
-    locale: ru_RU
+    locale: en_US

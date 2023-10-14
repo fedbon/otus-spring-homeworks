@@ -9,6 +9,7 @@ import ru.fedbon.service.TestingService;
 import ru.fedbon.service.UserService;
 
 
+
 @Component
 @RequiredArgsConstructor
 public class AppController implements Controller {

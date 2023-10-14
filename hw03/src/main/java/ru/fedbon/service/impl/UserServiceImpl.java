@@ -6,7 +6,7 @@ import ru.fedbon.domain.User;
 import ru.fedbon.service.IOService;
 import ru.fedbon.service.LocalizationMessageService;
 import ru.fedbon.service.UserService;
-import ru.fedbon.validator.StringInputValidator;
+import ru.fedbon.validator.LettersOnlyValidator;
 
 
 @Service
@@ -17,7 +17,7 @@ public class UserServiceImpl implements UserService {
 
     private final LocalizationMessageService messageService;
 
-    private final StringInputValidator validator;
+    private final LettersOnlyValidator validator;
 
     @Override
     public User getUser() {
@@ -29,14 +29,14 @@ public class UserServiceImpl implements UserService {
         do {
             firstName = ioService.readLn(messageService.getLocalizedMessage("message.enter.first.name"));
             if (validator.validate(firstName)) {
-                ioService.output(messageService.getLocalizedMessage("error.message.invalid.string.input"));
+                ioService.output(messageService.getLocalizedMessage(validator.errorMessage()));
             }
         } while (validator.validate(firstName));
 
         do {
             lastName = ioService.readLn(messageService.getLocalizedMessage("message.enter.last.name"));
             if (validator.validate(lastName)) {
-                ioService.output(messageService.getLocalizedMessage("error.message.invalid.string.input"));
+                ioService.output(messageService.getLocalizedMessage(validator.errorMessage()));
             }
         } while (validator.validate(lastName));
 

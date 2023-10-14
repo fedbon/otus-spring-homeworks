@@ -6,8 +6,10 @@ import ru.fedbon.domain.Result;
 import ru.fedbon.service.IOService;
 import ru.fedbon.service.LocalizationMessageService;
 import ru.fedbon.service.QuestionService;
+import ru.fedbon.service.Stringifier;
 import ru.fedbon.service.TestingService;
-import ru.fedbon.validator.NumberInputValidator;
+import ru.fedbon.validator.NumberRangeValidator;
+
 
 @Service
 @RequiredArgsConstructor
@@ -19,11 +21,11 @@ public class TestingServiceImpl implements TestingService {
 
     private final QuestionService questionService;
 
-    private final QuestionStringifier questionStringifier;
+    private final Stringifier stringifier;
 
     private final LocalizationMessageService messageService;
 
-    private final NumberInputValidator validator;
+    private final NumberRangeValidator validator;
 
     @Override
     public void displayHeader() {
@@ -39,11 +41,11 @@ public class TestingServiceImpl implements TestingService {
             int inputtedAnswer;
 
             do {
-                inputtedAnswer = ioService.readInt(questionStringifier.stringify(question) +
+                inputtedAnswer = ioService.readInt(stringifier.stringifyQuestion(question) +
                         messageService.getLocalizedMessage("message.enter.answer")) - 1;
 
                 if (validator.validate(inputtedAnswer + 1, question.getOptions().size())) {
-                    ioService.output(messageService.getLocalizedMessage("error.message.invalid.number.input") +
+                    ioService.output(messageService.getLocalizedMessage("error.message.invalid.number.range.input") +
                             question.getOptions().size() + ".");
                 }
             } while (validator.validate(inputtedAnswer + 1, question.getOptions().size()));

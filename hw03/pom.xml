@@ -2,70 +2,32 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
     <groupId>ru.fedbon</groupId>
-    <artifactId>hw03</artifactId>
+    <artifactId>otus-spring-homeworks</artifactId>
     <version>1.0</version>
+    </parent>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.target>17</maven.compiler.target>
-        <maven.compiler.source>17</maven.compiler.source>
-
-        <lombok.version>1.18.30</lombok.version>
-        <opencsv.version>5.8</opencsv.version>
-        <snakeyaml.version>2.0</snakeyaml.version>
-
-        <checkstyle-plugin.version>3.3.0</checkstyle-plugin.version>
-        <checkstyle.version>10.9.1</checkstyle.version>
-        <maven-checkstyle-plugin.version>3.3.0</maven-checkstyle-plugin.version>
-
-        <checkstyle.config.url>
-            https://raw.githubusercontent.com/OtusTeam/Spring/master/checkstyle.xml
-        </checkstyle.config.url>
-
-        <spring-boot-maven-plugin.version>3.1.4</spring-boot-maven-plugin.version>
-        <spring.version>6.0.12</spring.version>
-
-        <spring-shell-starter.version>3.1.2</spring-shell-starter.version>
-
-        <spring-boot-starter.version>3.1.4</spring-boot-starter.version>
-
-        <junit.jupiter.version>5.10.0</junit.jupiter.version>
-        <mockito.version>5.2.0</mockito.version>
-    </properties>
+    <artifactId>hw03</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-            <version>${snakeyaml.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
-            <version>${spring-boot-starter.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <version>${spring-boot-starter.version}</version>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>2.0.9</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
@@ -73,6 +35,18 @@
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j-api.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${snakeyaml.version}</version>
         </dependency>
 
         <dependency>
@@ -101,13 +75,13 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot-maven-plugin.version}</version>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>${maven-checkstyle-plugin.version}</version>
+
                 <dependencies>
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
@@ -115,9 +89,11 @@
                         <version>${checkstyle.version}</version>
                     </dependency>
                 </dependencies>
+
                 <configuration>
                     <configLocation>${checkstyle.config.url}</configLocation>
                 </configuration>
+
                 <executions>
                     <execution>
                         <goals>

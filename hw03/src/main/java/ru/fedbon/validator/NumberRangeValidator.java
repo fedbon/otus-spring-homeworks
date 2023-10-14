@@ -3,7 +3,7 @@ package ru.fedbon.validator;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NumberInputValidator implements Validator {
+public class NumberRangeValidator implements Validator {
 
     @Override
     public boolean validate(int value, int maxValue) {
@@ -12,6 +12,6 @@ public class NumberInputValidator implements Validator {
 
     @Override
     public String errorMessage() {
-        return "Invalid input! Please enter a number between 1 and ";
+        return "error.message.invalid.number.input";
     }
 }

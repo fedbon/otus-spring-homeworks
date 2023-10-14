@@ -7,11 +7,7 @@ import ru.fedbon.domain.Result;
 
 public interface Stringifier {
 
-    default String stringify(Question question) {
-        return null;
-    }
+    String stringifyQuestion(Question question);
 
-    default String stringify(Result result, int scoreToPass) {
-        return null;
-    }
+    String stringifyResult(Result result, int scoreToPass);
 }
