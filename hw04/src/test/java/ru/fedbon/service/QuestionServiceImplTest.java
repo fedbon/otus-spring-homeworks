@@ -9,6 +9,7 @@ import ru.fedbon.dao.QuestionDao;
 import ru.fedbon.domain.Answer;
 import ru.fedbon.domain.Question;
 import ru.fedbon.service.impl.QuestionServiceImpl;
+import ru.fedbon.stringifier.QuestionStringifierImpl;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +21,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@SpringBootTest(classes = QuestionServiceImpl.class)
 class QuestionServiceImplTest {
 
     @MockBean
