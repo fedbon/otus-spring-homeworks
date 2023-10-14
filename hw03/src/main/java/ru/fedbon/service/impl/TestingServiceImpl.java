@@ -6,7 +6,7 @@ import ru.fedbon.domain.Result;
 import ru.fedbon.service.IOService;
 import ru.fedbon.service.LocalizationMessageService;
 import ru.fedbon.service.QuestionService;
-import ru.fedbon.service.Stringifier;
+import ru.fedbon.stringifier.QuestionStringifier;
 import ru.fedbon.service.TestingService;
 import ru.fedbon.validator.NumberRangeValidator;
 
@@ -21,7 +21,7 @@ public class TestingServiceImpl implements TestingService {
 
     private final QuestionService questionService;
 
-    private final Stringifier stringifier;
+    private final QuestionStringifier stringifier;
 
     private final LocalizationMessageService messageService;
 
@@ -41,7 +41,7 @@ public class TestingServiceImpl implements TestingService {
             int inputtedAnswer;
 
             do {
-                inputtedAnswer = ioService.readInt(stringifier.stringifyQuestion(question) +
+                inputtedAnswer = ioService.readInt(stringifier.stringify(question) +
                         messageService.getLocalizedMessage("message.enter.answer")) - 1;
 
                 if (validator.validate(inputtedAnswer + 1, question.getOptions().size())) {

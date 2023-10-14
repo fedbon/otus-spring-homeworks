@@ -6,7 +6,8 @@ import ru.fedbon.config.ScoreToPassProvider;
 import ru.fedbon.domain.Result;
 import ru.fedbon.service.IOService;
 import ru.fedbon.service.ResultService;
-import ru.fedbon.service.Stringifier;
+import ru.fedbon.stringifier.ResultStringifier;
+
 
 @Service
 @RequiredArgsConstructor
@@ -14,12 +15,12 @@ public class ResultServiceImpl implements ResultService {
 
     private final IOService ioService;
 
-    private final Stringifier stringifier;
+    private final ResultStringifier stringifier;
 
     private final ScoreToPassProvider propertiesProvider;
 
     @Override
     public void displayResult(Result result) {
-        ioService.output(stringifier.stringifyResult(result, propertiesProvider.getScoreToPass()));
+        ioService.output(stringifier.stringify(result, propertiesProvider.getScoreToPass()));
     }
 }
