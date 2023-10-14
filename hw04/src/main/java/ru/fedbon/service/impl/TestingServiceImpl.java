@@ -8,7 +8,7 @@ import ru.fedbon.service.LocalizationMessageService;
 import ru.fedbon.service.QuestionService;
 import ru.fedbon.stringifier.QuestionStringifier;
 import ru.fedbon.service.TestingService;
-import ru.fedbon.validator.NumberRangeValidator;
+import ru.fedbon.validator.NumberRangeValidatorImpl;
 
 
 @Service
@@ -25,7 +25,7 @@ public class TestingServiceImpl implements TestingService {
 
     private final LocalizationMessageService messageService;
 
-    private final NumberRangeValidator validator;
+    private final NumberRangeValidatorImpl validator;
 
     @Override
     public void displayHeader() {

@@ -1,17 +1,8 @@
 package ru.fedbon.validator;
 
-import org.springframework.stereotype.Component;
+public interface NumberRangeValidator {
 
-@Component
-public class NumberRangeValidator implements Validator {
+    boolean validate(int value, int maxValue);
 
-    @Override
-    public boolean validate(int value, int maxValue) {
-        return value < 1 || value > maxValue;
-    }
-
-    @Override
-    public String errorMessage() {
-        return "error.message.invalid.number.input";
-    }
+    String errorMessage();
 }

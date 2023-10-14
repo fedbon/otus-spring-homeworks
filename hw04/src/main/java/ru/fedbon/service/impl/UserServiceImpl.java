@@ -6,7 +6,7 @@ import ru.fedbon.domain.User;
 import ru.fedbon.service.IOService;
 import ru.fedbon.service.LocalizationMessageService;
 import ru.fedbon.service.UserService;
-import ru.fedbon.validator.LettersOnlyValidator;
+import ru.fedbon.validator.LettersOnlyValidatorImpl;
 
 
 @Service
@@ -17,7 +17,7 @@ public class UserServiceImpl implements UserService {
 
     private final LocalizationMessageService messageService;
 
-    private final LettersOnlyValidator validator;
+    private final LettersOnlyValidatorImpl validator;
 
     @Override
     public User getUser() {
