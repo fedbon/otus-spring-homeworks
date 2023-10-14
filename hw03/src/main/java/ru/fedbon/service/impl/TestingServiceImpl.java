@@ -30,7 +30,7 @@ public class TestingServiceImpl implements TestingService {
     @Override
     public void displayHeader() {
         ioService.output(HEADER_DELIMITER);
-        ioService.output(messageService.getLocalizedMessage("message.header"));
+        ioService.output(messageService.getLocalizedMessage("message.greeting.header"));
         ioService.output(HEADER_DELIMITER);
     }
 
