@@ -3,7 +3,7 @@ package ru.fedbon.command;
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
-import ru.fedbon.AppRunner;
+import ru.fedbon.controller.AppController;
 import ru.fedbon.domain.Result;
 import ru.fedbon.service.ResultService;
 import ru.fedbon.service.TestingService;
@@ -14,7 +14,7 @@ import ru.fedbon.service.UserService;
 @RequiredArgsConstructor
 public class ShellCommand {
 
-    private final AppRunner appRunner;
+    private final AppController appController;
 
     private final TestingService testingService;
 
@@ -24,7 +24,7 @@ public class ShellCommand {
 
     @ShellMethod(value = "startTesting", key = {"start-testing"})
     public void startTesting() {
-        appRunner.run();
+        appController.executeTesting();
     }
 
     @ShellMethod(value = "executeDisplayHeader", key = {"display-header"})
