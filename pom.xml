@@ -13,6 +13,7 @@
         <module>hw01</module>
         <module>hw02</module>
         <module>hw04</module>
+        <module>hw05</module>
     </modules>
 
     <parent>
@@ -25,6 +26,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <spring-shell-starter.version>3.1.4</spring-shell-starter.version>
+
+        <h2.version>2.2.224</h2.version>
 
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.source>17</maven.compiler.source>
