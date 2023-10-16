@@ -1,0 +1,14 @@
+spring:
+  messages:
+    basename: "messages"
+    encoding: "UTF-8"
+
+app:
+  properties:
+    resource-name: "questions.csv"
+    score-to-pass: 4
+    locale: ru_RU
+
+logging:
+  level:
+    root: ERROR

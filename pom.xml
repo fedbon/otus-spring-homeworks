@@ -12,7 +12,7 @@
     <modules>
         <module>hw01</module>
         <module>hw02</module>
-        <module>hw03</module>
+        <module>hw04</module>
     </modules>
 
     <parent>
@@ -23,20 +23,21 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <spring-shell-starter.version>3.1.4</spring-shell-starter.version>
+
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.source>17</maven.compiler.source>
-
-        <opencsv.version>5.8</opencsv.version>
-        <snakeyaml.version>2.0</snakeyaml.version>
-
-        <spring-boot-maven-plugin.version>3.1.4</spring-boot-maven-plugin.version>
+        <maven-checkstyle-plugin.version>3.3.0</maven-checkstyle-plugin.version>
 
         <checkstyle-plugin.version>3.3.0</checkstyle-plugin.version>
         <checkstyle.version>10.9.1</checkstyle.version>
-        <maven-checkstyle-plugin.version>3.3.0</maven-checkstyle-plugin.version>
         <checkstyle.config.url>
             https://raw.githubusercontent.com/OtusTeam/Spring/master/checkstyle.xml
         </checkstyle.config.url>
+
+        <opencsv.version>5.8</opencsv.version>
+        <snakeyaml.version>2.0</snakeyaml.version>
     </properties>
 
 </project>
