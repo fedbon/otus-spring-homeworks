@@ -20,7 +20,7 @@ class GenreRepositoryJdbcTest {
 
     private static final long EXPECTED_GENRES_COUNT_AFTER_CLEANING = 0;
 
-    private static final long EXISTING_GENRE_ID = 1;
+    private static final long EXISTING_GENRE_ID = 1L;
 
     private static final String EXISTING_GENRE_NAME = "Жанр_01";
 
@@ -84,25 +84,11 @@ class GenreRepositoryJdbcTest {
     }
 
     @Test
-    @DisplayName("возвращать ожидаемый жанр по имени")
-    void shouldReturnExpectedGenreByName() {
-        var expectedGenre = new Genre(EXISTING_GENRE_ID, EXISTING_GENRE_NAME);
-
-        var actualGenre = genreRepositoryJdbc.findByName(expectedGenre.getGenreName());
-
-        assertThat(actualGenre)
-                .isNotEmpty()
-                .get()
-                .usingRecursiveComparison()
-                .isEqualTo(expectedGenre);
-    }
-
-    @Test
     @DisplayName("возвращать ожидаемый список жанров")
     void shouldReturnExpectedGenresList() {
         var expectedGenres = List.of(
                 new Genre(EXISTING_GENRE_ID, EXISTING_GENRE_NAME),
-                new Genre(EXISTING_GENRE_ID + 1, EXISTING_GENRE_NAME.replace('1', '2'))
+                new Genre(EXISTING_GENRE_ID + 1L, EXISTING_GENRE_NAME.replace('1', '2'))
         );
 
         var actualGenres = genreRepositoryJdbc.findAll();

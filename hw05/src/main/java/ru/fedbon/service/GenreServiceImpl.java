@@ -2,6 +2,7 @@ package ru.fedbon.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.fedbon.exception.GenreNotFoundException;
 import ru.fedbon.model.Genre;
 import ru.fedbon.repository.GenreRepository;
 
@@ -24,26 +25,16 @@ public class GenreServiceImpl implements GenreService {
     public Genre addGenre(String genreName) {
         var genre = new Genre();
         genre.setGenreName(genreName);
-        return genreRepository.insert(genre);
+        genreRepository.insert(genre);
+        return genre;
     }
 
     @Override
-    public Genre changeGenre(long id, String genreName) {
-        var genre = getGenreById(id);
+    public void changeGenre(long id, String genreName) {
+        var genre = genreRepository.findById(id)
+                .orElseThrow(() -> new GenreNotFoundException(format("Не найден жанр с идентификатором %d", id)));
         genre.setGenreName(genreName);
-        return genreRepository.update(genre);
-    }
-
-    @Override
-    public Genre getGenreById(long id) {
-        return genreRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException(format("Не найден жанр с идентификатором %d", id)));
-    }
-
-    @Override
-    public Genre getGenreByName(String genreName) {
-        return genreRepository.findByName(genreName)
-                .orElseThrow(() -> new IllegalArgumentException(format("Не найден жанр с названием %s", genreName)));
+        genreRepository.update(genre);
     }
 
     @Override
@@ -52,10 +43,8 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre deleteGenreById(long id) {
-        var genre = getGenreById(id);
+    public void deleteGenreById(long id) {
         genreRepository.deleteById(id);
-        return genre;
     }
 
     @Override

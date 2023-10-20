@@ -1,9 +1,9 @@
 package ru.fedbon.stringifier;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import ru.fedbon.model.Genre;
 
-@Service
+@Component
 public class GenreStringifierImpl implements GenreStringifier {
     @Override
     public String stringify(Genre genre) {

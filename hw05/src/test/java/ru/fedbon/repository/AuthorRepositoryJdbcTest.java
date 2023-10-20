@@ -21,7 +21,7 @@ class AuthorRepositoryJdbcTest {
 
     private static final long EXPECTED_AUTHORS_COUNT_AFTER_CLEANING = 0;
 
-    private static final long EXISTING_AUTHOR_ID = 1;
+    private static final long EXISTING_AUTHOR_ID = 1L;
 
     private static final String EXISTING_AUTHOR_NAME = "Автор_01";
 
@@ -85,26 +85,12 @@ class AuthorRepositoryJdbcTest {
     }
 
     @Test
-    @DisplayName("возвращать ожидаемого автора по имени")
-    void shouldReturnExpectedAuthorByName() {
-        var expectedAuthor = new Author(EXISTING_AUTHOR_ID, EXISTING_AUTHOR_NAME);
-
-        var actualAuthor = authorRepositoryJdbc.findByName(expectedAuthor.getName());
-
-        Assertions.assertThat(actualAuthor)
-                .isNotEmpty()
-                .get()
-                .usingRecursiveComparison()
-                .isEqualTo(expectedAuthor);
-    }
-
-    @Test
     @DisplayName("возвращать ожидаемый список авторов")
     void shouldReturnExpectedAuthorList() {
         var expectedAuthors = List.of(
                 new Author(EXISTING_AUTHOR_ID, EXISTING_AUTHOR_NAME),
-                new Author(EXISTING_AUTHOR_ID + 1, EXISTING_AUTHOR_NAME.replace('1', '2')),
-                new Author(EXISTING_AUTHOR_ID + 2, EXISTING_AUTHOR_NAME.replace('1', '3'))
+                new Author(EXISTING_AUTHOR_ID + 1L, EXISTING_AUTHOR_NAME.replace('1', '2')),
+                new Author(EXISTING_AUTHOR_ID + 2L, EXISTING_AUTHOR_NAME.replace('1', '3'))
         );
 
         var actualAuthors = authorRepositoryJdbc.findAll();

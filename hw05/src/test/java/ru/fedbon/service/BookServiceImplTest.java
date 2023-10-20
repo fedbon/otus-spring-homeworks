@@ -5,16 +5,22 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import ru.fedbon.dto.BookDto;
+import ru.fedbon.mapper.BookMapper;
 import ru.fedbon.model.Author;
 import ru.fedbon.model.Book;
 import ru.fedbon.model.Genre;
+import ru.fedbon.repository.AuthorRepository;
 import ru.fedbon.repository.BookRepository;
+import ru.fedbon.repository.GenreRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.BDDMockito.*;
 
 @DisplayName("Тест BookServiceImpl должен")
@@ -25,18 +31,14 @@ class BookServiceImplTest {
 
     private static final long EXPECTED_DELETED_BOOKS_COUNT = 3;
 
-    private static final long EXISTING_BOOK_ID = 1;
-
-    private static final long NOT_EXISTING_BOOK_ID = 100;
-
     @MockBean
     private BookRepository bookRepository;
 
     @MockBean
-    private AuthorService authorService;
+    private AuthorRepository authorRepository;
 
     @MockBean
-    private GenreService genreService;
+    private GenreRepository genreRepository;
 
     @Autowired
     private BookServiceImpl bookService;
@@ -53,142 +55,71 @@ class BookServiceImplTest {
 
     @Test
     @DisplayName("добавлять книгу в БД при указании ее названия и идентификаторов жанра и автора")
-    void shouldInsertBookWithTitleAndIdentifiers() {
-        var expectedGenre = new Genre(1, "Жанр_01");
-        var expectedAuthor = new Author(1, "Автор_01");
-        var expectedBook = new Book(4, "Книга_04", expectedGenre, expectedAuthor);
+    void shouldAddBookWithTitleAndIdentifiers() {
+        var genreId = 1L;
+        var authorId = 2L;
 
-        given(genreService.getGenreById(expectedGenre.getId())).willReturn(expectedGenre);
-        given(authorService.getAuthorById(expectedAuthor.getId())).willReturn(expectedAuthor);
-        given(bookRepository.insert(new Book(0, expectedBook.getTitle(), expectedGenre, expectedAuthor)))
-                .willReturn(expectedBook);
+        var bookDto = new BookDto();
+        bookDto.setTitle("Книг_01");
+        bookDto.setGenreId(genreId);
+        bookDto.setAuthorId(authorId);
 
-        var actualBook = bookService.addBook(expectedBook.getTitle(), expectedGenre.getId(), expectedAuthor.getId());
+        var genre = new Genre();
+        genre.setId(genreId);
 
-        assertThat(actualBook)
-                .usingRecursiveComparison()
-                .isEqualTo(expectedBook);
-        verify(genreService, times(1))
-                .getGenreById(expectedGenre.getId());
-        verify(authorService, times(1))
-                .getAuthorById(expectedAuthor.getId());
-        verify(bookRepository, times(1))
-                .insert(new Book(0, expectedBook.getTitle(), expectedGenre, expectedAuthor));
-    }
+        var author = new Author();
+        author.setId(authorId);
 
-    @Test
-    @DisplayName("добавлять книгу в БД при указании ее названия, названия жанра и имени автора")
-    void shouldInsertBookWithNames() {
-        var expectedGenre = new Genre(1, "Жанр_01");
-        var expectedAuthor = new Author(1, "Автор_01");
-        var expectedBook = new Book(4, "Книга_04", expectedGenre, expectedAuthor);
+        when(genreRepository.findById(genreId)).thenReturn(Optional.of(genre));
+        when(authorRepository.findById(authorId)).thenReturn(Optional.of(author));
 
-        given(genreService.getGenreByName(expectedGenre.getGenreName())).willReturn(expectedGenre);
-        given(authorService.getAuthorByName(expectedAuthor.getName())).willReturn(expectedAuthor);
-        given(bookRepository.insert(new Book(0, expectedBook.getTitle(), expectedGenre, expectedAuthor)))
-                .willReturn(expectedBook);
+        var addedBookDto = bookService.addBook(bookDto);
 
-        var actualBook = bookService.addBook(expectedBook.getTitle(), expectedGenre.getGenreName(),
-                expectedAuthor.getName());
+        verify(genreRepository, times(1)).findById(genreId);
+        verify(authorRepository, times(1)).findById(authorId);
+        verify(bookRepository, times(1)).insert(any(Book.class));
 
-        assertThat(actualBook)
-                .usingRecursiveComparison()
-                .isEqualTo(expectedBook);
-        verify(genreService, times(1))
-                .getGenreByName(expectedGenre.getGenreName());
-        verify(authorService, times(1))
-                .getAuthorByName(expectedAuthor.getName());
-        verify(bookRepository, times(1))
-                .insert(new Book(0, expectedBook.getTitle(), expectedGenre, expectedAuthor));
+        assertNotNull(addedBookDto);
+        assertEquals(bookDto.getTitle(), addedBookDto.getTitle());
+        assertEquals(bookDto.getGenreId(), addedBookDto.getGenreId());
+        assertEquals(bookDto.getAuthorId(), addedBookDto.getAuthorId());
     }
 
     @Test
     @DisplayName("изменять имеющуюся в БД книгу при указании ее id, названия и идентификаторов жанра и автора")
     void shouldChangeBookWithTitleAndIdentifiers() {
-        var bookFromDatabase = new Book(EXISTING_BOOK_ID, "Книга_01", new Genre(1, "Жанр_01"),
-                new Author(3, "Автор_03"));
+        var bookDto = new BookDto();
+        bookDto.setId(1L);
+        bookDto.setTitle("Книга_01");
+        bookDto.setGenreId(1L);
+        bookDto.setAuthorId(1L);
 
-        var expectedGenre = new Genre(2, "Жанр_02");
-        var expectedAuthor = new Author(1, "Автор_01");
-        var expectedChangedBook = new Book(EXISTING_BOOK_ID, "Книга_01_Updated", expectedGenre, expectedAuthor);
+        var genre = new Genre(1L, "Жанр_01");
+        var author = new Author(1L, "Автор_02");
+        var book = new Book(1L, "Книга_02", genre, author);
 
-        given(genreService.getGenreById(expectedGenre.getId())).willReturn(expectedGenre);
-        given(authorService.getAuthorById(expectedAuthor.getId())).willReturn(expectedAuthor);
-        given(bookRepository.findById(expectedChangedBook.getId())).willReturn(Optional.of(bookFromDatabase));
-        given(bookRepository.update(expectedChangedBook)).willReturn(expectedChangedBook);
+        when(genreRepository.findById(1L)).thenReturn(Optional.of(genre));
+        when(authorRepository.findById(1L)).thenReturn(Optional.of(author));
+        when(bookRepository.findById(1L)).thenReturn(Optional.of(book));
 
-        var actualChangedBook = bookService.changeBook(expectedChangedBook.getId(), expectedChangedBook.getTitle(),
-                expectedGenre.getId(), expectedAuthor.getId());
+        bookService.changeBook(bookDto);
 
-        assertThat(actualChangedBook)
-                .usingRecursiveComparison()
-                .isEqualTo(expectedChangedBook);
-        verify(genreService, times(1)).getGenreById(expectedGenre.getId());
-        verify(authorService, times(1)).getAuthorById(expectedAuthor.getId());
-        verify(bookRepository, times(1)).findById(expectedChangedBook.getId());
-        verify(bookRepository, times(1)).update(expectedChangedBook);
-    }
-
-    @Test
-    @DisplayName("изменять имеющуюся в БД книгу при указании ее id, названия, названия жанра и имени автора")
-    void shouldChangeBookWithNames() {
-        var bookFromDatabase = new Book(EXISTING_BOOK_ID, "Книга_01", new Genre(1, "Жанр_01"),
-                new Author(3, "Автор_03"));
-
-        var expectedGenre = new Genre(2, "Жанр_02");
-        var expectedAuthor = new Author(1, "Автор_01");
-        var expectedChangedBook = new Book(EXISTING_BOOK_ID, "Книга_01_Updated", expectedGenre, expectedAuthor);
-
-        given(genreService.getGenreByName(expectedGenre.getGenreName())).willReturn(expectedGenre);
-        given(authorService.getAuthorByName(expectedAuthor.getName())).willReturn(expectedAuthor);
-        given(bookRepository.findById(expectedChangedBook.getId())).willReturn(Optional.of(bookFromDatabase));
-        given(bookRepository.update(expectedChangedBook)).willReturn(expectedChangedBook);
-
-        var actualChangedBook = bookService.changeBook(expectedChangedBook.getId(), expectedChangedBook.getTitle(),
-                expectedGenre.getGenreName(), expectedAuthor.getName());
-
-        assertThat(actualChangedBook)
-                .usingRecursiveComparison()
-                .isEqualTo(expectedChangedBook);
-        verify(genreService, times(1)).getGenreByName(expectedGenre.getGenreName());
-        verify(authorService, times(1)).getAuthorByName(expectedAuthor.getName());
-        verify(bookRepository, times(1)).findById(expectedChangedBook.getId());
-        verify(bookRepository, times(1)).update(expectedChangedBook);
-    }
-
-    @Test
-    @DisplayName("возвращать ожидаемую книгу по идентификатору")
-    void shouldReturnExpectedBookById() {
-        var expectedBook = new Book();
-        expectedBook.setId(EXISTING_BOOK_ID);
-        expectedBook.setTitle("Книга_01");
-        expectedBook.setGenre(new Genre(1, "Жанр_01"));
-        expectedBook.setAuthor(new Author(3, "Автор_03"));
-
-        given(bookRepository.findById(EXISTING_BOOK_ID)).willReturn(Optional.of(expectedBook));
-        given(bookRepository.findById(NOT_EXISTING_BOOK_ID)).willReturn(Optional.empty());
-
-        var actualBook = bookService.getBookById(EXISTING_BOOK_ID);
-
-        assertThat(actualBook)
-                .usingRecursiveComparison()
-                .isEqualTo(expectedBook);
-        assertThatThrownBy(() -> bookService.getBookById(NOT_EXISTING_BOOK_ID))
-                .isInstanceOf(IllegalArgumentException.class);
-        verify(bookRepository, times(1)).findById(EXISTING_BOOK_ID);
-        verify(bookRepository, times(1)).findById(NOT_EXISTING_BOOK_ID);
+        verify(genreRepository, times(1)).findById(1L);
+        verify(authorRepository, times(1)).findById(1L);
+        verify(bookRepository, times(1)).findById(1L);
+        verify(bookRepository, times(1)).update(any(Book.class));
     }
 
     @Test
     @DisplayName("возвращать ожидаемый список книг")
     void shouldReturnExpectedBooksList() {
         var expectedBooks = List.of(
-                new Book(1, "Книга_01", new Genre(1, "Жанр_01"),
-                        new Author(3, "Автор_03")),
-                new Book(2, "Книга_02", new Genre(2, "Жанр_02"),
-                        new Author(1, "Автор_01")),
-                new Book(3, "Книга_03", new Genre(1, "Жанр_01"),
-                        new Author(2, "Автор_02"))
+                new Book(1L, "Книга_01", new Genre(1L, "Жанр_01"),
+                        new Author(3L, "Автор_03")),
+                new Book(2L, "Книга_02", new Genre(2L, "Жанр_02"),
+                        new Author(1L, "Автор_01")),
+                new Book(3L, "Книга_03", new Genre(1L, "Жанр_01"),
+                        new Author(2L, "Автор_02"))
         );
 
         given(bookRepository.findAll()).willReturn(expectedBooks);
@@ -203,10 +134,10 @@ class BookServiceImplTest {
     @Test
     @DisplayName("возвращать ожидаемый список книг одного жанра")
     void shouldReturnBooksListByExpectedGenre() {
-        var expectedGenre = new Genre(1, "Жанр_01");
+        var expectedGenre = new Genre(1L, "Жанр_01");
         var expectedBooksByGenre = List.of(
-                new Book(1, "Книга_01", expectedGenre, new Author(3, "Автор_03")),
-                new Book(3, "Книга_03", expectedGenre, new Author(2, "Автор_02"))
+                new Book(1L, "Книга_01", expectedGenre, new Author(3L, "Автор_03")),
+                new Book(3L, "Книга_03", expectedGenre, new Author(2L, "Автор_02"))
         );
 
         given(bookRepository.findAllByGenre(expectedGenre.getGenreName())).willReturn(expectedBooksByGenre);
@@ -221,9 +152,9 @@ class BookServiceImplTest {
     @Test
     @DisplayName("возвращать ожидаемый список книг одного автора")
     void shouldReturnBooksListByExpectedAuthor() {
-        var expectedAuthor = new Author(1, "Автор_01");
-        var expectedBooksByAuthor = List.of(new Book(2, "Книга_02",
-                new Genre(2, "Жанр_02"), expectedAuthor));
+        var expectedAuthor = new Author(1L, "Автор_01");
+        var expectedBooksByAuthor = List.of(new Book(2L, "Книга_02",
+                new Genre(2L, "Жанр_02"), expectedAuthor));
 
         given(bookRepository.findAllByAuthor(expectedAuthor.getName())).willReturn(expectedBooksByAuthor);
         var actualBooksByAuthor = bookService.getAllBooksByAuthor(expectedAuthor.getName());
@@ -237,20 +168,12 @@ class BookServiceImplTest {
     @Test
     @DisplayName("удалять заданную книгу по ее идентификатору")
     void shouldDeleteBookById() {
-        var expectedBook = new Book();
-        expectedBook.setId(EXISTING_BOOK_ID);
-        expectedBook.setTitle("Книга_01");
-        expectedBook.setGenre(new Genre(1, "Жанр_01"));
-        expectedBook.setAuthor(new Author(3, "Автор_03"));
+        long bookId = 1L;
 
-        given(bookRepository.findById(EXISTING_BOOK_ID)).willReturn(Optional.of(expectedBook));
+        bookService.deleteBookById(bookId);
 
-        var actualBook = bookService.deleteBookById(EXISTING_BOOK_ID);
+        verify(bookRepository, times(1)).deleteById(bookId);
 
-        assertThat(actualBook)
-                .usingRecursiveComparison()
-                .isEqualTo(expectedBook);
-        verify(bookRepository, times(1)).deleteById(EXISTING_BOOK_ID);
     }
 
     @Test

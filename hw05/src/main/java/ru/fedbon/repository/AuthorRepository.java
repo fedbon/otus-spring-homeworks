@@ -10,11 +10,9 @@ public interface AuthorRepository {
 
     Author insert(Author author);
 
-    Author update(Author author);
+    void update(Author author);
 
     Optional<Author> findById(long id);
-
-    Optional<Author> findByName(String authorName);
 
     List<Author> findAll();
 

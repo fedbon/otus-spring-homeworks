@@ -1,10 +1,10 @@
 package ru.fedbon.stringifier;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import ru.fedbon.model.Book;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class BookStringifierImpl implements BookStringifier {
 

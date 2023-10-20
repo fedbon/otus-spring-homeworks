@@ -1,9 +1,9 @@
 package ru.fedbon.stringifier;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import ru.fedbon.model.Author;
 
-@Service
+@Component
 public class AuthorStringifierImpl implements AuthorStringifier {
     @Override
     public String stringify(Author author) {

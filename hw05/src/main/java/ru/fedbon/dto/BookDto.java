@@ -1,4 +1,4 @@
-package ru.fedbon.model;
+package ru.fedbon.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,8 +10,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Genre {
+public class BookDto {
     private Long id;
 
-    private String genreName;
+    private String title;
+
+    private Long genreId;
+
+    private Long authorId;
 }

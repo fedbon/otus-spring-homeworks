@@ -10,7 +10,7 @@ public interface BookRepository {
 
     Book insert(Book book);
 
-    Book update(Book book);
+    void update(Book book);
 
     Optional<Book> findById(long id);
 

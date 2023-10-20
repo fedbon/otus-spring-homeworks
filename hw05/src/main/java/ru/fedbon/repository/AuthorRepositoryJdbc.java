@@ -44,22 +44,15 @@ public class AuthorRepositoryJdbc implements AuthorRepository {
     }
 
     @Override
-    public Author update(Author author) {
+    public void update(Author author) {
         jdbc.update("update authors set name = :name where id = :id",
                 Map.of("name", author.getName(), "id", author.getId()));
-        return author;
     }
 
     @Override
     public Optional<Author> findById(long id) {
         return jdbc.query("select id, name from authors where id = :id",
                 Map.of("id", id), new AuthorRowMapper()).stream().findFirst();
-    }
-
-    @Override
-    public Optional<Author> findByName(String authorName) {
-        return jdbc.query("select id, name from authors where name = :authorName",
-                Map.of("authorName", authorName), new AuthorRowMapper()).stream().findFirst();
     }
 
     @Override

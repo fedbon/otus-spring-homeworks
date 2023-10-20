@@ -44,22 +44,15 @@ public class GenreRepositoryJdbc implements GenreRepository {
     }
 
     @Override
-    public Genre update(Genre genre) {
+    public void update(Genre genre) {
         jdbc.update("update genres set genre = :genre where id = :id",
                 Map.of("genre", genre.getGenreName(), "id", genre.getId()));
-        return genre;
     }
 
     @Override
     public Optional<Genre> findById(long id) {
         return jdbc.query("select id, genre from genres where id = :id",
                 Map.of("id", id), new GenreRowMapper()).stream().findFirst();
-    }
-
-    @Override
-    public Optional<Genre> findByName(String genreName) {
-        return jdbc.query("select id, genre from genres where genre = :genreName",
-                Map.of("genreName", genreName), new GenreRowMapper()).stream().findFirst();
     }
 
     @Override

@@ -2,12 +2,18 @@ package ru.fedbon.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.fedbon.dto.BookDto;
+import ru.fedbon.exception.AuthorNotFoundException;
+import ru.fedbon.exception.BookNotFoundException;
+import ru.fedbon.exception.GenreNotFoundException;
+import ru.fedbon.mapper.BookMapper;
 import ru.fedbon.model.Book;
+import ru.fedbon.repository.AuthorRepository;
 import ru.fedbon.repository.BookRepository;
+import ru.fedbon.repository.GenreRepository;
 
 import java.util.List;
 
-import static java.lang.String.format;
 
 @Service
 @RequiredArgsConstructor
@@ -15,9 +21,10 @@ public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
 
-    private final AuthorService authorService;
+    private final GenreRepository genreRepository;
 
-    private final GenreService genreService;
+    private final AuthorRepository authorRepository;
+
 
     @Override
     public long getBooksCount() {
@@ -25,53 +32,41 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book addBook(String title, long genreId, long authorId) {
-        var genre = genreService.getGenreById(genreId);
-        var author = authorService.getAuthorById(authorId);
-        var book = new Book();
-        book.setTitle(title);
-        book.setGenre(genre);
-        book.setAuthor(author);
-        return bookRepository.insert(book);
+    public BookDto addBook(BookDto bookDto) {
+        var genre = genreRepository.findById(bookDto.getGenreId())
+                .orElseThrow(() -> new GenreNotFoundException(
+                        String.format("Не найден жанр с идентификатором %d", bookDto.getGenreId())
+                ));
+
+        var author = authorRepository.findById(bookDto.getAuthorId())
+                .orElseThrow(() -> new AuthorNotFoundException(
+                        String.format("Не найден автор с идентификатором %d", bookDto.getAuthorId())
+                ));
+
+        var book = BookMapper.mapDtoToBook(bookDto, genre, author);
+        bookRepository.insert(book);
+
+        return bookDto;
     }
 
-    @Override
-    public Book addBook(String title, String genreName, String authorName) {
-        var genre = genreService.getGenreByName(genreName);
-        var author = authorService.getAuthorByName(authorName);
-        var book = new Book();
-        book.setTitle(title);
-        book.setGenre(genre);
-        book.setAuthor(author);
-        return bookRepository.insert(book);
-    }
+    public void changeBook(BookDto bookDto) {
+        var genre = genreRepository.findById(bookDto.getGenreId())
+                .orElseThrow(() -> new GenreNotFoundException(
+                        String.format("Не найден жанр с идентификатором %d", bookDto.getGenreId())
+                ));
 
-    @Override
-    public Book changeBook(long id, String title, long genreId, long authorId) {
-        var genre = genreService.getGenreById(genreId);
-        var author = authorService.getAuthorById(authorId);
-        var book = getBookById(id);
-        book.setTitle(title);
-        book.setGenre(genre);
-        book.setAuthor(author);
-        return bookRepository.update(book);
-    }
+        var author = authorRepository.findById(bookDto.getAuthorId())
+                .orElseThrow(() -> new AuthorNotFoundException(
+                        String.format("Не найден автор с идентификатором %d", bookDto.getAuthorId())
+                ));
 
-    @Override
-    public Book changeBook(long id, String title, String genreName, String authorName) {
-        var genre = genreService.getGenreByName(genreName);
-        var author = authorService.getAuthorByName(authorName);
-        var book = getBookById(id);
-        book.setTitle(title);
-        book.setGenre(genre);
-        book.setAuthor(author);
-        return bookRepository.update(book);
-    }
+        bookRepository.findById(bookDto.getId())
+                .orElseThrow(() -> new BookNotFoundException(
+                        String.format("Не найдена книга с идентификатором %d", bookDto.getId())
+                ));
 
-    @Override
-    public Book getBookById(long id) {
-        return bookRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException(format("Не найдена книга с идентификатором %d", id)));
+        var book = BookMapper.mapDtoToBook(bookDto, genre, author);
+        bookRepository.update(book);
     }
 
     @Override
@@ -90,10 +85,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book deleteBookById(long id) {
-        var book = getBookById(id);
+    public void deleteBookById(long id) {
         bookRepository.deleteById(id);
-        return book;
     }
 
     @Override

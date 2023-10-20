@@ -1,5 +1,6 @@
 package ru.fedbon.service;
 
+import ru.fedbon.dto.BookDto;
 import ru.fedbon.model.Book;
 
 import java.util.List;
@@ -7,15 +8,9 @@ import java.util.List;
 public interface BookService {
     long getBooksCount();
 
-    Book addBook(String title, long genreId, long authorId);
+    BookDto addBook(BookDto bookDto);
 
-    Book addBook(String title, String genreName, String authorName);
-
-    Book changeBook(long id, String title, long genreId, long authorId);
-
-    Book changeBook(long id, String title, String genreName, String authorName);
-
-    Book getBookById(long id);
+    void changeBook(BookDto bookDto);
 
     List<Book> getAllBooks();
 
@@ -23,7 +18,7 @@ public interface BookService {
 
     List<Book> getAllBooksByAuthor(String authorName);
 
-    Book deleteBookById(long id);
+    void deleteBookById(long id);
 
     long deleteAllBooks();
 

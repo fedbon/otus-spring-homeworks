@@ -16,7 +16,7 @@ public class GenreCommand {
 
     private final GenreService genreService;
 
-    private final GenreStringifier converter;
+    private final GenreStringifier stringifier;
 
     @ShellMethod(key = {"get-genres-count", "genres-count"},
             value = "Возвращает количество всех жанров в БД")
@@ -29,42 +29,28 @@ public class GenreCommand {
             value = "Добавляет новый жанр в БД: укажите название жанра")
     public String handleAddGenre(String genreName) {
         var genre = genreService.addGenre(genreName);
-        return format("Добавлен новый жанр: %s", converter.stringify(genre));
+        return format("Добавлен новый жанр: %s", stringifier.stringify(genre));
     }
 
     @ShellMethod(key = {"change-genre"},
             value = "Изменяет существующий в БД жанр: укажите идентификатор жанра, название жанра")
     public String handleChangeGenre(long id, String genreName) {
-        var genre = genreService.changeGenre(id, genreName);
-        return format("Жанр изменен: %s", converter.stringify(genre));
-    }
-
-    @ShellMethod(key = {"find-genre-by-id", "genre-by-id"},
-            value = "Ищет жанр в БД по его идентификатору: укажите идентификатор жанра")
-    public String handleGetGenreById(long id) {
-        var genre = genreService.getGenreById(id);
-        return format("Жанр найден: %s", converter.stringify(genre));
-    }
-
-    @ShellMethod(key = {"find-genre-by-name", "genre-by-name"},
-            value = "Ищет жанр в БД по его названию: укажите название жанра")
-    public String handleGetGenreByName(String genreName) {
-        var genre = genreService.getGenreByName(genreName);
-        return format("Жанр найден: %s", converter.stringify(genre));
+        genreService.changeGenre(id, genreName);
+        return format("Название жанра c id=%d изменено на: %s", id, genreName);
     }
 
     @ShellMethod(key = {"show-all-genres", "all-genres"},
             value = "Выводит список всех жанров в БД")
     public String handleGetAllGenres() {
         var genres = genreService.getAllGenres();
-        return genres.stream().map(converter::stringify).collect(Collectors.joining("\n"));
+        return genres.stream().map(stringifier::stringify).collect(Collectors.joining("\n"));
     }
 
     @ShellMethod(key = {"delete-genre-from-db", "delete-genre"},
             value = "Удаляет жанр из БД по его идентификатору: укажите идентификатор жанра")
     public String handleDeleteGenreById(long id) {
-        var genre = genreService.deleteGenreById(id);
-        return format("Жанр удален: %s", converter.stringify(genre));
+        genreService.deleteGenreById(id);
+        return format("Жанр с id=%d удален", id);
     }
 
     @ShellMethod(key = {"delete-all-genres-from-db", "delete-all-genres"},

@@ -16,7 +16,7 @@ public class AuthorCommand {
 
     private final AuthorService authorService;
 
-    private final AuthorStringifier converter;
+    private final AuthorStringifier stringifier;
 
     @ShellMethod(key = {"get-authors-count", "authors-count"},
             value = "Возвращает количество всех авторов в БД")
@@ -29,42 +29,28 @@ public class AuthorCommand {
             value = "Добавляет нового автора в БД: укажите имя автора")
     public String handleAddAuthor(String authorName) {
         var author = authorService.addAuthor(authorName);
-        return format("Добавлен новый автор: %s", converter.stringify(author));
+        return format("Добавлен новый автор: %s", stringifier.stringify(author));
     }
 
     @ShellMethod(key = {"change-author"},
             value = "Изменяет существующего в БД автора: укажите идентификатор автора, имя автора")
     public String handleChangeAuthor(long id, String authorName) {
-        var author = authorService.changeAuthor(id, authorName);
-        return format("Автор изменен: %s", converter.stringify(author));
-    }
-
-    @ShellMethod(key = {"find-author-by-id", "author-by-id"},
-            value = "Ищет автора в БД по его идентификатору: укажите идентификатор автора")
-    public String handleGetAuthorById(long id) {
-        var author = authorService.getAuthorById(id);
-        return format("Автор найден: %s", converter.stringify(author));
-    }
-
-    @ShellMethod(key = {"find-author-by-name", "author-by-name"},
-            value = "Ищет автора в БД по его имени: укажите имя автора")
-    public String handleGetAuthorByName(String authorName) {
-        var author = authorService.getAuthorByName(authorName);
-        return format("Автор найден: %s", converter.stringify(author));
+        authorService.changeAuthor(id, authorName);
+        return format("Имя автора с id=%d изменено на: %s", id, authorName);
     }
 
     @ShellMethod(key = {"show-all-authors", "all-authors"},
             value = "Выводит список всех авторов в БД")
     public String handleGetAllAuthors() {
         var authors = authorService.getAllAuthors();
-        return authors.stream().map(converter::stringify).collect(Collectors.joining("\n"));
+        return authors.stream().map(stringifier::stringify).collect(Collectors.joining("\n"));
     }
 
     @ShellMethod(key = {"delete-author-from-db", "delete-author"},
             value = "Удаляет автора из БД по его идентификатору: укажите идентификатор автора")
     public String handleDeleteAuthorById(long id) {
-        var author = authorService.deleteAuthorById(id);
-        return format("Автор удален: %s", converter.stringify(author));
+        authorService.deleteAuthorById(id);
+        return format("Автор c id=%d удален", id);
     }
 
     @ShellMethod(key = {"delete-all-authors-from-db", "delete-all-authors"},

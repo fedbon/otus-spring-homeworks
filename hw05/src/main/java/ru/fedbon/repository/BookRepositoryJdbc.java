@@ -33,8 +33,8 @@ public class BookRepositoryJdbc implements BookRepository {
     public Book insert(Book book) {
         var params = new MapSqlParameterSource(Map.of(
                 "title", book.getTitle(),
-                "genre_id", book.getGenreId(),
-                "author_id", book.getAuthorId()
+                "genre_id", book.getGenre().getId(),
+                "author_id", book.getAuthor().getId()
         ));
         var keyHolder = new GeneratedKeyHolder();
         jdbc.update("insert into books(title, genre_id, author_id) values(:title, :genre_id, :author_id)",
@@ -51,16 +51,15 @@ public class BookRepositoryJdbc implements BookRepository {
     }
 
     @Override
-    public Book update(Book book) {
+    public void update(Book book) {
         var params = Map.of(
                 "id", book.getId(),
                 "title", book.getTitle(),
-                "genre_id", book.getGenreId(),
-                "author_id", book.getAuthorId()
+                "genre_id", book.getGenre().getId(),
+                "author_id", book.getAuthor().getId()
         );
         jdbc.update("update books set title = :title,  genre_id = :genre_id, author_id = :author_id " +
                 "where id = :id", params);
-        return book;
     }
 
     @Override
