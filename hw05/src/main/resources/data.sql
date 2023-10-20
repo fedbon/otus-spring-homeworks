@@ -12,7 +12,6 @@ values ('Русская классика'),
        ('Ужасы'),
        ('Сатира');
 
-
 insert into books(genre_id, author_id, title)
 values (1, 1, 'Война и мир'),
        (4, 2, 'Мёртвые души'),
