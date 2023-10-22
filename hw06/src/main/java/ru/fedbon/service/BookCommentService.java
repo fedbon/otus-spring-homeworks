@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface BookCommentService {
 
-    void addBookComment(long id, String text);
+    void add(long id, String text);
 
-    BookComment changeBookComment(long id, String text);
+    BookComment change(BookComment bookComment);
 
-    BookComment getBookCommentById(long id);
+    BookComment getById(long id);
 
-    List<BookComment> getAllCommentsByBookId(long id);
+    List<BookComment> getAllByBookId(long id);
 
-    void deleteBookCommentById(long id);
+    void deleteById(long id);
 }

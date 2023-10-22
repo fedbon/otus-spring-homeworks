@@ -3,8 +3,7 @@ package ru.fedbon.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.fedbon.exception.BookCommentNotFoundException;
-import ru.fedbon.exception.BookNotFoundException;
+import ru.fedbon.exception.NotFoundException;
 import ru.fedbon.model.BookComment;
 import ru.fedbon.repository.BookCommentRepository;
 import ru.fedbon.repository.BookRepository;
@@ -23,10 +22,10 @@ public class BookCommentServiceImpl implements BookCommentService {
 
     @Transactional
     @Override
-    public void addBookComment(long id, String text) {
+    public void add(long id, String text) {
         var book = bookRepository.findById(id)
                 .orElseThrow(() ->
-                        new BookNotFoundException(format("Не найдена книга с идентификатором %d", id)));
+                        new NotFoundException(format("Не найдена книга с идентификатором %d", id)));
         var bookComment = new BookComment();
         bookComment.setText(text);
         bookComment.setBook(book);
@@ -35,35 +34,36 @@ public class BookCommentServiceImpl implements BookCommentService {
 
     @Transactional
     @Override
-    public BookComment changeBookComment(long id, String text) {
-        var bookComment = bookCommentRepository.findById(id)
+    public BookComment change(BookComment bookComment) {
+        bookCommentRepository.findById(bookComment.getId())
                 .orElseThrow(() ->
-                        new BookCommentNotFoundException(format("Не найден комментарий с идентификатором %d", id)));
-        bookComment.setText(text);
+                        new NotFoundException(format("Не найден комментарий с идентификатором %d",
+                                bookComment.getId())));
+        bookComment.setText(bookComment.getText());
         bookCommentRepository.update(bookComment);
         return bookComment;
     }
 
     @Transactional(readOnly = true)
     @Override
-    public BookComment getBookCommentById(long id) {
+    public BookComment getById(long id) {
         return bookCommentRepository.findById(id)
                 .orElseThrow(() ->
-                        new BookCommentNotFoundException(format("Не найден комментарий с идентификатором %d", id)));
+                        new NotFoundException(format("Не найден комментарий с идентификатором %d", id)));
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<BookComment> getAllCommentsByBookId(long id) {
+    public List<BookComment> getAllByBookId(long id) {
         var book = bookRepository.findById(id)
                 .orElseThrow(() ->
-                        new BookNotFoundException(format("Не найдена книга с идентификатором %d", id)));
+                        new NotFoundException(format("Не найдена книга с идентификатором %d", id)));
         return bookCommentRepository.findAllCommentsForBook(book);
     }
 
     @Transactional
     @Override
-    public void deleteBookCommentById(long id) {
+    public void deleteById(long id) {
         bookCommentRepository.deleteById(id);
     }
 

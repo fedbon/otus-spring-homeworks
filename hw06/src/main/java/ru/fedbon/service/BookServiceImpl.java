@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.fedbon.dto.BookDto;
-import ru.fedbon.exception.AuthorNotFoundException;
-import ru.fedbon.exception.BookNotFoundException;
-import ru.fedbon.exception.GenreNotFoundException;
+import ru.fedbon.exception.NotFoundException;
 import ru.fedbon.mapper.BookMapper;
 import ru.fedbon.model.Book;
 import ru.fedbon.repository.AuthorRepository;
@@ -30,20 +28,20 @@ public class BookServiceImpl implements BookService {
 
     @Transactional(readOnly = true)
     @Override
-    public long getBooksCount() {
+    public long getCount() {
         return bookRepository.count();
     }
 
     @Transactional
     @Override
-    public void addBook(BookDto bookDto) {
+    public void add(BookDto bookDto) {
         var genre = genreRepository.findById(bookDto.getGenreId())
-                .orElseThrow(() -> new GenreNotFoundException(
+                .orElseThrow(() -> new NotFoundException(
                         String.format("Не найден жанр с идентификатором %d", bookDto.getGenreId())
                 ));
 
         var author = authorRepository.findById(bookDto.getAuthorId())
-                .orElseThrow(() -> new AuthorNotFoundException(
+                .orElseThrow(() -> new NotFoundException(
                         String.format("Не найден автор с идентификатором %d", bookDto.getAuthorId())
                 ));
 
@@ -52,19 +50,19 @@ public class BookServiceImpl implements BookService {
     }
 
     @Transactional
-    public Book changeBook(BookDto bookDto) {
+    public Book change(BookDto bookDto) {
         var genre = genreRepository.findById(bookDto.getGenreId())
-                .orElseThrow(() -> new GenreNotFoundException(
+                .orElseThrow(() -> new NotFoundException(
                         String.format("Не найден жанр с идентификатором %d", bookDto.getGenreId())
                 ));
 
         var author = authorRepository.findById(bookDto.getAuthorId())
-                .orElseThrow(() -> new AuthorNotFoundException(
+                .orElseThrow(() -> new NotFoundException(
                         String.format("Не найден автор с идентификатором %d", bookDto.getAuthorId())
                 ));
 
         bookRepository.findById(bookDto.getId())
-                .orElseThrow(() -> new BookNotFoundException(
+                .orElseThrow(() -> new NotFoundException(
                         String.format("Не найдена книга с идентификатором %d", bookDto.getId())
                 ));
 
@@ -75,21 +73,21 @@ public class BookServiceImpl implements BookService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Book> getAllBooks() {
+    public List<Book> getAll() {
         return bookRepository.findAll();
     }
 
     @Override
-    public Book getBookById(long id) {
+    public Book getById(long id) {
         return bookRepository.findById(id)
-                .orElseThrow(() -> new BookNotFoundException(format("Не найдена книга с идентификатором %d", id)));
+                .orElseThrow(() -> new NotFoundException(format("Не найдена книга с идентификатором %d", id)));
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<Book> getAllBooksByGenre(long id) {
+    public List<Book> getAllByGenreId(long id) {
         var genre = genreRepository.findById(id)
-                .orElseThrow(() -> new GenreNotFoundException(
+                .orElseThrow(() -> new NotFoundException(
                         String.format("Не найден жанр с идентификатором %d", id)
                 ));
         return bookRepository.findAllByGenre(genre);
@@ -97,22 +95,22 @@ public class BookServiceImpl implements BookService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Book> getAllBooksByAuthor(long id) {
+    public List<Book> getAllByAuthorId(long id) {
         var author = authorRepository.findById(id).orElseThrow(() ->
-                        new AuthorNotFoundException(String.format("Не найден автор с идентификатором %d", id)
+                        new NotFoundException(String.format("Не найден автор с идентификатором %d", id)
         ));
         return bookRepository.findAllByAuthor(author);
     }
 
     @Transactional
     @Override
-    public void deleteBookById(long id) {
+    public void deleteById(long id) {
         bookRepository.deleteById(id);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public long deleteAllBooks() {
+    public long deleteAll() {
         return bookRepository.deleteAll();
     }
 }

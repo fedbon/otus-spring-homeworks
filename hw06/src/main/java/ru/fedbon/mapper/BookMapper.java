@@ -13,10 +13,6 @@ public class BookMapper {
 
     public static Book mapDtoToBook(BookDto bookDto, Genre genre, Author author) {
 
-        if (bookDto == null && author == null && genre == null) {
-            return null;
-        }
-
         var bookBuilder = Book.builder();
 
         if (bookDto != null) {

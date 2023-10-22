@@ -3,7 +3,7 @@ package ru.fedbon.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.fedbon.exception.AuthorNotFoundException;
+import ru.fedbon.exception.NotFoundException;
 import ru.fedbon.model.Author;
 import ru.fedbon.repository.AuthorRepository;
 
@@ -19,13 +19,13 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Transactional(readOnly = true)
     @Override
-    public long getAuthorsCount() {
+    public long getCount() {
         return authorRepository.count();
     }
 
     @Transactional
     @Override
-    public void addAuthor(String authorName) {
+    public void add(String authorName) {
         var author = new Author();
         author.setName(authorName);
         authorRepository.save(author);
@@ -33,35 +33,36 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Transactional
     @Override
-    public Author changeAuthor(long id, String authorName) {
-        var author = authorRepository.findById(id)
-                .orElseThrow(() -> new AuthorNotFoundException(format("Не найден автор с идентификатором %d", id)));
-        author.setName(authorName);
+    public Author change(Author author) {
+        authorRepository.findById(author.getId())
+                .orElseThrow(() ->
+                        new NotFoundException(format("Не найден автор с идентификатором %d", author.getId())));
+        author.setName(author.getName());
         authorRepository.update(author);
         return author;
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<Author> getAllAuthors() {
+    public List<Author> getAll() {
         return authorRepository.findAll();
     }
 
     @Override
-    public Author getAuthorById(long id) {
+    public Author getById(long id) {
         return authorRepository.findById(id)
-                .orElseThrow(() -> new AuthorNotFoundException(format("Не найден автор с идентификатором %d", id)));
+                .orElseThrow(() -> new NotFoundException(format("Не найден автор с идентификатором %d", id)));
     }
 
     @Transactional
     @Override
-    public void deleteAuthorById(long id) {
+    public void deleteById(long id) {
         authorRepository.deleteById(id);
     }
 
     @Transactional
     @Override
-    public long deleteAllAuthors() {
+    public long deleteAll() {
         return authorRepository.deleteAll();
     }
 
