@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import ru.fedbon.model.Author;
 import ru.fedbon.model.Book;
 import ru.fedbon.model.Genre;
@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-@Repository
+@Component
 @RequiredArgsConstructor
 public class BookRepositoryJdbc implements BookRepository {
 
