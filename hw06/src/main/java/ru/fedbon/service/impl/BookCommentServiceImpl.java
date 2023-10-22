@@ -30,7 +30,7 @@ public class BookCommentServiceImpl implements BookCommentService {
                 .orElseThrow(() ->
                         new NotFoundException(format("Не найдена книга с идентификатором %d",
                                 bookCommentDto.getBookId())));
-        var bookComment = BookCommentMapper.mapDtoToBookComment(bookCommentDto, book);
+        var bookComment = BookCommentMapper.mapDtoToNewBookComment(bookCommentDto, book);
         return bookCommentRepository.save(bookComment);
     }
 
@@ -46,7 +46,7 @@ public class BookCommentServiceImpl implements BookCommentService {
                         new NotFoundException(format("Не найден комментарий с идентификатором %d",
                                 bookCommentDto.getId())));
 
-        return BookCommentMapper.mapDtoToBookComment(bookCommentDto, book);
+        return BookCommentMapper.mapDtoToUpdatedBookComment(bookCommentDto, book);
     }
 
     @Transactional(readOnly = true)

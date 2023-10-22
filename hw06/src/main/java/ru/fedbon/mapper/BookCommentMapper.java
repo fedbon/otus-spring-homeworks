@@ -11,7 +11,16 @@ import ru.fedbon.model.BookComment;
 @NoArgsConstructor
 public class BookCommentMapper {
 
-    public static BookComment mapDtoToBookComment(BookCommentDto bookCommentDto, Book book) {
+    public static BookComment mapDtoToNewBookComment(BookCommentDto bookCommentDto, Book book) {
+
+        var bookCommentBuilder = BookComment.builder();
+        bookCommentBuilder.text(bookCommentDto.getText());
+        bookCommentBuilder.book(book);
+
+        return bookCommentBuilder.build();
+    }
+
+    public static BookComment mapDtoToUpdatedBookComment(BookCommentDto bookCommentDto, Book book) {
 
         var bookCommentBuilder = BookComment.builder();
         bookCommentBuilder.id(bookCommentDto.getId());

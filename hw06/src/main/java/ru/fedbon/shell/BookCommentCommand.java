@@ -27,7 +27,7 @@ public class BookCommentCommand {
     @ShellMethod(key = {"add-new-book-comment-by-book-id", "new-book-comment-by-book-id"},
             value = "Добавляет новый комментарий к книге по ее идентификатору в БД: " +
                     "укажите идентификатор книги, укажите комментарий")
-    public String handleAddBookComment(long id, String text) {
+    public String handleAdd(long id, String text) {
         var bookCommentDto = new BookCommentDto();
         bookCommentDto.setText(text);
         bookCommentDto.setBookId(id);
@@ -39,7 +39,7 @@ public class BookCommentCommand {
     @ShellMethod(key = {"change-book-comment-by-id"},
             value = "Изменяет существующий комментарий к книге по идентификатору в БД: " +
                     "укажите идентификатор комментария, укажите обновленный комментарий")
-    public String handleChangeBookComment(long id, String text) {
+    public String handleChange(long id, String text) {
         var bookComment = bookCommentRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(format("Не найден комментарий с идентификатором %d", id)));
 
@@ -53,21 +53,21 @@ public class BookCommentCommand {
 
     @ShellMethod(key = {"get-book-comment-by-id", "book-comment-by-id"},
             value = "Ищет комментарий к книге в БД по его идентификатору: укажите идентификатор комментария")
-    public String handleGetBookCommentById(long id) {
+    public String handleGetById(long id) {
         var bookComment = bookCommentService.getById(id);
         return format("Комментарий найден: %s", stringifier.stringify(bookComment));
     }
 
     @ShellMethod(key = {"get-all-book-comments-by-book-id", "book-comments-by-book-id"},
             value = "Выводит список всех комментариев к книге по ее идентификатору в БД")
-    public String handleGetAllCommentsByBookId(long id) {
+    public String handleGetAllByBookId(long id) {
         var bookComments = bookCommentService.getAllByBookId(id);
         return bookComments.stream().map(stringifier::stringify).collect(Collectors.joining("\n"));
     }
 
     @ShellMethod(key = {"delete-book-comment-by-book-id", "delete-book-comment-by-book-id"},
             value = "Удаляет комментарий из БД по его идентификатору: укажите идентификатор комментария")
-    public String handleDeleteBookCommentById(long id) {
+    public String handleDeleteById(long id) {
         bookCommentService.deleteById(id);
         return format("Комментарий с id=%d удален", id);
     }

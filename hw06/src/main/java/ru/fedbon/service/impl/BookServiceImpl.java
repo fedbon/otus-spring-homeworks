@@ -46,7 +46,7 @@ public class BookServiceImpl implements BookService {
                         String.format("Не найден автор с идентификатором %d", bookDto.getAuthorId())
                 ));
 
-        var book = BookMapper.mapDtoToBook(bookDto, genre, author);
+        var book = BookMapper.mapDtoToNewBook(bookDto, genre, author);
         return bookRepository.save(book);
     }
 
@@ -67,7 +67,7 @@ public class BookServiceImpl implements BookService {
                         String.format("Не найдена книга с идентификатором %d", bookDto.getId())
                 ));
 
-        return BookMapper.mapDtoToBook(bookDto, genre, author);
+        return BookMapper.mapDtoToUpdatedBook(bookDto, genre, author);
     }
 
     @Transactional(readOnly = true)

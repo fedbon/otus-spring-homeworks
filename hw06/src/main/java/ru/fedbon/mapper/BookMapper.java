@@ -11,7 +11,17 @@ import ru.fedbon.model.Genre;
 @NoArgsConstructor
 public class BookMapper {
 
-    public static Book mapDtoToBook(BookDto bookDto, Genre genre, Author author) {
+    public static Book mapDtoToNewBook(BookDto bookDto, Genre genre, Author author) {
+
+        var bookBuilder = Book.builder();
+        bookBuilder.title(bookDto.getTitle());
+        bookBuilder.genre(genre);
+        bookBuilder.author(author);
+
+        return bookBuilder.build();
+    }
+
+    public static Book mapDtoToUpdatedBook(BookDto bookDto, Genre genre, Author author) {
 
         var bookBuilder = Book.builder();
         bookBuilder.id(bookDto.getId());

@@ -21,14 +21,14 @@ public class BookCommand {
 
     @ShellMethod(key = {"get-books-count", "books-count"},
             value = "Возвращает количество всех книг в БД")
-    public String handleGetBooksCount() {
+    public String handleGetCount() {
         var count = bookService.getCount();
         return format("Общее количество книг в БД: %d", count);
     }
 
     @ShellMethod(key = {"add-new-book", "new-book"},
             value = "Добавляет новую книгу в БД: укажите название книги, идентификатор жанра, идентификатор автора")
-    public String handleAddBook(String title, long genreId, long authorId) {
+    public String handleAdd(String title, long genreId, long authorId) {
         var bookDto = new BookDto();
         bookDto.setTitle(title);
         bookDto.setGenreId(genreId);
@@ -40,7 +40,7 @@ public class BookCommand {
     @ShellMethod(key = {"change-book-by-id"},
             value = "Изменяет существующую в БД книгу: укажите идентификатор книги, название книги, " +
                     "идентификатор жанра, идентификатор автора")
-    public String handleChangeBook(long id, String title, long genreId, long authorId) {
+    public String handleChange(long id, String title, long genreId, long authorId) {
         var bookDto = new BookDto();
         bookDto.setId(id);
         bookDto.setTitle(title);
@@ -52,42 +52,42 @@ public class BookCommand {
 
     @ShellMethod(key = {"get-all-books", "all-books"},
             value = "Выводит список всех книг в БД")
-    public String handleGetAllBooks() {
+    public String handleGetAll() {
         var books = bookService.getAll();
         return books.stream().map(stringifier::stringify).collect(Collectors.joining("\n"));
     }
 
     @ShellMethod(key = {"get-book-by-id", "book-by-id"},
             value = "Ищет книгу в БД по ее идентификатору: укажите идентификатор книги")
-    public String handleGetBookById(long id) {
+    public String handleGetById(long id) {
         var book = bookService.getById(id);
         return format("Книга найдена: %s", stringifier.stringify(book));
     }
 
     @ShellMethod(key = {"books-by-genre-id"},
             value = "Выводит список всех книг определенного жанра: укажите идентификатор жанра")
-    public String handleGetAllBooksByGenre(long id) {
+    public String handleGetAllByGenreId(long id) {
         var books = bookService.getAllByGenreId(id);
         return books.stream().map(stringifier::stringify).collect(Collectors.joining("\n"));
     }
 
     @ShellMethod(key = {"books-by-author-id"},
             value = "Выводит список всех книг определенного автора: укажите идентификатор автора")
-    public String handleGetAllBooksByAuthor(long id) {
+    public String handleGetAllByAuthorId(long id) {
         var books = bookService.getAllByAuthorId(id);
         return books.stream().map(stringifier::stringify).collect(Collectors.joining("\n"));
     }
 
     @ShellMethod(key = {"delete-book-by-id"},
             value = "Удаляет книгу из БД по ее идентификатору: укажите идентификатор книги")
-    public String handleDeleteBookById(long id) {
+    public String handleDeleteById(long id) {
         bookService.deleteById(id);
         return format("Книга c id=%d удалена", id);
     }
 
     @ShellMethod(key = {"delete-all-books"},
             value = "Удаляет все книги из БД")
-    public String handleDeleteAllBooks() {
+    public String handleDeleteAll() {
         var count = bookService.deleteAll();
         return format("%d книг удалено", count);
     }
