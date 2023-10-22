@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface BookCommentService {
 
-    void add(BookCommentDto bookCommentDto);
+    BookComment add(BookCommentDto bookCommentDto);
 
     BookComment change(BookCommentDto bookCommentDto);
 

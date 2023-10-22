@@ -47,14 +47,15 @@ class BookRepositoryJpaTest {
     @Test
     @DisplayName("добавлять книгу в БД")
     void shouldInsertBook() {
-        var expectedBook = new Book();
-        expectedBook.setTitle(NEW_BOOK_TITLE);
+        var newBook = new Book();
+        newBook.setTitle(NEW_BOOK_TITLE);
         var testGenre = testEntityManager.find(Genre.class, TEST_GENRE_ID);
-        expectedBook.setGenre(testGenre);
+        newBook.setGenre(testGenre);
         var testAuthor = testEntityManager.find(Author.class, TEST_AUTHOR_ID);
-        expectedBook.setAuthor(testAuthor);
+        newBook.setAuthor(testAuthor);
 
-        bookRepositoryJpa.save(expectedBook);
+        var expectedBook = bookRepositoryJpa.save(newBook);
+        assertThat(expectedBook).isNotNull();
         assertThat(expectedBook.getId()).isGreaterThan(0);
 
         var actualBook = testEntityManager.find(Book.class, expectedBook.getId());

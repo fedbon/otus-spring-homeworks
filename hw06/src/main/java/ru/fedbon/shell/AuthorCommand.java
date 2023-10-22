@@ -32,8 +32,7 @@ public class AuthorCommand {
     @ShellMethod(key = {"add-new-author", "new-author"},
             value = "Добавляет нового автора в БД: укажите имя автора")
     public String handleAddAuthor(String authorName) {
-        authorService.add(authorName);
-        return format("Добавлен новый автор с именем: %s", authorName);
+        return format("Добавлен новый автор: %s", stringifier.stringify(authorService.add(authorName)));
     }
 
     @ShellMethod(key = {"change-author-by-id"},

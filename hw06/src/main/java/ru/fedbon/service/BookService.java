@@ -8,7 +8,7 @@ import java.util.List;
 public interface BookService {
     long getCount();
 
-    void add(BookDto bookDto);
+    Book add(BookDto bookDto);
 
     Book change(BookDto bookDto);
 

@@ -28,12 +28,11 @@ public class BookRepositoryJpa implements BookRepository {
     }
 
     @Override
-    public void save(Book book) {
-        entityManager.persist(book);
-    }
-
-    @Override
-    public Book update(Book book) {
+    public Book save(Book book) {
+        if (book.getId() == null || book.getId() == 0) {
+            entityManager.persist(book);
+            return book;
+        }
         return entityManager.merge(book);
     }
 

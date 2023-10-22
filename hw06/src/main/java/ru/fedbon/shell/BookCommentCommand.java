@@ -32,8 +32,8 @@ public class BookCommentCommand {
         bookCommentDto.setText(text);
         bookCommentDto.setBookId(id);
 
-        bookCommentService.add(bookCommentDto);
-        return format("Добавлен новый комментарий с текстом: %s", text);
+        return format("Добавлен новый комментарий: %s",
+                stringifier.stringify(bookCommentService.add(bookCommentDto)));
     }
 
     @ShellMethod(key = {"change-book-comment-by-id"},

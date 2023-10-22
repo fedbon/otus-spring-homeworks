@@ -8,9 +8,7 @@ import java.util.Optional;
 public interface AuthorRepository {
     long count();
 
-    void save(Author author);
-
-    Author update(Author author);
+    Author save(Author author);
 
     Optional<Author> findById(long id);
 

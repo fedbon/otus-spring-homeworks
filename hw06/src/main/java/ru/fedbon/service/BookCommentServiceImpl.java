@@ -24,13 +24,13 @@ public class BookCommentServiceImpl implements BookCommentService {
 
     @Transactional
     @Override
-    public void add(BookCommentDto bookCommentDto) {
+    public BookComment add(BookCommentDto bookCommentDto) {
         var book = bookRepository.findById(bookCommentDto.getBookId())
                 .orElseThrow(() ->
                         new NotFoundException(format("Не найдена книга с идентификатором %d",
                                 bookCommentDto.getBookId())));
         var bookComment = BookCommentMapper.mapDtoToBookComment(bookCommentDto, book);
-        bookCommentRepository.save(bookComment);
+        return bookCommentRepository.save(bookComment);
     }
 
     @Transactional
@@ -45,9 +45,7 @@ public class BookCommentServiceImpl implements BookCommentService {
                         new NotFoundException(format("Не найден комментарий с идентификатором %d",
                                 bookCommentDto.getId())));
 
-        var bookComment = BookCommentMapper.mapDtoToBookComment(bookCommentDto, book);
-        bookCommentRepository.update(bookComment);
-        return bookComment;
+        return BookCommentMapper.mapDtoToBookComment(bookCommentDto, book);
     }
 
     @Transactional(readOnly = true)

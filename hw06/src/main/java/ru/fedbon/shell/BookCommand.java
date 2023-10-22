@@ -34,9 +34,7 @@ public class BookCommand {
         bookDto.setGenreId(genreId);
         bookDto.setAuthorId(authorId);
 
-        bookService.add(bookDto);
-
-        return format("Добавлена новая книга c названием: %s", title);
+        return format("Добавлена новая книга: %s", stringifier.stringify(bookService.add(bookDto)));
     }
 
     @ShellMethod(key = {"change-book-by-id"},

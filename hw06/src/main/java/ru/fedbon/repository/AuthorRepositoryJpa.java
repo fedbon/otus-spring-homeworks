@@ -23,12 +23,11 @@ public class AuthorRepositoryJpa implements AuthorRepository {
     }
 
     @Override
-    public void save(Author author) {
-        entityManager.persist(author);
-    }
-
-    @Override
-    public Author update(Author author) {
+    public Author save(Author author) {
+        if (author.getId() == null || author.getId() == 0) {
+            entityManager.persist(author);
+            return author;
+        }
         return entityManager.merge(author);
     }
 

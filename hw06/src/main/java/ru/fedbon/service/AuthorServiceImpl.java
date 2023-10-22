@@ -25,10 +25,10 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Transactional
     @Override
-    public void add(String name) {
+    public Author add(String name) {
         var author = new Author();
         author.setName(name);
-        authorRepository.save(author);
+        return authorRepository.save(author);
     }
 
     @Transactional
@@ -38,7 +38,6 @@ public class AuthorServiceImpl implements AuthorService {
                 .orElseThrow(() ->
                         new NotFoundException(format("Не найден автор с идентификатором %d", author.getId())));
         author.setName(author.getName());
-        authorRepository.update(author);
         return author;
     }
 

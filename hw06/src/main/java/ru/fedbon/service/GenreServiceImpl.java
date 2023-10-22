@@ -25,10 +25,10 @@ public class GenreServiceImpl implements GenreService {
 
     @Transactional
     @Override
-    public void add(String name) {
+    public Genre add(String name) {
         var genre = new Genre();
         genre.setName(name);
-        genreRepository.save(genre);
+        return genreRepository.save(genre);
     }
 
     @Transactional
@@ -37,7 +37,6 @@ public class GenreServiceImpl implements GenreService {
         genreRepository.findById(genre.getId())
                 .orElseThrow(() -> new NotFoundException(format("Не найден жанр с идентификатором %d", genre.getId())));
         genre.setName(genre.getName());
-        genreRepository.update(genre);
         return genre;
     }
 

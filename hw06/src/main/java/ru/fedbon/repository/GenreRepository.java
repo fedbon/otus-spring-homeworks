@@ -8,9 +8,7 @@ import java.util.Optional;
 public interface GenreRepository {
     long count();
 
-    void save(Genre genre);
-
-    Genre update(Genre genre);
+    Genre save(Genre genre);
 
     Optional<Genre> findById(long id);
 

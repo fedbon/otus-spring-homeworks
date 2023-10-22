@@ -7,7 +7,7 @@ import java.util.List;
 public interface GenreService {
     long getCount();
 
-    void add(String name);
+    Genre add(String name);
 
     Genre change(Genre genre);
 

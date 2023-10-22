@@ -7,7 +7,7 @@ import java.util.List;
 public interface AuthorService {
     long getCount();
 
-    void add(String name);
+    Author add(String name);
 
     Author change(Author author);
 

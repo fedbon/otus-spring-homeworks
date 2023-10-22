@@ -32,8 +32,7 @@ public class GenreCommand {
     @ShellMethod(key = {"add-new-genre", "new-genre"},
             value = "Добавляет новый жанр в БД: укажите название жанра")
     public String handleAddGenre(String genreName) {
-        genreService.add(genreName);
-        return format("Добавлен новый жанр с названием: %s", genreName);
+        return format("Добавлен новый жанр: %s", stringifier.stringify(genreService.add(genreName)));
     }
 
     @ShellMethod(key = {"change-genre-by-id"},
