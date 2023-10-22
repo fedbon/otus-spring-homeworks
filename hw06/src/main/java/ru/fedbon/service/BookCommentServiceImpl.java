@@ -3,7 +3,9 @@ package ru.fedbon.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.fedbon.dto.BookCommentDto;
 import ru.fedbon.exception.NotFoundException;
+import ru.fedbon.mapper.BookCommentMapper;
 import ru.fedbon.model.BookComment;
 import ru.fedbon.repository.BookCommentRepository;
 import ru.fedbon.repository.BookRepository;
@@ -22,24 +24,28 @@ public class BookCommentServiceImpl implements BookCommentService {
 
     @Transactional
     @Override
-    public void add(long id, String text) {
-        var book = bookRepository.findById(id)
+    public void add(BookCommentDto bookCommentDto) {
+        var book = bookRepository.findById(bookCommentDto.getBookId())
                 .orElseThrow(() ->
-                        new NotFoundException(format("Не найдена книга с идентификатором %d", id)));
-        var bookComment = new BookComment();
-        bookComment.setText(text);
-        bookComment.setBook(book);
+                        new NotFoundException(format("Не найдена книга с идентификатором %d",
+                                bookCommentDto.getBookId())));
+        var bookComment = BookCommentMapper.mapDtoToBookComment(bookCommentDto, book);
         bookCommentRepository.save(bookComment);
     }
 
     @Transactional
     @Override
-    public BookComment change(BookComment bookComment) {
-        bookCommentRepository.findById(bookComment.getId())
+    public BookComment change(BookCommentDto bookCommentDto) {
+        var book = bookRepository.findById(bookCommentDto.getBookId())
+                .orElseThrow(() ->
+                        new NotFoundException(format("Не найдена книга с идентификатором %d",
+                                bookCommentDto.getBookId())));
+        bookCommentRepository.findById(bookCommentDto.getId())
                 .orElseThrow(() ->
                         new NotFoundException(format("Не найден комментарий с идентификатором %d",
-                                bookComment.getId())));
-        bookComment.setText(bookComment.getText());
+                                bookCommentDto.getId())));
+
+        var bookComment = BookCommentMapper.mapDtoToBookComment(bookCommentDto, book);
         bookCommentRepository.update(bookComment);
         return bookComment;
     }

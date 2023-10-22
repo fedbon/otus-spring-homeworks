@@ -14,13 +14,10 @@ public class BookMapper {
     public static Book mapDtoToBook(BookDto bookDto, Genre genre, Author author) {
 
         var bookBuilder = Book.builder();
-
-        if (bookDto != null) {
-            bookBuilder.id(bookDto.getId());
-            bookBuilder.title(bookDto.getTitle());
-            bookBuilder.genre(genre);
-            bookBuilder.author(author);
-        }
+        bookBuilder.id(bookDto.getId());
+        bookBuilder.title(bookDto.getTitle());
+        bookBuilder.genre(genre);
+        bookBuilder.author(author);
 
         return bookBuilder.build();
     }

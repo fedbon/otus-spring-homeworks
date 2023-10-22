@@ -25,9 +25,9 @@ public class GenreServiceImpl implements GenreService {
 
     @Transactional
     @Override
-    public void add(String genreName) {
+    public void add(String name) {
         var genre = new Genre();
-        genre.setName(genreName);
+        genre.setName(name);
         genreRepository.save(genre);
     }
 

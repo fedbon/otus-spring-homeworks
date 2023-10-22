@@ -37,10 +37,10 @@ public class Book {
     private String title;
 
     @ManyToOne(targetEntity = Genre.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "genre_id", referencedColumnName = "id")
+    @JoinColumn(name = "genre_id", referencedColumnName = "id", nullable = false)
     private Genre genre;
 
     @ManyToOne(targetEntity = Author.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id", referencedColumnName = "id")
+    @JoinColumn(name = "author_id", referencedColumnName = "id", nullable = false)
     private Author author;
 }

@@ -25,9 +25,9 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Transactional
     @Override
-    public void add(String authorName) {
+    public void add(String name) {
         var author = new Author();
-        author.setName(authorName);
+        author.setName(name);
         authorRepository.save(author);
     }
 

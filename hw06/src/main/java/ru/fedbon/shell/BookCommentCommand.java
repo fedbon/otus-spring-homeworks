@@ -3,6 +3,8 @@ package ru.fedbon.shell;
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import ru.fedbon.dto.BookCommentDto;
+import ru.fedbon.dto.BookDto;
 import ru.fedbon.exception.NotFoundException;
 import ru.fedbon.repository.BookCommentRepository;
 import ru.fedbon.repository.BookRepository;
@@ -20,8 +22,6 @@ public class BookCommentCommand {
 
     private final BookCommentService bookCommentService;
 
-    private final BookRepository bookRepository;
-
     private final BookCommentRepository bookCommentRepository;
 
     private final BookCommentStringifier stringifier;
@@ -31,20 +31,27 @@ public class BookCommentCommand {
             value = "Добавляет новый комментарий к книге по ее идентификатору в БД: " +
                     "укажите идентификатор книги, укажите комментарий")
     public String handleAddBookComment(long id, String text) {
-        bookCommentService.add(id, text);
+        var bookCommentDto = new BookCommentDto();
+        bookCommentDto.setText(text);
+        bookCommentDto.setBookId(id);
+
+        bookCommentService.add(bookCommentDto);
         return format("Добавлен новый комментарий с текстом: %s", text);
     }
 
-    @ShellMethod(key = {"change-book-comment-by-book-id"},
-            value = "Изменяет существующий комментарий к книге по ее идентификатору в БД: " +
-                    "укажите идентификатор книги, укажите комментарий")
+    @ShellMethod(key = {"change-book-comment-by-id"},
+            value = "Изменяет существующий комментарий к книге по идентификатору в БД: " +
+                    "укажите идентификатор комментария, укажите обновленный комментарий")
     public String handleChangeBookComment(long id, String text) {
         var bookComment = bookCommentRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(format("Не найден комментарий с идентификатором %d", id)));
 
-        bookComment.setText(text);
+        var bookCommentDto = new BookCommentDto();
+        bookCommentDto.setId(id);
+        bookCommentDto.setText(text);
+        bookCommentDto.setBookId(bookComment.getBook().getId());
         return format("Комментарий к книге изменен: %s",
-                stringifier.stringify(bookCommentService.change(bookComment)));
+                stringifier.stringify(bookCommentService.change(bookCommentDto)));
     }
 
     @ShellMethod(key = {"get-book-comment-by-id", "book-comment-by-id"},

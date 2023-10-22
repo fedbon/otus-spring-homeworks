@@ -1,5 +1,6 @@
 package ru.fedbon.service;
 
+import ru.fedbon.dto.BookCommentDto;
 import ru.fedbon.model.BookComment;
 
 import java.util.List;
@@ -7,9 +8,9 @@ import java.util.List;
 
 public interface BookCommentService {
 
-    void add(long id, String text);
+    void add(BookCommentDto bookCommentDto);
 
-    BookComment change(BookComment bookComment);
+    BookComment change(BookCommentDto bookCommentDto);
 
     BookComment getById(long id);
 
