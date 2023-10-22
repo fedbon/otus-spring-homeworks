@@ -1,4 +1,4 @@
-package ru.fedbon.service;
+package ru.fedbon.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,6 +10,7 @@ import ru.fedbon.model.Book;
 import ru.fedbon.repository.AuthorRepository;
 import ru.fedbon.repository.BookRepository;
 import ru.fedbon.repository.GenreRepository;
+import ru.fedbon.service.BookService;
 
 import java.util.List;
 

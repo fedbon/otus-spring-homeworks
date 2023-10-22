@@ -1,10 +1,11 @@
-package ru.fedbon.repository;
+package ru.fedbon.repository.impl;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.fedbon.model.Author;
+import ru.fedbon.repository.AuthorRepository;
 
 import java.util.List;
 import java.util.Optional;

@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.fedbon.model.Author;
+import ru.fedbon.repository.impl.AuthorRepositoryJpa;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

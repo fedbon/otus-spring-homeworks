@@ -1,4 +1,4 @@
-package ru.fedbon.repository;
+package ru.fedbon.repository.impl;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.fedbon.model.Book;
 import ru.fedbon.model.BookComment;
+import ru.fedbon.repository.BookCommentRepository;
 
 import java.util.List;
 import java.util.Optional;

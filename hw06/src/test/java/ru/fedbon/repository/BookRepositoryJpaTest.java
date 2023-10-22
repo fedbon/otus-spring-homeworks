@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Import;
 import ru.fedbon.model.Author;
 import ru.fedbon.model.Book;
 import ru.fedbon.model.Genre;
+import ru.fedbon.repository.impl.BookRepositoryJpa;
 
 import java.util.List;
 

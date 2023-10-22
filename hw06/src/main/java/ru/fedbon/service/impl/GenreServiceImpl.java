@@ -1,4 +1,4 @@
-package ru.fedbon.service;
+package ru.fedbon.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.fedbon.exception.NotFoundException;
 import ru.fedbon.model.Genre;
 import ru.fedbon.repository.GenreRepository;
+import ru.fedbon.service.GenreService;
 
 import java.util.List;
 

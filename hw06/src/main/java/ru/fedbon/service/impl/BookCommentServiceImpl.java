@@ -1,4 +1,4 @@
-package ru.fedbon.service;
+package ru.fedbon.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,6 +9,7 @@ import ru.fedbon.mapper.BookCommentMapper;
 import ru.fedbon.model.BookComment;
 import ru.fedbon.repository.BookCommentRepository;
 import ru.fedbon.repository.BookRepository;
+import ru.fedbon.service.BookCommentService;
 
 import java.util.List;
 

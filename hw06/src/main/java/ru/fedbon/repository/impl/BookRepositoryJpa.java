@@ -1,4 +1,4 @@
-package ru.fedbon.repository;
+package ru.fedbon.repository.impl;
 
 import jakarta.persistence.EntityGraph;
 import jakarta.persistence.EntityManager;
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import ru.fedbon.model.Author;
 import ru.fedbon.model.Book;
 import ru.fedbon.model.Genre;
+import ru.fedbon.repository.BookRepository;
 
 import java.util.List;
 import java.util.Optional;

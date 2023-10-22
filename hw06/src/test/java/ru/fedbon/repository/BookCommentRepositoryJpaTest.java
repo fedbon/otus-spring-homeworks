@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Import;
 import ru.fedbon.model.Book;
 import ru.fedbon.model.BookComment;
 import ru.fedbon.model.Genre;
+import ru.fedbon.repository.impl.BookCommentRepositoryJpa;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 

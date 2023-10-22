@@ -1,7 +1,8 @@
-package ru.fedbon.stringifier;
+package ru.fedbon.stringifier.impl;
 
 import org.springframework.stereotype.Component;
 import ru.fedbon.model.Genre;
+import ru.fedbon.stringifier.GenreStringifier;
 
 @Component
 public class GenreStringifierImpl implements GenreStringifier {

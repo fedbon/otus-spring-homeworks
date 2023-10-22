@@ -1,8 +1,11 @@
-package ru.fedbon.stringifier;
+package ru.fedbon.stringifier.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.fedbon.model.Book;
+import ru.fedbon.stringifier.AuthorStringifier;
+import ru.fedbon.stringifier.BookStringifier;
+import ru.fedbon.stringifier.GenreStringifier;
 
 @Component
 @RequiredArgsConstructor
