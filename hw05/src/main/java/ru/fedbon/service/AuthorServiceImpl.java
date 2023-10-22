@@ -2,7 +2,7 @@ package ru.fedbon.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.fedbon.exception.AuthorNotFoundException;
+import ru.fedbon.exception.NotFoundException;
 import ru.fedbon.model.Author;
 import ru.fedbon.repository.AuthorRepository;
 
@@ -17,12 +17,12 @@ public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository authorRepository;
 
     @Override
-    public long getAuthorsCount() {
+    public long getCount() {
         return authorRepository.count();
     }
 
     @Override
-    public Author addAuthor(String authorName) {
+    public Author add(String authorName) {
         var author = new Author();
         author.setName(authorName);
         authorRepository.insert(author);
@@ -30,25 +30,26 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void changeAuthor(long id, String authorName) {
-        var author = authorRepository.findById(id)
-                .orElseThrow(() -> new AuthorNotFoundException(format("Не найден автор с идентификатором %d", id)));
-        author.setName(authorName);
+    public void change(Author author) {
+        authorRepository.findById(author.getId())
+                .orElseThrow(() ->
+                        new NotFoundException(format("Не найден автор с идентификатором %d", author.getId())));
+        author.setName(author.getName());
         authorRepository.update(author);
     }
 
     @Override
-    public List<Author> getAllAuthors() {
+    public List<Author> getAll() {
         return authorRepository.findAll();
     }
 
     @Override
-    public void deleteAuthorById(long id) {
+    public void deleteById(long id) {
         authorRepository.deleteById(id);
     }
 
     @Override
-    public long deleteAllAuthors() {
+    public long deleteAll() {
         return authorRepository.deleteAll();
     }
 

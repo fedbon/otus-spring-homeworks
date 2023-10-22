@@ -5,15 +5,15 @@ import ru.fedbon.model.Author;
 import java.util.List;
 
 public interface AuthorService {
-    long getAuthorsCount();
+    long getCount();
 
-    Author addAuthor(String authorName);
+    Author add(String authorName);
 
-    void changeAuthor(long id, String authorName);
+    void change(Author author);
 
-    List<Author> getAllAuthors();
+    List<Author> getAll();
 
-    void deleteAuthorById(long id);
+    void deleteById(long id);
 
-    long deleteAllAuthors();
+    long deleteAll();
 }

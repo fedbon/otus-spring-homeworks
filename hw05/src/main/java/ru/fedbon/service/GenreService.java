@@ -5,15 +5,15 @@ import ru.fedbon.model.Genre;
 import java.util.List;
 
 public interface GenreService {
-    long getGenresCount();
+    long getCount();
 
-    Genre addGenre(String genreName);
+    Genre add(String genreName);
 
-    void changeGenre(long id, String genreName);
+    void change(Genre genre);
 
-    List<Genre> getAllGenres();
+    List<Genre> getAll();
 
-    void deleteGenreById(long id);
+    void deleteById(long id);
 
-    long deleteAllGenres();
+    long deleteAll();
 }

@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Component;
+import ru.fedbon.exception.InvalidDataException;
 import ru.fedbon.model.Author;
 import ru.fedbon.model.Book;
 import ru.fedbon.model.Genre;
@@ -31,6 +32,12 @@ public class BookRepositoryJdbc implements BookRepository {
 
     @Override
     public Book insert(Book book) {
+        if (book.getGenre() == null || book.getGenre().getId() == null) {
+            throw new InvalidDataException("Book genre must be specified.");
+        }
+        if (book.getAuthor() == null || book.getAuthor().getId() == null) {
+            throw new InvalidDataException("Book author must be specified.");
+        }
         var params = new MapSqlParameterSource(Map.of(
                 "title", book.getTitle(),
                 "genre_id", book.getGenre().getId(),
@@ -45,13 +52,20 @@ public class BookRepositoryJdbc implements BookRepository {
         if (key != null) {
             book.setId(key.longValue());
         } else {
-            throw new IllegalStateException("Failed to retrieve ID after insert operation");
+            throw new InvalidDataException("Failed to retrieve ID after insert operation");
         }
         return book;
     }
 
     @Override
     public void update(Book book) {
+        if (book.getGenre() == null || book.getGenre().getId() == null) {
+            throw new InvalidDataException("Book genre must be specified.");
+        }
+        if (book.getAuthor() == null || book.getAuthor().getId() == null) {
+            throw new InvalidDataException("Book author must be specified.");
+        }
+
         var params = Map.of(
                 "id", book.getId(),
                 "title", book.getTitle(),

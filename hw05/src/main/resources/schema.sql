@@ -1,23 +1,19 @@
-drop table if exists authors cascade;
-drop table if exists genres cascade;
-drop table if exists books cascade;
-
-create table authors
+create table if not exists authors
 (
     id   bigserial primary key,
     name varchar(255) not null unique
 );
 
-create table genres
+create table if not exists genres
 (
     id    bigserial primary key,
     genre varchar(255) not null unique
 );
 
-create table books
+create table if not exists books
 (
     id        bigserial primary key,
-    genre_id  bigint references genres (id) on delete cascade on update cascade,
-    author_id bigint references authors (id) on delete cascade on update cascade,
+    genre_id  bigint references genres (id) on delete cascade on update cascade not null,
+    author_id bigint references authors (id) on delete cascade on update cascade not null,
     title     varchar(255) not null
 );

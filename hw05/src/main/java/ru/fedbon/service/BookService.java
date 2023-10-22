@@ -6,20 +6,20 @@ import ru.fedbon.model.Book;
 import java.util.List;
 
 public interface BookService {
-    long getBooksCount();
+    long getCount();
 
-    BookDto addBook(BookDto bookDto);
+    BookDto add(BookDto bookDto);
 
-    void changeBook(BookDto bookDto);
+    void change(BookDto bookDto);
 
-    List<Book> getAllBooks();
+    List<Book> getAll();
 
-    List<Book> getAllBooksByGenre(String genreName);
+    List<Book> getAllByGenreName(String genreName);
 
-    List<Book> getAllBooksByAuthor(String authorName);
+    List<Book> getAllByAuthorName(String authorName);
 
-    void deleteBookById(long id);
+    void deleteById(long id);
 
-    long deleteAllBooks();
+    long deleteAll();
 
 }

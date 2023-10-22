@@ -3,9 +3,7 @@ package ru.fedbon.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.fedbon.dto.BookDto;
-import ru.fedbon.exception.AuthorNotFoundException;
-import ru.fedbon.exception.BookNotFoundException;
-import ru.fedbon.exception.GenreNotFoundException;
+import ru.fedbon.exception.NotFoundException;
 import ru.fedbon.mapper.BookMapper;
 import ru.fedbon.model.Book;
 import ru.fedbon.repository.AuthorRepository;
@@ -27,19 +25,19 @@ public class BookServiceImpl implements BookService {
 
 
     @Override
-    public long getBooksCount() {
+    public long getCount() {
         return bookRepository.count();
     }
 
     @Override
-    public BookDto addBook(BookDto bookDto) {
+    public BookDto add(BookDto bookDto) {
         var genre = genreRepository.findById(bookDto.getGenreId())
-                .orElseThrow(() -> new GenreNotFoundException(
+                .orElseThrow(() -> new NotFoundException(
                         String.format("Не найден жанр с идентификатором %d", bookDto.getGenreId())
                 ));
 
         var author = authorRepository.findById(bookDto.getAuthorId())
-                .orElseThrow(() -> new AuthorNotFoundException(
+                .orElseThrow(() -> new NotFoundException(
                         String.format("Не найден автор с идентификатором %d", bookDto.getAuthorId())
                 ));
 
@@ -49,19 +47,19 @@ public class BookServiceImpl implements BookService {
         return bookDto;
     }
 
-    public void changeBook(BookDto bookDto) {
+    public void change(BookDto bookDto) {
         var genre = genreRepository.findById(bookDto.getGenreId())
-                .orElseThrow(() -> new GenreNotFoundException(
+                .orElseThrow(() -> new NotFoundException(
                         String.format("Не найден жанр с идентификатором %d", bookDto.getGenreId())
                 ));
 
         var author = authorRepository.findById(bookDto.getAuthorId())
-                .orElseThrow(() -> new AuthorNotFoundException(
+                .orElseThrow(() -> new NotFoundException(
                         String.format("Не найден автор с идентификатором %d", bookDto.getAuthorId())
                 ));
 
         bookRepository.findById(bookDto.getId())
-                .orElseThrow(() -> new BookNotFoundException(
+                .orElseThrow(() -> new NotFoundException(
                         String.format("Не найдена книга с идентификатором %d", bookDto.getId())
                 ));
 
@@ -70,27 +68,27 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> getAllBooks() {
+    public List<Book> getAll() {
         return bookRepository.findAll();
     }
 
     @Override
-    public List<Book> getAllBooksByGenre(String genreName) {
+    public List<Book> getAllByGenreName(String genreName) {
         return bookRepository.findAllByGenre(genreName);
     }
 
     @Override
-    public List<Book> getAllBooksByAuthor(String authorName) {
+    public List<Book> getAllByAuthorName(String authorName) {
         return bookRepository.findAllByAuthor(authorName);
     }
 
     @Override
-    public void deleteBookById(long id) {
+    public void deleteById(long id) {
         bookRepository.deleteById(id);
     }
 
     @Override
-    public long deleteAllBooks() {
+    public long deleteAll() {
         return bookRepository.deleteAll();
     }
 }

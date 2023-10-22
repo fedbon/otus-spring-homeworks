@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.fedbon.dto.BookDto;
-import ru.fedbon.mapper.BookMapper;
 import ru.fedbon.model.Author;
 import ru.fedbon.model.Book;
 import ru.fedbon.model.Genre;
@@ -47,7 +46,7 @@ class BookServiceImplTest {
     @DisplayName("возвращать ожидаемое количество книг в БД")
     void shouldReturnExpectedBooksCount() {
         given(bookRepository.count()).willReturn(EXPECTED_BOOKS_COUNT);
-        var actualBooksCount = bookService.getBooksCount();
+        var actualBooksCount = bookService.getCount();
 
         assertThat(actualBooksCount).isEqualTo(EXPECTED_BOOKS_COUNT);
         verify(bookRepository, times(1)).count();
@@ -73,7 +72,7 @@ class BookServiceImplTest {
         when(genreRepository.findById(genreId)).thenReturn(Optional.of(genre));
         when(authorRepository.findById(authorId)).thenReturn(Optional.of(author));
 
-        var addedBookDto = bookService.addBook(bookDto);
+        var addedBookDto = bookService.add(bookDto);
 
         verify(genreRepository, times(1)).findById(genreId);
         verify(authorRepository, times(1)).findById(authorId);
@@ -102,7 +101,7 @@ class BookServiceImplTest {
         when(authorRepository.findById(1L)).thenReturn(Optional.of(author));
         when(bookRepository.findById(1L)).thenReturn(Optional.of(book));
 
-        bookService.changeBook(bookDto);
+        bookService.change(bookDto);
 
         verify(genreRepository, times(1)).findById(1L);
         verify(authorRepository, times(1)).findById(1L);
@@ -123,7 +122,7 @@ class BookServiceImplTest {
         );
 
         given(bookRepository.findAll()).willReturn(expectedBooks);
-        var actualBooksList = bookService.getAllBooks();
+        var actualBooksList = bookService.getAll();
 
         assertThat(actualBooksList)
                 .usingRecursiveFieldByFieldElementComparator()
@@ -141,7 +140,7 @@ class BookServiceImplTest {
         );
 
         given(bookRepository.findAllByGenre(expectedGenre.getGenreName())).willReturn(expectedBooksByGenre);
-        var actualBooksByGenre = bookService.getAllBooksByGenre(expectedGenre.getGenreName());
+        var actualBooksByGenre = bookService.getAllByGenreName(expectedGenre.getGenreName());
 
         assertThat(actualBooksByGenre)
                 .usingRecursiveFieldByFieldElementComparator()
@@ -157,7 +156,7 @@ class BookServiceImplTest {
                 new Genre(2L, "Жанр_02"), expectedAuthor));
 
         given(bookRepository.findAllByAuthor(expectedAuthor.getName())).willReturn(expectedBooksByAuthor);
-        var actualBooksByAuthor = bookService.getAllBooksByAuthor(expectedAuthor.getName());
+        var actualBooksByAuthor = bookService.getAllByAuthorName(expectedAuthor.getName());
 
         assertThat(actualBooksByAuthor)
                 .usingRecursiveFieldByFieldElementComparator()
@@ -170,7 +169,7 @@ class BookServiceImplTest {
     void shouldDeleteBookById() {
         long bookId = 1L;
 
-        bookService.deleteBookById(bookId);
+        bookService.deleteById(bookId);
 
         verify(bookRepository, times(1)).deleteById(bookId);
 
@@ -180,7 +179,7 @@ class BookServiceImplTest {
     @DisplayName("удалять все книги из БД")
     void shouldDeleteAllBooks() {
         given(bookRepository.deleteAll()).willReturn(EXPECTED_DELETED_BOOKS_COUNT);
-        var actualDeletedBooksCount = bookService.deleteAllBooks();
+        var actualDeletedBooksCount = bookService.deleteAll();
 
         assertThat(actualDeletedBooksCount).isEqualTo(EXPECTED_DELETED_BOOKS_COUNT);
         verify(bookRepository, times(1)).deleteAll();
