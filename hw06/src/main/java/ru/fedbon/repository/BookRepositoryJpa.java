@@ -5,7 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import ru.fedbon.model.Author;
 import ru.fedbon.model.Book;
 import ru.fedbon.model.Genre;
@@ -15,7 +15,7 @@ import java.util.Optional;
 
 import static org.springframework.data.jpa.repository.EntityGraph.EntityGraphType.FETCH;
 
-@Repository
+@Component
 @RequiredArgsConstructor
 public class BookRepositoryJpa implements BookRepository {
 

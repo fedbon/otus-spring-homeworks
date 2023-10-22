@@ -3,14 +3,14 @@ package ru.fedbon.repository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import ru.fedbon.model.Book;
 import ru.fedbon.model.BookComment;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+@Component
 @RequiredArgsConstructor
 public class BookCommentRepositoryJpa implements BookCommentRepository {
 

@@ -36,7 +36,7 @@ public class BookCommand {
 
         bookService.addBook(bookDto);
 
-        return format("Добавлена новая книга c названием: %s", bookDto);
+        return format("Добавлена новая книга c названием: %s", title);
     }
 
     @ShellMethod(key = {"change-book-by-id"},
@@ -51,7 +51,7 @@ public class BookCommand {
 
         bookService.changeBook(bookDto);
 
-        return format("Книга изменена: %s", bookDto);
+        return format("Книга с идентификатором id=%d изменена", id);
     }
 
     @ShellMethod(key = {"get-all-books", "all-books"},
