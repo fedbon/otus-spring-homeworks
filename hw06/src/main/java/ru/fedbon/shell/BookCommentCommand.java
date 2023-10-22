@@ -4,10 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import ru.fedbon.dto.BookCommentDto;
-import ru.fedbon.dto.BookDto;
 import ru.fedbon.exception.NotFoundException;
 import ru.fedbon.repository.BookCommentRepository;
-import ru.fedbon.repository.BookRepository;
 import ru.fedbon.service.BookCommentService;
 import ru.fedbon.stringifier.BookCommentStringifier;
 
@@ -25,7 +23,6 @@ public class BookCommentCommand {
     private final BookCommentRepository bookCommentRepository;
 
     private final BookCommentStringifier stringifier;
-
 
     @ShellMethod(key = {"add-new-book-comment-by-book-id", "new-book-comment-by-book-id"},
             value = "Добавляет новый комментарий к книге по ее идентификатору в БД: " +
