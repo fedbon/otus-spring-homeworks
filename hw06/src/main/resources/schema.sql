@@ -15,7 +15,6 @@ create table if not exists books
     id        bigserial primary key,
     genre_id  bigint references genres (id) on delete cascade on update cascade,
     author_id bigint references authors (id) on delete cascade on update cascade,
-    constraint fk_author foreign key (author_id) references authors(id) not null
     title     varchar(255) not null
 );
 
