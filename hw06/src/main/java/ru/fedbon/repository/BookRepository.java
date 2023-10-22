@@ -10,9 +10,9 @@ import java.util.Optional;
 public interface BookRepository {
     long count();
 
-    Book save(Book book);
+    void save(Book book);
 
-    void update(Book book);
+    Book update(Book book);
 
     Optional<Book> findById(long id);
 

@@ -23,14 +23,13 @@ public class GenreRepositoryJpa implements GenreRepository {
     }
 
     @Override
-    public Genre save(Genre genre) {
+    public void save(Genre genre) {
         entityManager.persist(genre);
-        return genre;
     }
 
     @Override
-    public void update(Genre genre) {
-        entityManager.merge(genre);
+    public Genre update(Genre genre) {
+        return entityManager.merge(genre);
     }
 
     @Override

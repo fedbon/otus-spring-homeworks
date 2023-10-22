@@ -36,7 +36,7 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public BookDto addBook(BookDto bookDto) {
+    public void addBook(BookDto bookDto) {
         var genre = genreRepository.findById(bookDto.getGenreId())
                 .orElseThrow(() -> new GenreNotFoundException(
                         String.format("Не найден жанр с идентификатором %d", bookDto.getGenreId())
@@ -49,12 +49,10 @@ public class BookServiceImpl implements BookService {
 
         var book = BookMapper.mapDtoToBook(bookDto, genre, author);
         bookRepository.save(book);
-
-        return bookDto;
     }
 
     @Transactional
-    public void changeBook(BookDto bookDto) {
+    public Book changeBook(BookDto bookDto) {
         var genre = genreRepository.findById(bookDto.getGenreId())
                 .orElseThrow(() -> new GenreNotFoundException(
                         String.format("Не найден жанр с идентификатором %d", bookDto.getGenreId())
@@ -72,6 +70,7 @@ public class BookServiceImpl implements BookService {
 
         var book = BookMapper.mapDtoToBook(bookDto, genre, author);
         bookRepository.update(book);
+        return book;
     }
 
     @Transactional(readOnly = true)

@@ -28,14 +28,13 @@ public class BookRepositoryJpa implements BookRepository {
     }
 
     @Override
-    public Book save(Book book) {
+    public void save(Book book) {
         entityManager.persist(book);
-        return book;
     }
 
     @Override
-    public void update(Book book) {
-        entityManager.merge(book);
+    public Book update(Book book) {
+        return entityManager.merge(book);
     }
 
     @Override

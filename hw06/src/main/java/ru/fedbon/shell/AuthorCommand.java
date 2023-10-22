@@ -28,15 +28,14 @@ public class AuthorCommand {
     @ShellMethod(key = {"add-new-author", "new-author"},
             value = "Добавляет нового автора в БД: укажите имя автора")
     public String handleAddAuthor(String authorName) {
-        var author = authorService.addAuthor(authorName);
-        return format("Добавлен новый автор: %s", stringifier.stringify(author));
+        authorService.addAuthor(authorName);
+        return format("Добавлен новый автор с именем: %s", authorName);
     }
 
     @ShellMethod(key = {"change-author-by-id"},
             value = "Изменяет существующего в БД автора: укажите идентификатор автора, имя автора")
     public String handleChangeAuthor(long id, String authorName) {
-        authorService.changeAuthor(id, authorName);
-        return format("Имя автора с id=%d изменено на: %s", id, authorName);
+        return format("Автор изменен: %s", stringifier.stringify(authorService.changeAuthor(id, authorName)));
     }
 
     @ShellMethod(key = {"get-all-authors", "all-authors"},

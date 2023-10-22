@@ -24,16 +24,16 @@ public class BookCommentCommand {
             value = "Добавляет новый комментарий к книге по ее идентификатору в БД: " +
                     "укажите идентификатор книги, укажите комментарий")
     public String handleAddBookComment(long id, String text) {
-        var bookComment = bookCommentService.addBookComment(id, text);
-        return format("Добавлен новый комментарий: %s", stringifier.stringify(bookComment));
+        bookCommentService.addBookComment(id, text);
+        return format("Добавлен новый комментарий с текстом: %s", text);
     }
 
     @ShellMethod(key = {"change-book-comment-by-book-id"},
             value = "Изменяет существующий комментарий к книге по ее идентификатору в БД: " +
                     "укажите идентификатор книги, укажите комментарий")
     public String handleChangeGenre(long id, String text) {
-        bookCommentService.changeBookComment(id, text);
-        return format("Комментарий к книге c id=%d изменен на: %s", id, text);
+        return format("Комментарий к книге изменен: %s",
+                stringifier.stringify(bookCommentService.changeBookComment(id, text)));
     }
 
     @ShellMethod(key = {"get-book-comment-by-id", "book-comment-by-id"},

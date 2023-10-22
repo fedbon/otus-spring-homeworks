@@ -18,14 +18,13 @@ public class BookCommentRepositoryJpa implements BookCommentRepository {
     private final EntityManager entityManager;
 
     @Override
-    public BookComment save(BookComment bookComment) {
+    public void save(BookComment bookComment) {
         entityManager.persist(bookComment);
-        return bookComment;
     }
 
     @Override
-    public void update(BookComment bookComment) {
-        entityManager.merge(bookComment);
+    public BookComment update(BookComment bookComment) {
+        return entityManager.merge(bookComment);
     }
 
     @Override

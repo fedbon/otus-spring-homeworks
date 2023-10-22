@@ -25,19 +25,20 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Transactional
     @Override
-    public Author addAuthor(String authorName) {
+    public void addAuthor(String authorName) {
         var author = new Author();
         author.setName(authorName);
-        return authorRepository.save(author);
+        authorRepository.save(author);
     }
 
     @Transactional
     @Override
-    public void changeAuthor(long id, String authorName) {
+    public Author changeAuthor(long id, String authorName) {
         var author = authorRepository.findById(id)
                 .orElseThrow(() -> new AuthorNotFoundException(format("Не найден автор с идентификатором %d", id)));
         author.setName(authorName);
         authorRepository.update(author);
+        return author;
     }
 
     @Transactional(readOnly = true)

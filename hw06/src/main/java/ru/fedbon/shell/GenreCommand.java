@@ -28,15 +28,14 @@ public class GenreCommand {
     @ShellMethod(key = {"add-new-genre", "new-genre"},
             value = "Добавляет новый жанр в БД: укажите название жанра")
     public String handleAddGenre(String genreName) {
-        var genre = genreService.addGenre(genreName);
-        return format("Добавлен новый жанр: %s", stringifier.stringify(genre));
+        genreService.addGenre(genreName);
+        return format("Добавлен новый жанр с названием: %s", genreName);
     }
 
     @ShellMethod(key = {"change-genre-by-id"},
             value = "Изменяет существующий в БД жанр: укажите идентификатор жанра, название жанра")
     public String handleChangeGenre(long id, String genreName) {
-        genreService.changeGenre(id, genreName);
-        return format("Название жанра c id=%d изменено на: %s", id, genreName);
+        return format("Жанр изменен: %s", stringifier.stringify(genreService.changeGenre(id, genreName)));
     }
 
     @ShellMethod(key = {"get-all-genres", "all-genres"},

@@ -8,9 +8,9 @@ import java.util.Optional;
 
 public interface BookCommentRepository {
 
-    BookComment save(BookComment bookComment);
+    void save(BookComment bookComment);
 
-    void update(BookComment bookComment);
+    BookComment update(BookComment bookComment);
 
     Optional<BookComment> findById(long id);
 

@@ -23,7 +23,7 @@ public class BookCommentServiceImpl implements BookCommentService {
 
     @Transactional
     @Override
-    public BookComment addBookComment(long id, String text) {
+    public void addBookComment(long id, String text) {
         var book = bookRepository.findById(id)
                 .orElseThrow(() ->
                         new BookNotFoundException(format("Не найдена книга с идентификатором %d", id)));
@@ -31,17 +31,17 @@ public class BookCommentServiceImpl implements BookCommentService {
         bookComment.setText(text);
         bookComment.setBook(book);
         bookCommentRepository.save(bookComment);
-        return bookComment;
     }
 
     @Transactional
     @Override
-    public void changeBookComment(long id, String text) {
+    public BookComment changeBookComment(long id, String text) {
         var bookComment = bookCommentRepository.findById(id)
                 .orElseThrow(() ->
                         new BookCommentNotFoundException(format("Не найден комментарий с идентификатором %d", id)));
         bookComment.setText(text);
         bookCommentRepository.update(bookComment);
+        return bookComment;
     }
 
     @Transactional(readOnly = true)

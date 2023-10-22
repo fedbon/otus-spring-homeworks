@@ -49,9 +49,7 @@ public class BookCommand {
         bookDto.setGenreId(genreId);
         bookDto.setAuthorId(authorId);
 
-        bookService.changeBook(bookDto);
-
-        return format("Книга с идентификатором id=%d изменена", id);
+        return format("Книга изменена: %s", stringifier.stringify(bookService.changeBook(bookDto)));
     }
 
     @ShellMethod(key = {"get-all-books", "all-books"},

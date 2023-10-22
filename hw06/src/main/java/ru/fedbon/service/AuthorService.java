@@ -7,9 +7,9 @@ import java.util.List;
 public interface AuthorService {
     long getAuthorsCount();
 
-    Author addAuthor(String authorName);
+    void addAuthor(String authorName);
 
-    void changeAuthor(long id, String authorName);
+    Author changeAuthor(long id, String authorName);
 
     Author getAuthorById(long id);
 

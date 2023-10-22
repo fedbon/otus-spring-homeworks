@@ -8,9 +8,9 @@ import java.util.List;
 public interface BookService {
     long getBooksCount();
 
-    BookDto addBook(BookDto bookDto);
+    void addBook(BookDto bookDto);
 
-    void changeBook(BookDto bookDto);
+    Book changeBook(BookDto bookDto);
 
     List<Book> getAllBooks();
 

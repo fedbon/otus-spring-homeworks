@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface BookCommentService {
 
-    BookComment addBookComment(long id, String text);
+    void addBookComment(long id, String text);
 
-    void changeBookComment(long id, String text);
+    BookComment changeBookComment(long id, String text);
 
     BookComment getBookCommentById(long id);
 
