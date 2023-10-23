@@ -30,11 +30,11 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void change(Author author) {
-        authorRepository.findById(author.getId())
+    public void change(Author authorDto) {
+        var author = authorRepository.findById(authorDto.getId())
                 .orElseThrow(() ->
-                        new NotFoundException(format("Не найден автор с идентификатором %d", author.getId())));
-        author.setName(author.getName());
+                        new NotFoundException(format("Не найден автор с идентификатором %d", authorDto.getId())));
+        author.setName(authorDto.getName());
         authorRepository.update(author);
     }
 

@@ -79,32 +79,32 @@ public class BookRepositoryJdbc implements BookRepository {
     @Override
     public Optional<Book> findById(long id) {
         var sql = "select books.id, books.title, books.author_id, authors.name, books.genre_id, genres.genre " +
-                "from books left join authors on books.author_id = authors.id " +
-                "left join genres on books.genre_id = genres.id where books.id = :id";
+                "from books join authors on books.author_id = authors.id " +
+                "join genres on books.genre_id = genres.id where books.id = :id";
         return jdbc.query(sql, Map.of("id", id), new BookRowMapper()).stream().findFirst();
     }
 
     @Override
     public List<Book> findAll() {
         var sql = "select books.id, books.title, books.author_id, authors.name, books.genre_id, genres.genre " +
-                "from books left join authors on books.author_id = authors.id " +
-                "left join genres on books.genre_id = genres.id order by books.id";
+                "from books join authors on books.author_id = authors.id " +
+                "join genres on books.genre_id = genres.id order by books.id";
         return jdbc.query(sql, new BookRowMapper());
     }
 
     @Override
     public List<Book> findAllByGenre(String genreName) {
         var sql = "select books.id, books.title, books.author_id, authors.name, books.genre_id, genres.genre " +
-                "from books left join authors on books.author_id = authors.id " +
-                "left join genres on books.genre_id = genres.id where genres.genre = :genreName order by books.id";
+                "from books join authors on books.author_id = authors.id " +
+                "join genres on books.genre_id = genres.id where genres.genre = :genreName order by books.id";
         return jdbc.query(sql, Map.of("genreName", genreName), new BookRowMapper());
     }
 
     @Override
     public List<Book> findAllByAuthor(String authorName) {
         var sql = "select books.id, books.title, books.author_id, authors.name, books.genre_id, genres.genre " +
-                "from books left join authors on books.author_id = authors.id " +
-                "left join genres on books.genre_id = genres.id where authors.name = :authorName order by books.id";
+                "from books join authors on books.author_id = authors.id " +
+                "join genres on books.genre_id = genres.id where authors.name = :authorName order by books.id";
         return jdbc.query(sql, Map.of("authorName", authorName), new BookRowMapper());
     }
 

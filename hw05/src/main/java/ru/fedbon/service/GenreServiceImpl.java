@@ -30,10 +30,11 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public void change(Genre genre) {
-        genreRepository.findById(genre.getId())
-                .orElseThrow(() -> new NotFoundException(format("Не найден жанр с идентификатором %d", genre.getId())));
-        genre.setGenreName(genre.getGenreName());
+    public void change(Genre genreDto) {
+        var genre = genreRepository.findById(genreDto.getId())
+                .orElseThrow(() ->
+                        new NotFoundException(format("Не найден жанр с идентификатором %d", genreDto.getId())));
+        genre.setGenreName(genreDto.getGenreName());
         genreRepository.update(genre);
     }
 
