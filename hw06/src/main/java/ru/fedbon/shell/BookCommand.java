@@ -19,7 +19,7 @@ public class BookCommand {
 
     private final BookStringifier stringifier;
 
-    @ShellMethod(key = {"get-books-count", "books-count"},
+    @ShellMethod(key = {"books-count"},
             value = "Возвращает количество всех книг в БД")
     public String handleGetCount() {
         var count = bookService.getCount();
@@ -50,14 +50,14 @@ public class BookCommand {
         return format("Книга изменена: %s", stringifier.stringify(bookService.change(bookDto)));
     }
 
-    @ShellMethod(key = {"get-all-books", "all-books"},
+    @ShellMethod(key = {"all-books"},
             value = "Выводит список всех книг в БД")
     public String handleGetAll() {
         var books = bookService.getAll();
         return books.stream().map(stringifier::stringify).collect(Collectors.joining("\n"));
     }
 
-    @ShellMethod(key = {"get-book-by-id", "book-by-id"},
+    @ShellMethod(key = {"book-by-id"},
             value = "Ищет книгу в БД по ее идентификатору: укажите идентификатор книги")
     public String handleGetById(long id) {
         var book = bookService.getById(id);

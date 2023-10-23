@@ -22,14 +22,14 @@ public class GenreCommand {
 
     private final GenreStringifier stringifier;
 
-    @ShellMethod(key = {"get-genres-count", "genres-count"},
+    @ShellMethod(key = {"genres-count"},
             value = "Возвращает количество всех жанров в БД")
     public String handleGetCount() {
         var count = genreService.getCount();
         return format("Общее количество жанров в БД: %d", count);
     }
 
-    @ShellMethod(key = {"add-new-genre", "new-genre"},
+    @ShellMethod(key = {"new-genre"},
             value = "Добавляет новый жанр в БД: укажите название жанра")
     public String handleAdd(String genreName) {
         return format("Добавлен новый жанр: %s", stringifier.stringify(genreService.add(genreName)));
@@ -44,14 +44,14 @@ public class GenreCommand {
         return format("Жанр изменен: %s", stringifier.stringify(genreService.change(genre)));
     }
 
-    @ShellMethod(key = {"get-all-genres", "all-genres"},
+    @ShellMethod(key = {"all-genres"},
             value = "Выводит список всех жанров в БД")
     public String handleGetAll() {
         var genres = genreService.getAll();
         return genres.stream().map(stringifier::stringify).collect(Collectors.joining("\n"));
     }
 
-    @ShellMethod(key = {"get-genre-by-id", "genre-by-id"},
+    @ShellMethod(key = {"genre-by-id"},
             value = "Ищет жанр в БД по его идентификатору: укажите идентификатор жанра")
     public String handleGetById(long id) {
         var genre = genreService.getById(id);

@@ -22,14 +22,14 @@ public class AuthorCommand {
 
     private final AuthorStringifier stringifier;
 
-    @ShellMethod(key = {"get-authors-count", "authors-count"},
+    @ShellMethod(key = {"authors-count"},
             value = "Возвращает количество всех авторов в БД")
     public String handleGetCount() {
         var count = authorService.getCount();
         return format("Общее количество авторов в БД: %d", count);
     }
 
-    @ShellMethod(key = {"add-new-author", "new-author"},
+    @ShellMethod(key = {"new-author"},
             value = "Добавляет нового автора в БД: укажите имя автора")
     public String handleAdd(String authorName) {
         return format("Добавлен новый автор: %s", stringifier.stringify(authorService.add(authorName)));
@@ -45,14 +45,14 @@ public class AuthorCommand {
         return format("Автор изменен: %s", stringifier.stringify(authorService.change(author)));
     }
 
-    @ShellMethod(key = {"get-all-authors", "all-authors"},
+    @ShellMethod(key = {"all-authors"},
             value = "Выводит список всех авторов в БД")
     public String handleGetAll() {
         var authors = authorService.getAll();
         return authors.stream().map(stringifier::stringify).collect(Collectors.joining("\n"));
     }
 
-    @ShellMethod(key = {"get-author-by-id", "author-by-id"},
+    @ShellMethod(key = {"author-by-id"},
             value = "Ищет автора в БД по его идентификатору: укажите идентификатор автора")
     public String handleGetById(long id) {
         var author = authorService.getById(id);

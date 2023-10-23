@@ -30,7 +30,7 @@ public class CommentServiceImpl implements CommentService {
                 .orElseThrow(() ->
                         new NotFoundException(format("Не найдена книга с идентификатором %d",
                                 commentDto.getBookId())));
-        var bookComment = CommentMapper.mapDtoToNewBookComment(commentDto, book);
+        var bookComment = CommentMapper.mapDtoToComment(commentDto, book);
         return commentRepository.save(bookComment);
     }
 

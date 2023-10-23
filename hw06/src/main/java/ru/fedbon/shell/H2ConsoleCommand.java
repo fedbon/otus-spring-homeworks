@@ -14,7 +14,7 @@ import static java.lang.String.format;
 @ShellComponent
 public class H2ConsoleCommand {
 
-    @ShellMethod(key = {"start-h2-web-console", "start-console"},
+    @ShellMethod(key = {"h2-start"},
             value = "Запускает веб-консоль H2")
     public String startH2Console(@ShellOption(defaultValue = "-browser") String[] args) {
         try {
