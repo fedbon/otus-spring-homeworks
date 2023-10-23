@@ -25,7 +25,7 @@ public class GenreRepositoryJpa implements GenreRepository {
 
     @Override
     public Genre save(Genre genre) {
-        if (genre.getId() == null || genre.getId() == 0) {
+        if (genre.getId() == null) {
             entityManager.persist(genre);
             return genre;
         }

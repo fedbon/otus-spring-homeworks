@@ -7,17 +7,17 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.fedbon.model.Book;
-import ru.fedbon.model.BookComment;
+import ru.fedbon.model.Comment;
 import ru.fedbon.model.Genre;
-import ru.fedbon.repository.impl.BookCommentRepositoryJpa;
+import ru.fedbon.repository.impl.CommentRepositoryJpa;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 
 @DisplayName("Тест BookCommentRepositoryJpa должен")
 @DataJpaTest
-@Import(value = {BookCommentRepositoryJpa.class})
-class BookCommentRepositoryJpaTest {
+@Import(value = {CommentRepositoryJpa.class})
+class CommentRepositoryJpaTest {
 
     private static final String NEW_COMMENT_TEXT = "Новый комментарий";
 
@@ -31,12 +31,12 @@ class BookCommentRepositoryJpaTest {
     private TestEntityManager testEntityManager;
 
     @Autowired
-    private BookCommentRepositoryJpa bookCommentRepositoryJpa;
+    private CommentRepositoryJpa bookCommentRepositoryJpa;
 
     @DisplayName("добавлять комментарий в БД")
     @Test
     void shouldInsertBookComment() {
-        var expectedComment = new BookComment();
+        var expectedComment = new Comment();
         expectedComment.setText(NEW_COMMENT_TEXT);
         var testBook = testEntityManager.find(Book.class, TEST_BOOK_ID);
         expectedComment.setBook(testBook);
@@ -44,7 +44,7 @@ class BookCommentRepositoryJpaTest {
         bookCommentRepositoryJpa.save(expectedComment);
         assertThat(expectedComment.getId()).isGreaterThan(0);
 
-        var actualComment = testEntityManager.find(BookComment.class, expectedComment.getId());
+        var actualComment = testEntityManager.find(Comment.class, expectedComment.getId());
 
         assertThat(actualComment)
                 .isNotNull()
@@ -61,10 +61,10 @@ class BookCommentRepositoryJpaTest {
     @DisplayName("изменять имеющийся в БД комментарий без отключения объекта комментария от контекста")
     @Test
     void shouldUpdateBookComment() {
-        var comment = testEntityManager.find(BookComment.class, EXISTING_COMMENT_ID);
+        var comment = testEntityManager.find(Comment.class, EXISTING_COMMENT_ID);
         comment.setText(UPDATED_COMMENT_TEXT);
         testEntityManager.flush();
-        var updatedComment = testEntityManager.find(BookComment.class, EXISTING_COMMENT_ID);
+        var updatedComment = testEntityManager.find(Comment.class, EXISTING_COMMENT_ID);
 
         assertThat(updatedComment.getText()).isEqualTo(UPDATED_COMMENT_TEXT);
     }
@@ -73,7 +73,7 @@ class BookCommentRepositoryJpaTest {
     @Test
     void shouldReturnExpectedBookCommentById() {
         var optionalActualComment = bookCommentRepositoryJpa.findById(EXISTING_COMMENT_ID);
-        var expectedComment = testEntityManager.find(BookComment.class, EXISTING_COMMENT_ID);
+        var expectedComment = testEntityManager.find(Comment.class, EXISTING_COMMENT_ID);
 
         assertThat(optionalActualComment)
                 .isPresent()
@@ -90,7 +90,7 @@ class BookCommentRepositoryJpaTest {
 
         bookCommentRepositoryJpa.deleteById(EXISTING_COMMENT_ID);
 
-        var deletedComment = testEntityManager.find(BookComment.class, EXISTING_COMMENT_ID);
+        var deletedComment = testEntityManager.find(Comment.class, EXISTING_COMMENT_ID);
         assertThat(deletedComment).isNull();
     }
 }

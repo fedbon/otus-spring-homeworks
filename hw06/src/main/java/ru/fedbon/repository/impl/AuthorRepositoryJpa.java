@@ -25,7 +25,7 @@ public class AuthorRepositoryJpa implements AuthorRepository {
 
     @Override
     public Author save(Author author) {
-        if (author.getId() == null || author.getId() == 0) {
+        if (author.getId() == null) {
             entityManager.persist(author);
             return author;
         }

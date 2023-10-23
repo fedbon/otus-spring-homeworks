@@ -9,7 +9,7 @@ public interface GenreService {
 
     Genre add(String name);
 
-    Genre change(Genre genre);
+    Genre change(Genre genreDto);
 
     List<Genre> getAll();
 

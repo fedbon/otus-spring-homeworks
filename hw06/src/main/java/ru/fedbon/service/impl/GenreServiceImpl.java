@@ -34,10 +34,11 @@ public class GenreServiceImpl implements GenreService {
 
     @Transactional
     @Override
-    public Genre change(Genre genre) {
-        genreRepository.findById(genre.getId())
-                .orElseThrow(() -> new NotFoundException(format("Не найден жанр с идентификатором %d", genre.getId())));
-        genre.setName(genre.getName());
+    public Genre change(Genre genreDto) {
+        var genre = genreRepository.findById(genreDto.getId())
+                .orElseThrow(() ->
+                        new NotFoundException(format("Не найден жанр с идентификатором %d", genreDto.getId())));
+        genre.setName(genreDto.getName());
         return genre;
     }
 

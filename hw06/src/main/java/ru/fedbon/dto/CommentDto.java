@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class BookCommentDto {
+public class CommentDto {
     private Long id;
 
     private String text;

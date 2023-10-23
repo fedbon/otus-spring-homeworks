@@ -18,7 +18,7 @@ create table if not exists books
     title     varchar(255) not null
 );
 
-create table if not exists book_comments
+create table if not exists comments
 (
     id      bigserial primary key,
     book_id bigint references books (id) on delete cascade on update cascade not null,

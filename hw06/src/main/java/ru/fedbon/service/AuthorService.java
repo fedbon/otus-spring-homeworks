@@ -9,7 +9,7 @@ public interface AuthorService {
 
     Author add(String name);
 
-    Author change(Author author);
+    Author change(Author authorDto);
 
     Author getById(long id);
 

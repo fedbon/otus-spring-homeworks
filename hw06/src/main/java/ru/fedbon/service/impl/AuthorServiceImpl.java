@@ -34,11 +34,11 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Transactional
     @Override
-    public Author change(Author author) {
-        authorRepository.findById(author.getId())
+    public Author change(Author authorDto) {
+        var author = authorRepository.findById(authorDto.getId())
                 .orElseThrow(() ->
-                        new NotFoundException(format("Не найден автор с идентификатором %d", author.getId())));
-        author.setName(author.getName());
+                        new NotFoundException(format("Не найден автор с идентификатором %d", authorDto.getId())));
+        author.setName(authorDto.getName());
         return author;
     }
 
