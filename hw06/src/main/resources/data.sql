@@ -45,3 +45,8 @@ merge into comments as target
     on target.book_id = source.book_id and target.comment = source.comment
     when not matched then
         insert (book_id, comment) values (source.book_id, source.comment);
+
+select * from authors;
+select * from genres;
+select * from books;
+select * from comments;
