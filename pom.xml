@@ -27,6 +27,8 @@
 
         <spring-shell-starter.version>3.1.4</spring-shell-starter.version>
 
+        <h2.version>2.2.224</h2.version>
+
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.source>17</maven.compiler.source>
         <maven-checkstyle-plugin.version>3.3.0</maven-checkstyle-plugin.version>
