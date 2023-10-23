@@ -33,7 +33,7 @@ public class CommentRepositoryJpa implements CommentRepository {
     }
 
     @Override
-    public List<Comment> findAllCommentsForBook(Book book) {
+    public List<Comment> findAllByBook(Book book) {
         var query = entityManager.createQuery(
                 "select c from Comment c where c.book = :book", Comment.class);
         query.setParameter("book", book);

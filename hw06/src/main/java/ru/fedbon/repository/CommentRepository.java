@@ -12,7 +12,7 @@ public interface CommentRepository {
 
     Optional<Comment> findById(long id);
 
-    List<Comment> findAllCommentsForBook(Book book);
+    List<Comment> findAllByBook(Book book);
 
     void deleteById(long id);
 }

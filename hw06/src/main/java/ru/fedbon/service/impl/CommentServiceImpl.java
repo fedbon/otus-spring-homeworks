@@ -61,7 +61,7 @@ public class CommentServiceImpl implements CommentService {
         var book = bookRepository.findById(id)
                 .orElseThrow(() ->
                         new NotFoundException(format("Не найдена книга с идентификатором %d", id)));
-        return commentRepository.findAllCommentsForBook(book);
+        return commentRepository.findAllByBook(book);
     }
 
     @Transactional
