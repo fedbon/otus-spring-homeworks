@@ -45,8 +45,8 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Author> getAll() {
-        return authorRepository.findAll(Sort.by(Sort.Direction.ASC,"id"));
+    public List<Author> getAll(Sort sort) {
+        return authorRepository.findAll();
     }
 
     @Override
@@ -63,8 +63,8 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Transactional
     @Override
-    public long deleteAll() {
-        return authorRepository.deleteAllCustom();
+    public void deleteAll() {
+        authorRepository.deleteAll();
     }
 
 }

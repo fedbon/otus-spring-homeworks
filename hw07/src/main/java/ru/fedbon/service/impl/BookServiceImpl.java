@@ -12,6 +12,7 @@ import ru.fedbon.repository.AuthorRepository;
 import ru.fedbon.repository.BookRepository;
 import ru.fedbon.repository.GenreRepository;
 import ru.fedbon.service.BookService;
+import ru.fedbon.utils.ErrorMessage;
 
 import java.util.List;
 
@@ -39,48 +40,47 @@ public class BookServiceImpl implements BookService {
     public Book create(BookDto bookDto) {
         var genre = genreRepository.findById(bookDto.getGenreId())
                 .orElseThrow(() -> new NotFoundException(
-                        String.format("Не найден жанр с идентификатором %d", bookDto.getGenreId())
+                        String.format(ErrorMessage.GENRE_NOT_FOUND, bookDto.getGenreId())
                 ));
 
         var author = authorRepository.findById(bookDto.getAuthorId())
                 .orElseThrow(() -> new NotFoundException(
-                        String.format("Не найден автор с идентификатором %d", bookDto.getAuthorId())
+                        String.format(ErrorMessage.AUTHOR_NOT_FOUND, bookDto.getAuthorId())
                 ));
 
-        var book = BookMapper.mapDtoToNewBook(bookDto, genre, author);
+        var book = BookMapper.mapDtoToBook(bookDto, genre, author);
         return bookRepository.save(book);
     }
 
     @Transactional
     public Book update(BookDto bookDto) {
-        var genre = genreRepository.findById(bookDto.getGenreId())
-                .orElseThrow(() -> new NotFoundException(
-                        String.format("Не найден жанр с идентификатором %d", bookDto.getGenreId())
+        var genre = genreRepository.findById(bookDto.getGenreId()).orElseThrow(() -> new NotFoundException(
+                        String.format(ErrorMessage.GENRE_NOT_FOUND, bookDto.getGenreId())
                 ));
 
         var author = authorRepository.findById(bookDto.getAuthorId())
                 .orElseThrow(() -> new NotFoundException(
-                        String.format("Не найден автор с идентификатором %d", bookDto.getAuthorId())
+                        String.format(ErrorMessage.AUTHOR_NOT_FOUND, bookDto.getAuthorId())
                 ));
 
         bookRepository.findById(bookDto.getId())
                 .orElseThrow(() -> new NotFoundException(
-                        String.format("Не найдена книга с идентификатором %d", bookDto.getId())
+                        String.format(ErrorMessage.BOOK_NOT_FOUND, bookDto.getId())
                 ));
 
-        return BookMapper.mapDtoToUpdatedBook(bookDto, genre, author);
+        return BookMapper.mapDtoToBook(bookDto, genre, author);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<Book> getAll() {
-        return bookRepository.findAll(Sort.by(Sort.Direction.ASC,"id"));
+    public List<Book> getAll(Sort sort) {
+        return bookRepository.findAll();
     }
 
     @Override
     public Book getById(long id) {
         return bookRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(format("Не найдена книга с идентификатором %d", id)));
+                .orElseThrow(() -> new NotFoundException(format(ErrorMessage.BOOK_NOT_FOUND, id)));
     }
 
     @Transactional(readOnly = true)
@@ -88,7 +88,7 @@ public class BookServiceImpl implements BookService {
     public List<Book> getAllByGenreId(long id) {
         var genre = genreRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(
-                        String.format("Не найден жанр с идентификатором %d", id)
+                        String.format(ErrorMessage.GENRE_NOT_FOUND, id)
                 ));
         return bookRepository.findAllByGenre(genre);
     }
@@ -97,7 +97,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> getAllByAuthorId(long id) {
         var author = authorRepository.findById(id).orElseThrow(() ->
-                        new NotFoundException(String.format("Не найден автор с идентификатором %d", id)
+                        new NotFoundException(String.format(ErrorMessage.AUTHOR_NOT_FOUND, id)
         ));
         return bookRepository.findAllByAuthor(author);
     }
@@ -110,7 +110,7 @@ public class BookServiceImpl implements BookService {
 
     @Transactional(readOnly = true)
     @Override
-    public long deleteAll() {
-        return bookRepository.deleteAllCustom();
+    public void deleteAll() {
+        bookRepository.deleteAll();
     }
 }

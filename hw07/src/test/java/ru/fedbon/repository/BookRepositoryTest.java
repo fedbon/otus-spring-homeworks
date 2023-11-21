@@ -177,9 +177,7 @@ class BookRepositoryTest {
         var actualCountBeforeCleaning = bookRepository.count();
         assertThat(actualCountBeforeCleaning).isEqualTo(EXPECTED_BOOKS_COUNT);
 
-        var deletedBooksCount = bookRepository.deleteAllCustom();
-
-        assertThat(deletedBooksCount).isEqualTo(EXPECTED_BOOKS_COUNT);
+        bookRepository.deleteAll();
 
         var actualCountAfterCleaning = bookRepository.count();
         assertThat(actualCountAfterCleaning).isEqualTo(EXPECTED_BOOKS_COUNT_AFTER_CLEANING);

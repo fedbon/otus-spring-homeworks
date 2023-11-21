@@ -1,5 +1,6 @@
 package ru.fedbon.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -36,11 +37,11 @@ public class Book {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @ManyToOne(targetEntity = Genre.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Genre.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "genre_id", referencedColumnName = "id", nullable = false)
     private Genre genre;
 
-    @ManyToOne(targetEntity = Author.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Author.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "author_id", referencedColumnName = "id", nullable = false)
     private Author author;
 }

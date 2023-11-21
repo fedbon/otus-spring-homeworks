@@ -1,6 +1,7 @@
 package ru.fedbon.shell;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import ru.fedbon.dto.BookDto;
@@ -53,7 +54,7 @@ public class BookCommand {
     @ShellMethod(key = {"all-books"},
             value = "Выводит список всех книг в БД")
     public String handleGetAll() {
-        var books = bookService.getAll();
+        var books = bookService.getAll(Sort.by(Sort.Direction.ASC,"id"));
         return books.stream().map(stringifier::stringify).collect(Collectors.joining("\n"));
     }
 
@@ -88,7 +89,7 @@ public class BookCommand {
     @ShellMethod(key = {"delete-all-books"},
             value = "Удаляет все книги из БД")
     public String handleDeleteAll() {
-        var count = bookService.deleteAll();
-        return format("%d книг удалено", count);
+        bookService.deleteAll();
+        return "Все книги удалены";
     }
 }

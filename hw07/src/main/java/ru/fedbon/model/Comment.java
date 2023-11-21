@@ -1,5 +1,6 @@
 package ru.fedbon.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -32,7 +33,7 @@ public class Comment {
     @Column(name = "comment", nullable = false)
     private String text;
 
-    @ManyToOne(targetEntity = Book.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Book.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "book_id", referencedColumnName = "id", nullable = false)
     private Book book;
 }

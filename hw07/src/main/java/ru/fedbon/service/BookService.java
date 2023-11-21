@@ -1,5 +1,6 @@
 package ru.fedbon.service;
 
+import org.springframework.data.domain.Sort;
 import ru.fedbon.dto.BookDto;
 import ru.fedbon.model.Book;
 
@@ -12,7 +13,7 @@ public interface BookService {
 
     Book update(BookDto bookDto);
 
-    List<Book> getAll();
+    List<Book> getAll(Sort sort);
 
     Book getById(long id);
 
@@ -22,6 +23,6 @@ public interface BookService {
 
     void deleteById(long id);
 
-    long deleteAll();
+    void deleteAll();
 
 }

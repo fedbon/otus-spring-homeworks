@@ -10,6 +10,7 @@ import ru.fedbon.model.Comment;
 import ru.fedbon.repository.BookRepository;
 import ru.fedbon.repository.CommentRepository;
 import ru.fedbon.service.CommentService;
+import ru.fedbon.utils.ErrorMessage;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class CommentServiceImpl implements CommentService {
     public Comment create(CommentDto commentDto) {
         var book = bookRepository.findById(commentDto.getBookId())
                 .orElseThrow(() ->
-                        new NotFoundException(format("Не найдена книга с идентификатором %d",
+                        new NotFoundException(format(ErrorMessage.BOOK_NOT_FOUND,
                                 commentDto.getBookId())));
         var bookComment = CommentMapper.mapDtoToComment(commentDto, book);
         return commentRepository.save(bookComment);
@@ -39,7 +40,7 @@ public class CommentServiceImpl implements CommentService {
     public Comment update(CommentDto commentDto) {
         var comment = commentRepository.findById(commentDto.getId())
                 .orElseThrow(() ->
-                        new NotFoundException(format("Не найден комментарий с идентификатором %d",
+                        new NotFoundException(format(ErrorMessage.COMMENT_NOT_FOUND,
                                 commentDto.getId())));
 
         comment.setText(commentDto.getText());
@@ -52,7 +53,7 @@ public class CommentServiceImpl implements CommentService {
     public Comment getById(long id) {
         return commentRepository.findById(id)
                 .orElseThrow(() ->
-                        new NotFoundException(format("Не найден комментарий с идентификатором %d", id)));
+                        new NotFoundException(format(ErrorMessage.COMMENT_NOT_FOUND, id)));
     }
 
     @Transactional(readOnly = true)
@@ -60,7 +61,7 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> getAllByBookId(long id) {
         var book = bookRepository.findById(id)
                 .orElseThrow(() ->
-                        new NotFoundException(format("Не найдена книга с идентификатором %d", id)));
+                        new NotFoundException(format(ErrorMessage.BOOK_NOT_FOUND, id)));
         return commentRepository.findAllByBook(book);
     }
 

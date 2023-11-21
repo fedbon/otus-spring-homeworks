@@ -1,6 +1,7 @@
 package ru.fedbon.shell;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import ru.fedbon.exception.NotFoundException;
@@ -48,7 +49,7 @@ public class AuthorCommand {
     @ShellMethod(key = {"all-authors"},
             value = "Выводит список всех авторов в БД")
     public String handleGetAll() {
-        var authors = authorService.getAll();
+        var authors = authorService.getAll(Sort.by(Sort.Direction.ASC,"id"));
         return authors.stream().map(stringifier::stringify).collect(Collectors.joining("\n"));
     }
 
@@ -69,7 +70,7 @@ public class AuthorCommand {
     @ShellMethod(key = {"delete-all-authors"},
             value = "Удаляет всех авторов из БД")
     public String handleDeleteAll() {
-        var count = authorService.deleteAll();
-        return format("%d авторов удалено", count);
+        authorService.deleteAll();
+        return "Все авторы удалены";
     }
 }

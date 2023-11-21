@@ -132,9 +132,7 @@ class AuthorRepositoryTest {
         var actualCountBeforeCleaning = authorRepository.count();
         assertThat(actualCountBeforeCleaning).isEqualTo(EXPECTED_AUTHORS_COUNT);
 
-        var deletedAuthorsCount = authorRepository.deleteAllCustom();
-
-        assertThat(deletedAuthorsCount).isEqualTo(EXPECTED_AUTHORS_COUNT);
+        authorRepository.deleteAll();
 
         var actualCountAfterCleaning = authorRepository.count();
         assertThat(actualCountAfterCleaning).isEqualTo(EXPECTED_AUTHORS_COUNT_AFTER_CLEANING);

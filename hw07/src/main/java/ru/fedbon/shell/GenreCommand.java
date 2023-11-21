@@ -1,6 +1,7 @@
 package ru.fedbon.shell;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import ru.fedbon.exception.NotFoundException;
@@ -47,7 +48,7 @@ public class GenreCommand {
     @ShellMethod(key = {"all-genres"},
             value = "Выводит список всех жанров в БД")
     public String handleGetAll() {
-        var genres = genreService.getAll();
+        var genres = genreService.getAll(Sort.by(Sort.Direction.ASC,"id"));
         return genres.stream().map(stringifier::stringify).collect(Collectors.joining("\n"));
     }
 
@@ -68,7 +69,7 @@ public class GenreCommand {
     @ShellMethod(key = {"delete-all-genres"},
             value = "Удаляет все жанры из БД")
     public String handleDeleteAll() {
-        var count = genreService.deleteAll();
-        return format("%d жанров удалено", count);
+        genreService.deleteAll();
+        return "Все жанры удалены";
     }
 }

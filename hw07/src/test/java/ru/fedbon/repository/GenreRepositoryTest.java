@@ -131,9 +131,7 @@ class GenreRepositoryTest {
         var actualCountBeforeCleaning = genreRepository.count();
         assertThat(actualCountBeforeCleaning).isEqualTo(EXPECTED_GENRES_COUNT);
 
-        var deletedGenresCount = genreRepository.deleteAllCustom();
-
-        assertThat(deletedGenresCount).isEqualTo(EXPECTED_GENRES_COUNT);
+        genreRepository.deleteAll();
 
         var actualCountAfterCleaning = genreRepository.count();
         assertThat(actualCountAfterCleaning).isEqualTo(EXPECTED_GENRES_COUNT_AFTER_CLEANING);

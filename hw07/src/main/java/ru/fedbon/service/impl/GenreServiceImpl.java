@@ -8,6 +8,7 @@ import ru.fedbon.exception.NotFoundException;
 import ru.fedbon.model.Genre;
 import ru.fedbon.repository.GenreRepository;
 import ru.fedbon.service.GenreService;
+import ru.fedbon.utils.ErrorMessage;
 
 import java.util.List;
 
@@ -38,22 +39,22 @@ public class GenreServiceImpl implements GenreService {
     public Genre update(Genre genreDto) {
         var genre = genreRepository.findById(genreDto.getId())
                 .orElseThrow(() ->
-                        new NotFoundException(format("Не найден жанр с идентификатором %d", genreDto.getId())));
+                        new NotFoundException(format(ErrorMessage.GENRE_NOT_FOUND, genreDto.getId())));
         genre.setName(genreDto.getName());
         return genre;
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<Genre> getAll() {
-        return genreRepository.findAll(Sort.by(Sort.Direction.ASC,"id"));
+    public List<Genre> getAll(Sort sort) {
+        return genreRepository.findAll();
     }
 
     @Transactional(readOnly = true)
     @Override
     public Genre getById(long id) {
         return genreRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(format("Не найден жанр с идентификатором %d", id)));
+                .orElseThrow(() -> new NotFoundException(format(ErrorMessage.GENRE_NOT_FOUND, id)));
     }
 
     @Transactional
@@ -64,7 +65,7 @@ public class GenreServiceImpl implements GenreService {
 
     @Transactional
     @Override
-    public long deleteAll() {
-        return genreRepository.deleteAllCustom();
+    public void deleteAll() {
+        genreRepository.deleteAll();
     }
 }
