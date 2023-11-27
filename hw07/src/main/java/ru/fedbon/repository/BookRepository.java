@@ -4,9 +4,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import ru.fedbon.model.Author;
 import ru.fedbon.model.Book;
-import ru.fedbon.model.Genre;
 
 
 import java.util.List;
@@ -22,10 +20,10 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> findAll();
 
     @EntityGraph(attributePaths = {"author"})
-    List<Book> findAllByGenre(Genre genre);
+    List<Book> findAllByGenre_Id(long id);
 
     @EntityGraph(attributePaths = {"genre"})
-    List<Book> findAllByAuthor(Author author);
+    List<Book> findAllByAuthor_Id(long id);
 
     @Modifying
     @Query("delete from Book")

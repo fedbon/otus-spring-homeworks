@@ -47,7 +47,7 @@ public class GenreServiceImpl implements GenreService {
     @Transactional(readOnly = true)
     @Override
     public List<Genre> getAll(Sort sort) {
-        return genreRepository.findAll();
+        return genreRepository.findAll(sort);
     }
 
     @Transactional(readOnly = true)

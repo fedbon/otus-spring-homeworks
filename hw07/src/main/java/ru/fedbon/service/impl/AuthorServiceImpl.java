@@ -46,7 +46,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Transactional(readOnly = true)
     @Override
     public List<Author> getAll(Sort sort) {
-        return authorRepository.findAll();
+        return authorRepository.findAll(sort);
     }
 
     @Override

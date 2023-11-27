@@ -74,7 +74,7 @@ public class BookServiceImpl implements BookService {
     @Transactional(readOnly = true)
     @Override
     public List<Book> getAll(Sort sort) {
-        return bookRepository.findAll();
+        return bookRepository.findAll(sort);
     }
 
     @Override
@@ -86,20 +86,17 @@ public class BookServiceImpl implements BookService {
     @Transactional(readOnly = true)
     @Override
     public List<Book> getAllByGenreId(long id) {
-        var genre = genreRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(
-                        String.format(ErrorMessage.GENRE_NOT_FOUND, id)
-                ));
-        return bookRepository.findAllByGenre(genre);
+        var genre = genreRepository.findById(id).orElseThrow(() -> new NotFoundException(
+                        String.format(ErrorMessage.GENRE_NOT_FOUND, id)));
+        return bookRepository.findAllByGenre_Id(genre.getId());
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<Book> getAllByAuthorId(long id) {
         var author = authorRepository.findById(id).orElseThrow(() ->
-                        new NotFoundException(String.format(ErrorMessage.AUTHOR_NOT_FOUND, id)
-        ));
-        return bookRepository.findAllByAuthor(author);
+                        new NotFoundException(String.format(ErrorMessage.AUTHOR_NOT_FOUND, id)));
+        return bookRepository.findAllByAuthor_Id(author.getId());
     }
 
     @Transactional
