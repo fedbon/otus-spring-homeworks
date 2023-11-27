@@ -88,7 +88,7 @@ public class BookServiceImpl implements BookService {
     public List<Book> getAllByGenreId(long id) {
         var genre = genreRepository.findById(id).orElseThrow(() -> new NotFoundException(
                         String.format(ErrorMessage.GENRE_NOT_FOUND, id)));
-        return bookRepository.findAllByGenre_Id(genre.getId());
+        return bookRepository.findAllByGenreId(genre.getId());
     }
 
     @Transactional(readOnly = true)
@@ -96,7 +96,7 @@ public class BookServiceImpl implements BookService {
     public List<Book> getAllByAuthorId(long id) {
         var author = authorRepository.findById(id).orElseThrow(() ->
                         new NotFoundException(String.format(ErrorMessage.AUTHOR_NOT_FOUND, id)));
-        return bookRepository.findAllByAuthor_Id(author.getId());
+        return bookRepository.findAllByAuthorId(author.getId());
     }
 
     @Transactional

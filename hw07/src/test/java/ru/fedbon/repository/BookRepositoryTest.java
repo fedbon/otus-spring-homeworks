@@ -137,7 +137,7 @@ class BookRepositoryTest {
         );
         var expectedGenre = testEntityManager.find(Genre.class, 1L);
 
-        var actualBooks = bookRepository.findAllByGenre_Id(expectedGenre.getId());
+        var actualBooks = bookRepository.findAllByGenreId(expectedGenre.getId());
 
         assertThat(actualBooks).isNotNull().hasSize(2)
                 .usingRecursiveFieldByFieldElementComparator()
@@ -152,7 +152,7 @@ class BookRepositoryTest {
         );
         var expectedAuthor = testEntityManager.find(Author.class, 3L);
 
-        var actualBooks = bookRepository.findAllByAuthor_Id(expectedAuthor.getId());
+        var actualBooks = bookRepository.findAllByAuthorId(expectedAuthor.getId());
 
         assertThat(actualBooks).isNotNull().hasSize(1)
                 .usingRecursiveFieldByFieldElementComparator()

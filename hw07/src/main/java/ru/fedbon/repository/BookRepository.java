@@ -20,10 +20,10 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> findAll();
 
     @EntityGraph(attributePaths = {"author"})
-    List<Book> findAllByGenre_Id(long id);
+    List<Book> findAllByGenreId(long id);
 
     @EntityGraph(attributePaths = {"genre"})
-    List<Book> findAllByAuthor_Id(long id);
+    List<Book> findAllByAuthorId(long id);
 
     @Modifying
     @Query("delete from Book")
