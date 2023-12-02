@@ -14,7 +14,7 @@ public interface CommentService {
 
     Comment getById(String id);
 
-    List<Comment> getAllByBookId(String id);
+    List<Comment> getAllByBookId(String bookId);
 
     void deleteById(String id);
 }

@@ -17,9 +17,9 @@ public interface BookService {
 
     Book getById(String id);
 
-    List<Book> getAllByGenreId(String id);
+    List<Book> getAllByGenreId(String genreId);
 
-    List<Book> getAllByAuthorId(String id);
+    List<Book> getAllByAuthorId(String authorId);
 
     void deleteById(String id);
 

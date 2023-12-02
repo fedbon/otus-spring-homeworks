@@ -53,9 +53,9 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> getAllByBookId(String id) {
-        var book = bookRepository.findById(id).orElseThrow(() ->
-                        new NotFoundException(format(ErrorMessage.BOOK_NOT_FOUND, id)));
+    public List<Comment> getAllByBookId(String bookId) {
+        var book = bookRepository.findById(bookId).orElseThrow(() ->
+                        new NotFoundException(format(ErrorMessage.BOOK_NOT_FOUND, bookId)));
         return commentRepository.findAllByBookId(book.getId());
     }
 
