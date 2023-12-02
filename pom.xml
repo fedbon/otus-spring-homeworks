@@ -17,6 +17,7 @@
         <module>hw05</module>
         <module>hw06</module>
         <module>hw07</module>
+        <module>hw08</module>
     </modules>
 
     <parent>
@@ -31,6 +32,8 @@
         <spring-shell-starter.version>3.1.4</spring-shell-starter.version>
 
         <h2.version>2.2.224</h2.version>
+        <mongock.version>4.3.8</mongock.version>
+        <flapdoodle.version>4.11.0</flapdoodle.version>
 
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.source>17</maven.compiler.source>
