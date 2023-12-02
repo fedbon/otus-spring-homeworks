@@ -80,16 +80,16 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> getAllByGenreId(String id) {
-        var genre = genreRepository.findById(id).orElseThrow(() -> new NotFoundException(
-                        String.format(ErrorMessage.GENRE_NOT_FOUND, id)));
+    public List<Book> getAllByGenreId(String genreId) {
+        var genre = genreRepository.findById(genreId).orElseThrow(() -> new NotFoundException(
+                        String.format(ErrorMessage.GENRE_NOT_FOUND, genreId)));
         return bookRepository.findAllByGenreId(genre.getId());
     }
 
     @Override
-    public List<Book> getAllByAuthorId(String id) {
-        var author = authorRepository.findById(id).orElseThrow(() ->
-                        new NotFoundException(String.format(ErrorMessage.AUTHOR_NOT_FOUND, id)));
+    public List<Book> getAllByAuthorId(String authorId) {
+        var author = authorRepository.findById(authorId).orElseThrow(() ->
+                        new NotFoundException(String.format(ErrorMessage.AUTHOR_NOT_FOUND, authorId)));
         return bookRepository.findAllByAuthorId(author.getId());
     }
 
