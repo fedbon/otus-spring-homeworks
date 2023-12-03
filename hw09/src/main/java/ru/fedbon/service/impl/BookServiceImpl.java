@@ -68,7 +68,7 @@ public class BookServiceImpl implements BookService {
         book.setGenre(genre);
         book.setAuthor(author);
 
-        return bookRepository.save(book);
+        return book;
     }
 
     @Transactional(readOnly = true)

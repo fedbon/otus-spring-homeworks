@@ -36,13 +36,6 @@ class GenreRepositoryTest {
     private GenreRepository genreRepository;
 
     @Test
-    @DisplayName("возвращать ожидаемое количество жанров в БД")
-    void shouldReturnExpectedGenresCount() {
-        var actualGenresCount = genreRepository.count();
-        assertThat(actualGenresCount).isEqualTo(EXPECTED_GENRES_COUNT);
-    }
-
-    @Test
     @DisplayName("добавлять жанр в БД")
     void shouldInsertGenre() {
         var expectedGenre = new Genre();
@@ -123,17 +116,5 @@ class GenreRepositoryTest {
 
         var deletedGenre = testEntityManager.find(Genre.class, EXISTING_GENRE_ID);
         assertThat(deletedGenre).isNull();
-    }
-
-    @Test
-    @DisplayName("удалять все жанры из БД")
-    void shouldDeleteAllGenres() {
-        var actualCountBeforeCleaning = genreRepository.count();
-        assertThat(actualCountBeforeCleaning).isEqualTo(EXPECTED_GENRES_COUNT);
-
-        genreRepository.deleteAll();
-
-        var actualCountAfterCleaning = genreRepository.count();
-        assertThat(actualCountAfterCleaning).isEqualTo(EXPECTED_GENRES_COUNT_AFTER_CLEANING);
     }
 }

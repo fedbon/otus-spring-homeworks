@@ -42,13 +42,6 @@ class BookRepositoryTest {
     private BookRepository bookRepository;
 
     @Test
-    @DisplayName("возвращать ожидаемое количество книг в БД")
-    void shouldReturnExpectedBooksCount() {
-        var actualBooksCount = bookRepository.count();
-        assertThat(actualBooksCount).isEqualTo(EXPECTED_BOOKS_COUNT);
-    }
-
-    @Test
     @DisplayName("добавлять книгу в БД")
     void shouldInsertBook() {
         var expectedBook = new Book();

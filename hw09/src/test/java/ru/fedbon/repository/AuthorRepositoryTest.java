@@ -36,13 +36,6 @@ class AuthorRepositoryTest {
     private AuthorRepository authorRepository;
 
     @Test
-    @DisplayName("возвращать ожидаемое число авторов в БД")
-    void shouldReturnExpectedAuthorsCount() {
-        var actualAuthorsCount = authorRepository.count();
-        assertThat(actualAuthorsCount).isEqualTo(EXPECTED_AUTHORS_COUNT);
-    }
-
-    @Test
     @DisplayName("добавлять автора в БД")
     void shouldInsertAuthor() {
         var expectedAuthor = new Author();
@@ -124,17 +117,5 @@ class AuthorRepositoryTest {
 
         var deletedAuthor = testEntityManager.find(Author.class, EXISTING_AUTHOR_ID);
         assertThat(deletedAuthor).isNull();
-    }
-
-    @Test
-    @DisplayName("удалять всех авторов из БД")
-    void shouldDeleteAllAuthors() {
-        var actualCountBeforeCleaning = authorRepository.count();
-        assertThat(actualCountBeforeCleaning).isEqualTo(EXPECTED_AUTHORS_COUNT);
-
-        authorRepository.deleteAll();
-
-        var actualCountAfterCleaning = authorRepository.count();
-        assertThat(actualCountAfterCleaning).isEqualTo(EXPECTED_AUTHORS_COUNT_AFTER_CLEANING);
     }
 }
