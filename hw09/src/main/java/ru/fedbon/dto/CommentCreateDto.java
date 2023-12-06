@@ -12,10 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CommentDto {
-
-    @NotNull
-    private Long id;
+public class CommentCreateDto {
 
     @NotBlank
     private String text;

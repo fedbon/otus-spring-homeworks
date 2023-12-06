@@ -7,8 +7,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.fedbon.dto.NewBookDto;
-import ru.fedbon.dto.UpdateBookDto;
+import ru.fedbon.dto.BookCreateDto;
+import ru.fedbon.dto.BookDto;
+import ru.fedbon.dto.BookUpdateDto;
 import ru.fedbon.model.Author;
 import ru.fedbon.model.Book;
 import ru.fedbon.model.Comment;
@@ -78,7 +79,7 @@ class BookControllerTest {
         var expectedAuthor = new Author(1L, "firstAuthor");
         var expectedGenre = new Genre(1L, "firstGenre");
 
-        when(bookService.create(any(NewBookDto.class))).thenReturn(new Book());
+        when(bookService.create(any(BookCreateDto.class))).thenReturn(new BookDto());
 
         mockMvc.perform(post("/create")
                         .param("title", "NewBookTitle")
@@ -87,7 +88,7 @@ class BookControllerTest {
                 .andExpect(status().isFound())
                 .andExpect(view().name("redirect:/books"));
 
-        verify(bookService, times(1)).create(any(NewBookDto.class));
+        verify(bookService, times(1)).create(any(BookCreateDto.class));
     }
 
     @DisplayName("отображать страницу со всей информацией о конкретной книге, включая комментарии")
@@ -118,7 +119,7 @@ class BookControllerTest {
         var expectedGenre = new Genre(1L, "firstGenre");
         var expectedBook = new Book(1L, "firstBook", expectedGenre, expectedAuthor);
 
-        when(bookService.update(any(UpdateBookDto.class))).thenReturn(expectedBook);
+        when(bookService.update(any(BookUpdateDto.class))).thenReturn(expectedBook);
 
         mockMvc.perform(post("/update")
                         .param("id", Long.toString(expectedBook.getId()))
@@ -128,7 +129,7 @@ class BookControllerTest {
                 .andExpect(status().isFound())
                 .andExpect(view().name("redirect:/books"));
 
-        verify(bookService, times(1)).update(any(UpdateBookDto.class));
+        verify(bookService, times(1)).update(any(BookUpdateDto.class));
     }
 
     @DisplayName("отображать страницу со списком всех книг одного автора")

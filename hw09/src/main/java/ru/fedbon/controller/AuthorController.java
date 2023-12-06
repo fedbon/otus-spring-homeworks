@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import ru.fedbon.service.AuthorService;
 
 
-
 @Controller
 @RequiredArgsConstructor
 public class AuthorController {

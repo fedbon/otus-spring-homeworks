@@ -1,17 +1,18 @@
 package ru.fedbon.service;
 
 import org.springframework.data.domain.Sort;
-import ru.fedbon.dto.NewBookDto;
-import ru.fedbon.dto.UpdateBookDto;
+import ru.fedbon.dto.BookCreateDto;
+import ru.fedbon.dto.BookDto;
+import ru.fedbon.dto.BookUpdateDto;
 import ru.fedbon.model.Book;
 
 import java.util.List;
 
 public interface BookService {
 
-    Book create(NewBookDto newBookDto);
+    BookDto create(BookCreateDto bookCreateDto);
 
-    Book update(UpdateBookDto updateBookDto);
+    Book update(BookUpdateDto bookUpdateDto);
 
     List<Book> getAll(Sort sort);
 

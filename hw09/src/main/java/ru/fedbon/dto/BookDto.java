@@ -12,14 +12,17 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CommentDto {
+public class BookDto {
 
     @NotNull
     private Long id;
 
     @NotBlank
-    private String text;
+    private String title;
 
     @NotNull
-    private Long bookId;
+    private Long genreId;
+
+    @NotNull
+    private Long authorId;
 }

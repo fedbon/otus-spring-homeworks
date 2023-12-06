@@ -4,8 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.fedbon.dto.NewBookDto;
-import ru.fedbon.dto.UpdateBookDto;
+import ru.fedbon.dto.BookCreateDto;
+import ru.fedbon.dto.BookDto;
+import ru.fedbon.dto.BookUpdateDto;
 import ru.fedbon.exception.NotFoundException;
 import ru.fedbon.mapper.BookMapper;
 import ru.fedbon.model.Book;
@@ -33,38 +34,40 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public Book create(NewBookDto newBookDto) {
-        var genre = genreRepository.findById(newBookDto.getGenreId())
+    public BookDto create(BookCreateDto bookCreateDto) {
+        var genre = genreRepository.findById(bookCreateDto.getGenreId())
                 .orElseThrow(() -> new NotFoundException(
-                        String.format(ErrorMessage.GENRE_NOT_FOUND, newBookDto.getGenreId())
+                        String.format(ErrorMessage.GENRE_NOT_FOUND, bookCreateDto.getGenreId())
                 ));
 
-        var author = authorRepository.findById(newBookDto.getAuthorId())
+        var author = authorRepository.findById(bookCreateDto.getAuthorId())
                 .orElseThrow(() -> new NotFoundException(
-                        String.format(ErrorMessage.AUTHOR_NOT_FOUND, newBookDto.getAuthorId())
+                        String.format(ErrorMessage.AUTHOR_NOT_FOUND, bookCreateDto.getAuthorId())
                 ));
 
-        return bookRepository.save(BookMapper.mapDtoToNewBook(newBookDto, genre, author));
+        var book = bookRepository.save(BookMapper.mapDtoToNewBook(bookCreateDto, genre, author));
+
+        return BookMapper.mapBookToDto(book);
     }
 
     @Transactional
     @Override
-    public Book update(UpdateBookDto updateBookDto) {
-        var genre = genreRepository.findById(updateBookDto.getGenreId()).orElseThrow(() -> new NotFoundException(
-                String.format(ErrorMessage.GENRE_NOT_FOUND, updateBookDto.getGenreId())
+    public Book update(BookUpdateDto bookUpdateDto) {
+        var genre = genreRepository.findById(bookUpdateDto.getGenreId()).orElseThrow(() -> new NotFoundException(
+                String.format(ErrorMessage.GENRE_NOT_FOUND, bookUpdateDto.getGenreId())
         ));
 
-        var author = authorRepository.findById(updateBookDto.getAuthorId())
+        var author = authorRepository.findById(bookUpdateDto.getAuthorId())
                 .orElseThrow(() -> new NotFoundException(
-                        String.format(ErrorMessage.AUTHOR_NOT_FOUND, updateBookDto.getAuthorId())
+                        String.format(ErrorMessage.AUTHOR_NOT_FOUND, bookUpdateDto.getAuthorId())
                 ));
 
-        var book = bookRepository.findById(updateBookDto.getId())
+        var book = bookRepository.findById(bookUpdateDto.getId())
                 .orElseThrow(() -> new NotFoundException(
-                        String.format(ErrorMessage.BOOK_NOT_FOUND, updateBookDto.getId())
+                        String.format(ErrorMessage.BOOK_NOT_FOUND, bookUpdateDto.getId())
                 ));
 
-        book.setTitle(updateBookDto.getTitle());
+        book.setTitle(bookUpdateDto.getTitle());
         book.setGenre(genre);
         book.setAuthor(author);
 

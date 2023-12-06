@@ -3,6 +3,7 @@ package ru.fedbon.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.fedbon.dto.CommentCreateDto;
 import ru.fedbon.dto.CommentDto;
 import ru.fedbon.exception.NotFoundException;
 import ru.fedbon.mapper.CommentMapper;
@@ -26,13 +27,13 @@ public class CommentServiceImpl implements CommentService {
 
     @Transactional
     @Override
-    public Comment create(CommentDto commentDto) {
-        var book = bookRepository.findById(commentDto.getBookId())
+    public CommentDto create(CommentCreateDto commentCreateDto) {
+        var book = bookRepository.findById(commentCreateDto.getBookId())
                 .orElseThrow(() ->
                         new NotFoundException(format(ErrorMessage.BOOK_NOT_FOUND,
-                                commentDto.getBookId())));
-        var bookComment = CommentMapper.mapDtoToComment(commentDto, book);
-        return commentRepository.save(bookComment);
+                                commentCreateDto.getBookId())));
+        var comment = commentRepository.save(CommentMapper.mapDtoToComment(commentCreateDto, book));
+        return CommentMapper.mapCommentToDto(comment);
     }
 
     @Transactional

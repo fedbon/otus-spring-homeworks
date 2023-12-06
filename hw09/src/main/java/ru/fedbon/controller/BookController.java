@@ -8,8 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.fedbon.dto.NewBookDto;
-import ru.fedbon.dto.UpdateBookDto;
+import ru.fedbon.dto.BookCreateDto;
+import ru.fedbon.dto.BookUpdateDto;
 import ru.fedbon.service.AuthorService;
 import ru.fedbon.service.BookService;
 import ru.fedbon.service.CommentService;
@@ -42,8 +42,8 @@ public class BookController {
     }
 
     @PostMapping("/create")
-    public String handleCreate(@Valid NewBookDto newBookDto) {
-        bookService.create(newBookDto);
+    public String handleCreate(@Valid BookCreateDto bookCreateDto) {
+        bookService.create(bookCreateDto);
 
         return "redirect:/books";
     }
@@ -64,8 +64,8 @@ public class BookController {
     }
 
     @PostMapping("/update")
-    public String handleUpdate(@Valid UpdateBookDto updateBookDto) {
-        bookService.update(updateBookDto);
+    public String handleUpdate(@Valid BookUpdateDto bookUpdateDto) {
+        bookService.update(bookUpdateDto);
 
         return "redirect:/books";
     }
