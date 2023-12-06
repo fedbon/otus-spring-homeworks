@@ -1,6 +1,7 @@
 package ru.fedbon.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,17 +12,17 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UpdateBookDto {
+public class BookUpdateDto {
 
-    @NotBlank
+    @NotNull
     private Long id;
 
     @NotBlank
     private String title;
 
-    @NotBlank
+    @NotNull
     private Long genreId;
 
-    @NotBlank
+    @NotNull
     private Long authorId;
 }

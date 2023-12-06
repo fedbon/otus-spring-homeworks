@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.fedbon.controller.GenreController;
 import ru.fedbon.dto.GenreDto;
+import ru.fedbon.mapper.GenreMapper;
 import ru.fedbon.model.Genre;
 import ru.fedbon.service.GenreService;
 
@@ -43,15 +44,17 @@ class GenreControllerTest {
                 new Genre(1L, "firstGenre"),
                 new Genre(2L, "secondGenre")
         );
-        given(genreService.getAll(Sort.by(Sort.Direction.ASC,"id"))).willReturn(expectedGenres);
 
-        List<GenreDto> expectedResult = expectedGenres.stream()
-                .map(GenreDto::transformDomainToDto)
+        var expectedGenresDto = expectedGenres.stream()
+                .map(GenreMapper::mapGenreToDto)
                 .collect(Collectors.toList());
+
+        given(genreService.getAll(Sort.by(Sort.Direction.ASC,"id"))).willReturn(expectedGenresDto);
 
         mockMvc.perform(get("/api/genres"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(expectedResult)));
+                .andExpect(content().json(objectMapper.writeValueAsString(expectedGenresDto)));
+
         verify(genreService, times(1)).getAll(Sort.by(Sort.Direction.ASC,"id"));
     }
 }

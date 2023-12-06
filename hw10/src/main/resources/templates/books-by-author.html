@@ -38,7 +38,7 @@
                         <td>${book.author}</td>
                         <td>${book.genre}</td>
                         <td>
-                        	<a href="/edit?id=${book.id}">Изменить</a>
+                        	<button onclick="update(${book.id})">Изменить</button>
 						</td>
                         <td>
                         	<button onclick = "deleteBookById(${book.id})">Удалить</button>
@@ -59,6 +59,11 @@
         function getAuthorIdFromUrl() {
             return window.location.search.replace('?authorId=', '')
         }
+
+        function update(bookId) {
+            window.location.href = '/edit?bookId=' + bookId;
+        }
+
     </script>
 
 </head>

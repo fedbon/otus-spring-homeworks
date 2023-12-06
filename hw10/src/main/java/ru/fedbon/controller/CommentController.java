@@ -19,9 +19,6 @@ public class CommentController {
 
     @GetMapping(value = "/api/books/{id}/comments")
     public List<CommentDto> findAllCommentsForSpecificBook(@PathVariable(value = "id") long id) {
-        return commentService.getAllByBookId(id)
-                .stream()
-                .map(CommentDto::transformDomainToDto)
-                .toList();
+        return commentService.getAllByBookId(id);
     }
 }

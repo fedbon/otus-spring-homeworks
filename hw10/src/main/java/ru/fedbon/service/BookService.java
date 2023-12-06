@@ -1,25 +1,25 @@
 package ru.fedbon.service;
 
 import org.springframework.data.domain.Sort;
-import ru.fedbon.dto.NewBookDto;
-import ru.fedbon.dto.UpdateBookDto;
-import ru.fedbon.model.Book;
+import ru.fedbon.dto.BookCreateDto;
+import ru.fedbon.dto.BookDto;
+import ru.fedbon.dto.BookUpdateDto;
 
 import java.util.List;
 
 public interface BookService {
 
-    Book create(NewBookDto newBookDto);
+    BookDto create(BookCreateDto bookCreateDto);
 
-    Book update(UpdateBookDto updateBookDto);
+    BookDto update(BookUpdateDto bookUpdateDto);
 
-    List<Book> getAll(Sort sort);
+    List<BookDto> getAll(Sort sort);
 
-    Book getById(long id);
+    BookDto getById(long id);
 
-    List<Book> getAllByGenreId(long genreId);
+    List<BookDto> getAllByGenreId(long genreId);
 
-    List<Book> getAllByAuthorId(long authorId);
+    List<BookDto> getAllByAuthorId(long authorId);
 
     void deleteById(long id);
 

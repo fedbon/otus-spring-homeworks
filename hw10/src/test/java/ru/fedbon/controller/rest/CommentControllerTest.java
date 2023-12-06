@@ -9,6 +9,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.fedbon.controller.CommentController;
 import ru.fedbon.dto.CommentDto;
+import ru.fedbon.mapper.BookMapper;
+import ru.fedbon.mapper.CommentMapper;
 import ru.fedbon.model.Author;
 import ru.fedbon.model.Book;
 import ru.fedbon.model.Comment;
@@ -40,17 +42,21 @@ class CommentControllerTest {
 
     @DisplayName("возвращать корректный список комментариев для конкретной книги")
     @Test
-    void shouldReturnCorrectCommentsListForSpecificBook() throws Exception {
+    void shouldReturnCorrectCommentsListByBookId() throws Exception {
         var expectedBook = new Book(1L, "firstBook", new Genre(1L, "firstGenre"),
                 new Author(1L, "firstAuthor"));
         var expectedComments = List.of(
                 new Comment(1L, "firstComment", expectedBook),
-                new Comment(1L, "firstComment", expectedBook)
+                new Comment(1L, "secondComment", expectedBook)
         );
 
-        given(commentService.getAllByBookId(expectedBook.getId())).willReturn(expectedComments);
-        List<CommentDto> expectedResult = expectedComments.stream()
-                .map(CommentDto::transformDomainToDto)
+        var expectedCommentsDto = expectedComments.stream()
+                .map(CommentMapper::mapCommentToDto)
+                .toList();
+
+        given(commentService.getAllByBookId(expectedBook.getId())).willReturn(expectedCommentsDto);
+        var expectedResult = expectedComments.stream()
+                .map(CommentMapper::mapCommentToDto)
                 .collect(Collectors.toList());
 
         mockMvc.perform(get("/api/books/{id}/comments", expectedBook.getId()))

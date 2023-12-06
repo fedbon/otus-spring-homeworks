@@ -3,7 +3,6 @@ package ru.fedbon.mapper;
 
 import org.springframework.stereotype.Component;
 import ru.fedbon.dto.CommentDto;
-import ru.fedbon.model.Book;
 import ru.fedbon.model.Comment;
 
 
@@ -14,12 +13,13 @@ public class CommentMapper {
 
     }
 
-    public static Comment mapDtoToComment(CommentDto commentDto, Book book) {
+    public static CommentDto mapCommentToDto(Comment comment) {
 
-        var commentBuilder = Comment.builder();
-        commentBuilder.text(commentDto.getText());
-        commentBuilder.book(book);
+        var commentDto = new CommentDto();
+        commentDto.setId(comment.getId());
+        commentDto.setText(comment.getText());
+        commentDto.setBookId(comment.getBook().getId());
 
-        return commentBuilder.build();
+        return commentDto;
     }
 }

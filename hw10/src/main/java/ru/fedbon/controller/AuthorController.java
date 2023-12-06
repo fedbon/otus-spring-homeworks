@@ -19,9 +19,6 @@ public class AuthorController {
 
     @GetMapping(value = "/api/authors")
     public List<AuthorDto> handleGetAll() {
-        return authorService.getAll(Sort.by(Sort.Direction.ASC,"id"))
-                .stream()
-                .map(AuthorDto::transformDomainToDto)
-                .toList();
+        return authorService.getAll(Sort.by(Sort.Direction.ASC,"id"));
     }
 }

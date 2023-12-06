@@ -1,21 +1,13 @@
 package ru.fedbon.service;
 
 import org.springframework.data.domain.Sort;
-import ru.fedbon.model.Author;
+import ru.fedbon.dto.AuthorDto;
+
 
 import java.util.List;
 
 public interface AuthorService {
 
-    Author create(String name);
+    List<AuthorDto> getAll(Sort sort);
 
-    Author update(Author authorDto);
-
-    Author getById(long id);
-
-    List<Author> getAll(Sort sort);
-
-    void deleteById(long id);
-
-    void deleteAll();
 }

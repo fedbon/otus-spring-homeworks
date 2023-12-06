@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.fedbon.controller.AuthorController;
 import ru.fedbon.dto.AuthorDto;
+import ru.fedbon.mapper.AuthorMapper;
 import ru.fedbon.model.Author;
 import ru.fedbon.service.AuthorService;
 
@@ -43,15 +44,17 @@ class AuthorControllerTest {
                 new Author(1L, "firstAuthor"),
                 new Author(2L, "secondAuthor")
         );
-        given(authorService.getAll(Sort.by(Sort.Direction.ASC,"id"))).willReturn(expectedAuthors);
 
-        List<AuthorDto> expectedResult = expectedAuthors.stream()
-                .map(AuthorDto::transformDomainToDto)
+        var expectedAuthorsDto = expectedAuthors.stream()
+                .map(AuthorMapper::mapAuthorToDto)
                 .collect(Collectors.toList());
+
+        given(authorService.getAll(Sort.by(Sort.Direction.ASC,"id"))).willReturn(expectedAuthorsDto);
 
         mockMvc.perform(get("/api/authors"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(expectedResult)));
+                .andExpect(content().json(objectMapper.writeValueAsString(expectedAuthorsDto)));
+
         verify(authorService, times(1)).getAll(Sort.by(Sort.Direction.ASC,"id"));
     }
 }

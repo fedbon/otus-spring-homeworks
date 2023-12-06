@@ -10,8 +10,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.fedbon.controller.BookController;
 import ru.fedbon.dto.BookDto;
-import ru.fedbon.dto.NewBookDto;
-import ru.fedbon.dto.UpdateBookDto;
+import ru.fedbon.dto.BookCreateDto;
+import ru.fedbon.dto.BookUpdateDto;
+import ru.fedbon.mapper.BookMapper;
 import ru.fedbon.model.Author;
 import ru.fedbon.model.Book;
 import ru.fedbon.model.Genre;
@@ -49,15 +50,23 @@ class BookControllerTest {
                 new Genre(1L, "firstGenre"),
                 new Author(1L, "firstAuthor"));
 
-        given(bookService.create(any(NewBookDto.class))).willReturn(expectedBook);
-        var expectedResult = objectMapper.writeValueAsString(BookDto.transformDomainToDto(expectedBook));
+        var bookCreateDto = new BookCreateDto();
+        bookCreateDto.setTitle("firstBook");
+        bookCreateDto.setAuthorId(1L);
+        bookCreateDto.setGenreId(1L);
+
+        var expectedBookDto = BookMapper.mapBookToDto(expectedBook);
+
+        given(bookService.create(any(BookCreateDto.class))).willReturn(expectedBookDto);
+        var expectedResult = objectMapper.writeValueAsString(expectedBookDto);
 
         mockMvc.perform(post("/api/books")
                         .contentType(APPLICATION_JSON)
-                        .content(expectedResult))
+                        .content(objectMapper.writeValueAsString(bookCreateDto)))
                 .andExpect(status().isOk())
                 .andExpect(content().json(expectedResult));
-        verify(bookService, times(1)).create(any(NewBookDto.class));
+
+        verify(bookService, times(1)).create(any(BookCreateDto.class));
     }
 
     @DisplayName("обновлять книгу по идентификатору")
@@ -66,38 +75,50 @@ class BookControllerTest {
         var expectedBook = new Book(1L, "firstBook",
                 new Genre(1L, "firstGenre"),
                 new Author(1L, "firstAuthor"));
-        given(bookService.update(any(UpdateBookDto.class))).willReturn(expectedBook);
-        var expectedResult = objectMapper.writeValueAsString(BookDto.transformDomainToDto(expectedBook));
+
+        var bookUpdateDto = new BookUpdateDto();
+        bookUpdateDto.setId(1L);
+        bookUpdateDto.setTitle("firstBook");
+        bookUpdateDto.setAuthorId(1L);
+        bookUpdateDto.setGenreId(1L);
+
+        var expectedBookDto = BookMapper.mapBookToDto(expectedBook);
+
+        given(bookService.update(any(BookUpdateDto.class))).willReturn(expectedBookDto);
+        var expectedResult = objectMapper.writeValueAsString(expectedBookDto);
 
         mockMvc.perform(put("/api/books/{id}", expectedBook.getId())
                         .contentType(APPLICATION_JSON)
-                        .content(expectedResult))
+                        .content(objectMapper.writeValueAsString(bookUpdateDto)))
                 .andExpect(status().isOk())
                 .andExpect(content().json(expectedResult));
-        verify(bookService, times(1)).update(any(UpdateBookDto.class));
+
+        verify(bookService, times(1)).update(any(BookUpdateDto.class));
     }
 
     @DisplayName("возвращать корректный список всех книг")
     @Test
     void shouldReturnCorrectBooksList() throws Exception {
         var expectedFirstAuthor = new Author(1L, "firstAuthor");
-        var expectedSecondAuthor = new Author(1L, "secondAuthor");
+        var expectedSecondAuthor = new Author(2L, "secondAuthor");
         var expectedFirstGenre = new Genre(1L, "firstGenre");
-        var expectedSecondGenre = new Genre(1L, "secondGenre");
+        var expectedSecondGenre = new Genre(2L, "secondGenre");
 
         var expectedBooks = List.of(
                 new Book(1L, "firstBook", expectedFirstGenre, expectedFirstAuthor),
                 new Book(2L, "secondBook", expectedSecondGenre, expectedSecondAuthor)
         );
 
-        given(bookService.getAll(Sort.by(Sort.Direction.ASC,"id"))).willReturn(expectedBooks);
-        List<BookDto> expectedResult = expectedBooks.stream()
-                .map(BookDto::transformDomainToDto)
-                .collect(Collectors.toList());
+        var expectedBooksDto = expectedBooks.stream()
+                .map(BookMapper::mapBookToDto)
+                .toList();
+
+        given(bookService.getAll(Sort.by(Sort.Direction.ASC,"id"))).willReturn(expectedBooksDto);
 
         mockMvc.perform(get("/api/books"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(expectedResult)));
+                .andExpect(content().json(objectMapper.writeValueAsString(expectedBooksDto)));
+
         verify(bookService, times(1)).getAll(Sort.by(Sort.Direction.ASC,"id"));
     }
 
@@ -112,14 +133,16 @@ class BookControllerTest {
                 new Book(2L, "secondBook", expectedSecondGenre, expectedAuthor)
         );
 
-        given(bookService.getAllByAuthorId(expectedAuthor.getId())).willReturn(expectedBooks);
-        List<BookDto> expectedResult = expectedBooks.stream()
-                .map(BookDto::transformDomainToDto)
-                .collect(Collectors.toList());
+        var expectedBooksDto = expectedBooks.stream()
+                .map(BookMapper::mapBookToDto)
+                .toList();
+
+        given(bookService.getAllByAuthorId(expectedAuthor.getId())).willReturn(expectedBooksDto);
 
         mockMvc.perform(get("/api/books").param("authorId", String.valueOf(expectedAuthor.getId())))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(expectedResult)));
+                .andExpect(content().json(objectMapper.writeValueAsString(expectedBooksDto)));
+
         verify(bookService, times(1)).getAllByAuthorId(expectedAuthor.getId());
     }
 
@@ -134,14 +157,16 @@ class BookControllerTest {
                 new Book(2L, "secondBook", expectedGenre, expectedSecondAuthor)
         );
 
-        given(bookService.getAllByGenreId(expectedGenre.getId())).willReturn(expectedBooks);
-        List<BookDto> expectedResult = expectedBooks.stream()
-                .map(BookDto::transformDomainToDto)
-                .collect(Collectors.toList());
+        var expectedBooksDto = expectedBooks.stream()
+                .map(BookMapper::mapBookToDto)
+                .toList();
+
+        given(bookService.getAllByGenreId(expectedGenre.getId())).willReturn(expectedBooksDto);
 
         mockMvc.perform(get("/api/books").param("genreId", String.valueOf(expectedGenre.getId())))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(expectedResult)));
+                .andExpect(content().json(objectMapper.writeValueAsString(expectedBooksDto)));
+
         verify(bookService, times(1)).getAllByGenreId(expectedGenre.getId());
     }
 
@@ -152,12 +177,14 @@ class BookControllerTest {
                 new Genre(1L, "firstGenre"),
                 new Author(1L, "firstAuthor"));
 
-        given(bookService.getById(expectedBook.getId())).willReturn(expectedBook);
-        var expectedResult = BookDto.transformDomainToDto(expectedBook);
+        var expectedBookDto = BookMapper.mapBookToDto(expectedBook);
+
+        given(bookService.getById(expectedBook.getId())).willReturn(expectedBookDto);
 
         mockMvc.perform(get("/api/books/{id}", expectedBook.getId()))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(expectedResult)));
+                .andExpect(content().json(objectMapper.writeValueAsString(expectedBookDto)));
+
         verify(bookService, times(1)).getById(expectedBook.getId());
     }
 

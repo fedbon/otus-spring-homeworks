@@ -1,11 +1,12 @@
 package ru.fedbon.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.fedbon.model.Book;
+
 
 
 @AllArgsConstructor
@@ -14,7 +15,7 @@ import ru.fedbon.model.Book;
 @Setter
 public class BookDto {
 
-    @NotBlank
+    @NotNull
     private Long id;
 
     @NotBlank
@@ -26,11 +27,4 @@ public class BookDto {
     @NotBlank
     private String genre;
 
-    public static BookDto transformDomainToDto(Book book) {
-        return new BookDto(
-                book.getId(),
-                book.getTitle(),
-                book.getAuthor().getName(),
-                book.getGenre().getName());
-    }
 }

@@ -18,9 +18,6 @@ public class GenreController {
 
     @GetMapping(value = "/api/genres")
     public List<GenreDto> handleGetAllGenres() {
-        return genreService.getAll(Sort.by(Sort.Direction.ASC,"id"))
-                .stream()
-                .map(GenreDto::transformDomainToDto)
-                .toList();
+        return genreService.getAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 }
