@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
 
 
 @AllArgsConstructor
@@ -25,5 +26,25 @@ public class BookDto {
 
     @NotBlank
     private String genre;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        var bookDto = (BookDto) o;
+        return Objects.equals(id, bookDto.id) &&
+                Objects.equals(title, bookDto.title) &&
+                Objects.equals(author, bookDto.author) &&
+                Objects.equals(genre, bookDto.genre);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, author, genre);
+    }
 
 }
