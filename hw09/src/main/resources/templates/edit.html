@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Изменить книгу</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+
+</head>
+<body>
+
+<form id="edit-form" method="post" action="edit.html" th:action="@{/update}" th:object="${book}">
+
+    <div class="row">
+        <button type="submit">Сохранить</button>
+        <a href="books.html" th:href="@{/books}">
+            <button type="button">На главную</button>
+        </a>
+    </div>
+
+    <h3> Информация о книге:</h3>
+
+    <div class="row">
+        <label for="id-input">ID:</label>
+        <input id="id-input" type="text" name="id" readonly="readonly" th:value="*{id}"/>
+    </div>
+
+    <div class="row">
+        <label for="book-name-input">Введите название:</label>
+        <input id="book-name-input" name="title" type="text" th:value="*{title}"/>
+    </div>
+
+    <div class="row">
+        <label for="book-author-name-select">Выберите автора:</label>
+        <select name="authorId" id="book-author-name-select">
+            <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name}"
+                    th:selected="${book.author.id==author.id}">
+            </option>
+        </select>
+    </div>
+
+    <div class="row">
+        <label for="book-genre-name-select">Выберите жанр:</label>
+        <select name="genreId" id="book-genre-name-select" >
+            <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}"
+                    th:selected="${book.genre.id==genre.id}">
+            </option>
+        </select>
+    </div>
+
+</form>
+
+<h3>Комментарии к книге:</h3>
+<div class="row">
+    <ol>
+        <li th:each="comment : ${comments}">
+            <span th:text="${comment.text}">Комментарий</span>
+        </li>
+    </ol>
+</div>
+
+</body>
+</html>
