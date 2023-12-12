@@ -1,4 +1,4 @@
-package ru.fedbon.controller;
+package ru.fedbon.controller.rest;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
