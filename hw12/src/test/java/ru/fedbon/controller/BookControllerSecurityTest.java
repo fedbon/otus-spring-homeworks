@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.fedbon.security.SecurityConfig;
 import ru.fedbon.security.UserDetailsServiceImpl;
@@ -64,6 +65,17 @@ class BookControllerSecurityTest {
                 .andExpect(redirectedUrl("http://localhost/login"));
     }
 
+    @DisplayName("создание книги с авторизацией должно вернуть успешный код состояния")
+    @Test
+    @WithMockUser(username = "testUser")
+    void testCreateBookAuthorized() throws Exception {
+        mockMvc.perform(post("/create")
+                        .param("title", "New Book Title")
+                        .param("genreId", "1")
+                        .param("authorId", "1"))
+                .andExpect(redirectedUrl("/books"));
+    }
+
     @DisplayName("обновление книги без авторизации должно вернуть код состояния 302 и страницу авторизации")
     @Test
     void testUpdateBookUnauthorized() throws Exception {
@@ -74,6 +86,18 @@ class BookControllerSecurityTest {
                         .param("authorId", "1"))
                 .andExpect(status().isFound())
                 .andExpect(redirectedUrl("http://localhost/login"));
+    }
+
+    @DisplayName("обновление книги с авторизацией должно вернуть успешный код состояния")
+    @Test
+    @WithMockUser(username = "testUser")
+    void testUpdateBookAuthorized() throws Exception {
+        mockMvc.perform(post("/update")
+                        .param("id", "1")
+                        .param("title", "Updated Book Title")
+                        .param("genreId", "1")
+                        .param("authorId", "1"))
+                .andExpect(redirectedUrl("/books"));
     }
 
     @DisplayName("доступ к странице редактирования без авторизации должен вернуть код состояния 302 и страницу авторизации")
