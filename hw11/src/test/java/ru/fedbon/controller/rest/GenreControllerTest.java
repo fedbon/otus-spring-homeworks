@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
+import ru.fedbon.controller.GenreController;
 import ru.fedbon.dto.GenreDto;
 import ru.fedbon.service.GenreService;
 

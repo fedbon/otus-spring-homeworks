@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
+import ru.fedbon.controller.CommentController;
 import ru.fedbon.dto.CommentDto;
 import ru.fedbon.service.CommentService;
 

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.data.domain.Sort;
@@ -13,6 +14,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import ru.fedbon.controller.BookController;
 import ru.fedbon.dto.BookDto;
 import ru.fedbon.dto.BookCreateDto;
 import ru.fedbon.dto.BookUpdateDto;
@@ -36,6 +38,12 @@ class BookControllerTest {
             new BookDto("2", "secondBook", "secondAuthor", "secondGenre")
     );
 
+    private final BookCreateDto newBook =
+            new BookCreateDto("firstBook", "firstAuthor", "firstGenre");
+
+    private final BookUpdateDto updatedBook =
+            new BookUpdateDto("1", "firstBook", "firstAuthor", "firstGenre");
+
     @Mock
     private BookService bookService;
 
@@ -57,7 +65,7 @@ class BookControllerTest {
 
         webTestClient.post().uri("/api/books")
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromValue(books.get(0)))
+                .body(BodyInserters.fromValue(newBook))
                 .exchange()
                 .expectStatus().isCreated()
                 .expectBody(BookDto.class)
@@ -73,7 +81,7 @@ class BookControllerTest {
 
         webTestClient.put().uri("/api/books/{id}", books.get(0).getId())
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromValue(books.get(0)))
+                .body(BodyInserters.fromValue(updatedBook))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(BookDto.class)
@@ -146,9 +154,12 @@ class BookControllerTest {
     @Test
     void shouldDeleteById() {
         var bookId = "1";
+
+        Mockito.when(bookService.deleteById(bookId)).thenReturn(Mono.empty());
+
         webTestClient.delete().uri("/api/books/{id}", bookId)
                 .exchange()
-                .expectStatus().isOk();
+                .expectStatus().isNoContent();
 
         verify(bookService, times(1)).deleteById(bookId);
     }
@@ -156,9 +167,11 @@ class BookControllerTest {
     @DisplayName("удалять все книги")
     @Test
     void shouldDeleteAll() {
+        Mockito.when(bookService.deleteAll()).thenReturn(Mono.empty());
+
         webTestClient.delete().uri("/api/books")
                 .exchange()
-                .expectStatus().isOk();
+                .expectStatus().isNoContent();
 
         verify(bookService, times(1)).deleteAll();
     }
