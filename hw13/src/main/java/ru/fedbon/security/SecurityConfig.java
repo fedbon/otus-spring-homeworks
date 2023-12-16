@@ -25,21 +25,25 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable).cors(AbstractHttpConfigurer::disable)
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/api/authors/**").hasAnyRole("USER")
-                        .requestMatchers(HttpMethod.POST, "/api/books").hasAnyRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/books/{id}").hasAnyRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/books/**").hasAnyRole("USER")
-                        .requestMatchers(HttpMethod.DELETE, "/api/books/{id}").hasAnyRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/books").hasAnyRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/books/{id}/comments").hasAnyRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/genres").hasAnyRole("USER")
-                        .requestMatchers(HttpMethod.GET, "/edit").hasAnyRole("ADMIN")
-                        .anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults())
-        ;
+                        .requestMatchers(HttpMethod.POST, "/api/books", "/api/books/{id}",
+                                "/api/books", "/api/books/{id}/comments")
+                        .hasAnyRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/books/{id}")
+                        .hasAnyRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/books/{id}", "/api/books")
+                        .hasAnyRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/genres", "/api/authors/**", "/api/books/**")
+                        .hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.GET, "/edit")
+                        .hasRole("ADMIN")
+                        .anyRequest().authenticated()
+                )
+                .formLogin(Customizer.withDefaults());
 
         return http.build();
     }
