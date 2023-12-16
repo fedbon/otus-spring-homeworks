@@ -1,0 +1,22 @@
+spring:
+  data:
+    mongodb:
+      database: mongotest
+      host: localhost
+      port: 0
+
+mongock:
+  runner-type: "InitializingBean"
+  mongo-db:
+    write-concern:
+      journal: false
+    read-concern: local
+de:
+  flapdoodle:
+    mongodb:
+      embedded:
+        version: 4.0.2
+
+logging:
+  level:
+    root: WARN
