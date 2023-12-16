@@ -18,64 +18,115 @@ import reactor.core.publisher.Mono;
 import ru.fedbon.dto.BookDto;
 import ru.fedbon.dto.BookCreateDto;
 import ru.fedbon.dto.BookUpdateDto;
-import ru.fedbon.service.BookService;
+import ru.fedbon.exception.NotFoundException;
+import ru.fedbon.mapper.BookMapper;
+import ru.fedbon.repository.AuthorRepository;
+import ru.fedbon.repository.BookRepository;
+import ru.fedbon.repository.GenreRepository;
+import ru.fedbon.util.ErrorMessage;
 
+import static java.lang.String.format;
 
 
 @RestController
 @RequiredArgsConstructor
 public class BookController {
 
-    private final BookService bookService;
+    private final BookRepository bookRepository;
+
+    private final GenreRepository genreRepository;
+
+    private final AuthorRepository authorRepository;
 
     @PostMapping(value = "/api/books")
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<BookDto> handleCreate(@Valid @RequestBody BookCreateDto bookCreateDto) {
-        return bookService.create(bookCreateDto);
+        return genreRepository.findById(bookCreateDto.getGenreId())
+                .switchIfEmpty(Mono.error(new NotFoundException(
+                        format(ErrorMessage.GENRE_NOT_FOUND, bookCreateDto.getGenreId())
+                )))
+                .zipWith(authorRepository.findById(bookCreateDto.getAuthorId())
+                        .switchIfEmpty(Mono.error(new NotFoundException(
+                                format(ErrorMessage.AUTHOR_NOT_FOUND, bookCreateDto.getAuthorId())
+                        ))))
+                .flatMap(tuple -> {
+                    var genre = tuple.getT1();
+                    var author = tuple.getT2();
+                    var newBook = BookMapper.mapDtoToNewBook(bookCreateDto, genre, author);
+                    return bookRepository.save(newBook)
+                            .map(BookMapper::mapBookToDto);
+                });
     }
 
     @PutMapping(value = "/api/books/{id}")
-    @ResponseStatus(HttpStatus.OK)
     public Mono<BookDto> handleUpdate(@PathVariable(value = "id") String id,
                                       @Valid @RequestBody BookUpdateDto bookUpdateDto) {
-        return bookService.update(bookUpdateDto);
+        return genreRepository.findById(bookUpdateDto.getGenreId())
+                .switchIfEmpty(Mono.error(new NotFoundException(
+                        format(ErrorMessage.GENRE_NOT_FOUND, bookUpdateDto.getGenreId())
+                )))
+                .zipWith(authorRepository.findById(bookUpdateDto.getAuthorId())
+                        .switchIfEmpty(Mono.error(new NotFoundException(
+                                format(ErrorMessage.AUTHOR_NOT_FOUND, bookUpdateDto.getAuthorId())
+                        ))))
+                .flatMap(tuple -> bookRepository.findById(bookUpdateDto.getId())
+                        .switchIfEmpty(Mono.error(new NotFoundException(
+                                format(ErrorMessage.BOOK_NOT_FOUND, bookUpdateDto.getId())
+                        )))
+                        .flatMap(book -> {
+                            var genre = tuple.getT1();
+                            var author = tuple.getT2();
+                            book.setTitle(bookUpdateDto.getTitle());
+                            book.setGenre(genre);
+                            book.setAuthor(author);
+                            return bookRepository.save(book)
+                                    .map(BookMapper::mapBookToDto);
+                        }));
     }
 
     @GetMapping(value = "/api/books")
-    @ResponseStatus(HttpStatus.OK)
     public Flux<BookDto> handleGetAll() {
-        return bookService.getAll(Sort.by(Sort.Direction.ASC, "id"));
-    }
-
-    @GetMapping(value = "/api/books", params = "authorId")
-    @ResponseStatus(HttpStatus.OK)
-    public Flux<BookDto> handleGetAllByAuthorId(@RequestParam(value = "authorId") String authorId) {
-        return bookService.getAllByAuthorId(authorId);
-    }
-
-    @GetMapping(value = "/api/books", params = "genreId")
-    @ResponseStatus(HttpStatus.OK)
-    public Flux<BookDto> handleGetAllByGenreId(@RequestParam(value = "genreId") String genreId) {
-        return bookService.getAllByGenreId(genreId);
+        return bookRepository.findAll(Sort.by(Sort.Direction.ASC, "id"))
+                .map(BookMapper::mapBookToDto);
     }
 
     @GetMapping(value = "/api/books/{id}")
-    @ResponseStatus(HttpStatus.OK)
     public Mono<BookDto> handleGetById(@PathVariable(value = "id") String id) {
-        return bookService.getById(id);
+        return bookRepository.findById(id)
+                .switchIfEmpty(Mono.error(new NotFoundException(format(ErrorMessage.BOOK_NOT_FOUND, id))))
+                .map(BookMapper::mapBookToDto);
+    }
+
+    @GetMapping(value = "/api/books", params = "authorId")
+    public Flux<BookDto> handleGetAllByAuthorId(@RequestParam(value = "authorId") String authorId) {
+        return authorRepository.findById(authorId)
+                .switchIfEmpty(Mono.error(new NotFoundException(
+                        format(ErrorMessage.AUTHOR_NOT_FOUND, authorId))))
+                .flatMapMany(author -> bookRepository.findAllByAuthorId(author.getId())
+                        .map(BookMapper::mapBookToDto));
+    }
+
+    @GetMapping(value = "/api/books", params = "genreId")
+    public Flux<BookDto> handleGetAllByGenreId(@RequestParam(value = "genreId") String genreId) {
+        return genreRepository.findById(genreId)
+                .switchIfEmpty(Mono.error(new NotFoundException(
+                        format(ErrorMessage.GENRE_NOT_FOUND, genreId))))
+                .flatMapMany(genre -> bookRepository.findAllByGenreId(genre.getId())
+                        .map(BookMapper::mapBookToDto));
     }
 
     @DeleteMapping(value = "/api/books/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<Void> handleDelete(@PathVariable(value = "id") String id) {
-        return bookService.deleteById(id);
+        return bookRepository.deleteById(id);
     }
 
     @DeleteMapping(value = "/api/books")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<Void> handleDeleteAll() {
-        return bookService.deleteAll();
+        return bookRepository.deleteAll();
     }
 }
+
 
 

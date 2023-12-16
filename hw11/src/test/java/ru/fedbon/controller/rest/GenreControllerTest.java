@@ -12,7 +12,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import ru.fedbon.controller.GenreController;
 import ru.fedbon.dto.GenreDto;
-import ru.fedbon.service.GenreService;
+import ru.fedbon.model.Genre;
+import ru.fedbon.repository.GenreRepository;
 
 
 import java.util.List;
@@ -26,13 +27,18 @@ import static org.mockito.Mockito.verify;
 @WebFluxTest(GenreController.class)
 class GenreControllerTest {
 
-    private final List<GenreDto> genres = List.of(
-            new GenreDto("1", "Genre1"),
-            new GenreDto("2", "Genre2")
+    private final List<Genre> expectedGenres = List.of(
+            new Genre("1", "firstGenre"),
+            new Genre("2", "secondGenre")
+    );
+
+    private final List<GenreDto> expectedGenresDto = List.of(
+            new GenreDto("1", "firstGenre"),
+            new GenreDto("2", "secondGenre")
     );
 
     @Mock
-    private GenreService genreService;
+    private GenreRepository genreRepository;
 
     @InjectMocks
     private GenreController genreController;
@@ -45,17 +51,19 @@ class GenreControllerTest {
         webTestClient = WebTestClient.bindToController(genreController).build();
     }
 
-    @DisplayName("возвращать корректный список всех авторов")
+    @DisplayName("возвращать корректный список всех жанров")
     @Test
     void testHandleGetAll() {
-        given(genreService.getAll(any(Sort.class))).willReturn(Flux.fromIterable(genres));
+        given(genreRepository.findAll(any(Sort.class)))
+                .willReturn(Flux.fromIterable(expectedGenres));
 
         webTestClient.get().uri("/api/genres").exchange()
                 .expectStatus().isOk()
                 .expectBodyList(GenreDto.class)
                 .hasSize(2)
-                .isEqualTo(genres);
+                .isEqualTo(expectedGenresDto);
 
-        verify(genreService).getAll(any(Sort.class));
+        verify(genreRepository).findAll(any(Sort.class));
     }
 }
+

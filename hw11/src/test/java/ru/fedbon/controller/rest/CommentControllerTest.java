@@ -11,15 +11,20 @@ import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import ru.fedbon.controller.CommentController;
 import ru.fedbon.dto.CommentDto;
-import ru.fedbon.service.CommentService;
+import ru.fedbon.model.Author;
+import ru.fedbon.model.Book;
+import ru.fedbon.model.Comment;
+import ru.fedbon.model.Genre;
+import ru.fedbon.repository.BookRepository;
+import ru.fedbon.repository.CommentRepository;
 
 
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -29,8 +34,27 @@ import static org.mockito.Mockito.verify;
 @WebFluxTest(CommentController.class)
 class CommentControllerTest {
 
+    private final Author author = new Author("1", "firstAuthor");
+
+    private final Genre genre = new Genre("1", "firstGenre");
+
+    private final Book expectedBook = new Book("1", "Book Title", genre, author);
+
+    private final List<Comment> expectedComments = List.of(
+            new Comment("1", "firstComment", expectedBook),
+            new Comment("2", "secondComment", expectedBook)
+    );
+
+    private final List<CommentDto> expectedCommentsDto = List.of(
+            new CommentDto("1", "firstComment", "1"),
+            new CommentDto("2", "secondComment", "1")
+    );
+
     @Mock
-    private CommentService commentService;
+    private BookRepository bookRepository;
+
+    @Mock
+    private CommentRepository commentRepository;
 
     @InjectMocks
     private CommentController commentController;
@@ -46,26 +70,22 @@ class CommentControllerTest {
     @DisplayName("возвращать корректный список комментариев для конкретной книги")
     @Test
     void shouldReturnCorrectCommentsListByBookId() {
-        var expectedBookId = "1";
-        var expectedCommentsDto = List.of(
-                new CommentDto("1", "firstComment", "1"),
-                new CommentDto("2", "secondComment", "1")
-        );
-        given(commentService.getAllByBookId(eq(expectedBookId), any()))
-                .willReturn(Flux.fromIterable(expectedCommentsDto));
+        given(bookRepository.findById(expectedBook.getId()))
+                .willReturn(Mono.just(expectedBook));
+        given(commentRepository.findAllByBook(any()))
+                .willReturn(Flux.fromIterable(expectedComments));
 
         webTestClient.get()
-                .uri("/api/books/{id}/comments", expectedBookId)
+                .uri("/api/books/{id}/comments", expectedBook.getId())
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(CommentDto.class)
-                .value(commentDtos -> {
-                    Assertions.assertThat(commentDtos)
-                            .hasSize(2)
-                            .containsExactlyInAnyOrderElementsOf(expectedCommentsDto);
-                });
+                .value(commentDtos -> Assertions.assertThat(commentDtos)
+                        .hasSize(2)
+                        .containsExactlyInAnyOrderElementsOf(expectedCommentsDto));
 
-        verify(commentService, times(1)).getAllByBookId(eq(expectedBookId), any());
+        verify(bookRepository, times(1)).findById(expectedBook.getId());
+        verify(commentRepository, times(1)).findAllByBook(any());
     }
 }
