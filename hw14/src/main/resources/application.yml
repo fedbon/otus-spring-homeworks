@@ -1,0 +1,52 @@
+spring:
+  main:
+    allow-circular-references: true
+
+  sql:
+    init:
+      mode: always
+#      data-locations: data.sql
+#      schema-locations: schema.sql
+
+  batch:
+    job:
+      enabled: true
+
+  shell:
+    interactive:
+      enabled: true
+    noninteractive:
+      enabled: false
+
+    command:
+      version:
+        enabled: false
+
+  data:
+    mongodb:
+      host: localhost
+      port: 30002
+      database: mongod
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: usr
+    password:
+
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+      #ddl-auto: create
+    show-sql: true
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+logging:
+  level:
+    root: ERROR
