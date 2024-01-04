@@ -39,6 +39,8 @@ management:
 
 logging:
   level:
-    org:
-      springframework:
-        security: DEBUG
+    root: INFO
+  file:
+    name: "hw17/logs/application.log"
+  pattern:
+    file: "%d %p [%t] [%c:%L] %m%n"
