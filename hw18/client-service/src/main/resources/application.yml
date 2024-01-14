@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: client-service
+  profiles:
+    active: resilience4j
   cloud:
     config:
       enabled: false
