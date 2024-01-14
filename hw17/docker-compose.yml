@@ -2,7 +2,6 @@ version: '3'
 services:
   hw17-app:
     build:
-      context: .
       dockerfile: Dockerfile
     privileged: true
     image: hw17-app:1.0

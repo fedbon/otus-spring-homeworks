@@ -17,17 +17,24 @@ public class LibraryStatusHealthIndicator implements HealthIndicator {
 
     @Override
     public Health health() {
-        var books = bookService.getAll(Sort.unsorted());
-        boolean isEmpty = books.isEmpty();
-        if (isEmpty) {
+        try {
+            var books = bookService.getAll(Sort.unsorted());
+            boolean isEmpty = books.isEmpty();
+            if (isEmpty) {
+                return Health
+                        .status(Status.DOWN)
+                        .withDetail("message", "В библиотеке нет книг, проверьте, все ли в порядке!")
+                        .build();
+            } else {
+                return Health
+                        .status(Status.UP)
+                        .withDetail("message", "Все в порядке")
+                        .build();
+            }
+        } catch (Exception e) {
             return Health
                     .status(Status.DOWN)
-                    .withDetail("message", "В библиотеке нет книг, проверьте, все ли в порядке!")
-                    .build();
-        } else {
-            return Health
-                    .status(Status.UP)
-                    .withDetail("message", "Все в порядке")
+                    .withDetail("message", "Ошибка при получении данных из базы данных: " + e.getMessage())
                     .build();
         }
     }
